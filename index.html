@@ -1,1924 +1,1547 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <!-- SEO: Meta description for search engines -->
-    <meta name="description" content="Professionelle Objektbetreuung in NRW: Hausmeisterservice, Treppenhausreinigung, Grünpflege, Winterdienst. Jetzt Angebot anfordern."/>
-    <!-- Performance: Preconnect to font domains and preload the primary font -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professionelle Objektbetreuung in NRW: Hausmeisterservice, Treppenhausreinigung, Grünpflege, Winterdienst. Jetzt Angebot anfordern.">
+    <title>Hausmeisterservice Spasowski – Objektpflege NRW</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" as="style">
-    <title>Hausmeisterservice – Objektpflege NRW</title>
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Leaflet CSS for Map -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-   <style>
-/* =========================
-   Theme & Base
-   ========================= */
-:root{
-  --bg-1:#0d1117;
-  --bg-2:#101a2f;
-  --glass-bg:rgba(17,27,47,.65);
-  --border:rgba(255,255,255,.12);
-  --text:#e9eef9;
-  --heading:#ffffff;
-  --muted:#a4b4ce;
-  --accent:#8fd3ff;
-  --accent-dim:rgba(143,211,255,.18);
-  --radius:16px;          /* Karten/Buttons moderat rund */
-  --blur:18px;
-  --field-radius:18px;    /* Form-Felder moderat rund */
-  --shadow:0 8px 32px rgba(0,0,0,.25);
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
-  /* Brand */
-  --brand-blue:#4cc9f0;
+    <style>
+        /* ===== VARIABLES & BASE ===== */
+        :root {
+            --dark-bg: #0a0f1a;
+            --dark-bg-2: #111827;
+            --dark-bg-3: #1f2937;
+            --light-bg: #ffffff;
+            --light-bg-2: #f8fafc;
+            --light-bg-3: #f1f5f9;
 
-  /* Steps */
-  --step1-color:#f72585;
-  --step2-color:#4cc9f0;
-  --step3-color:#ffbe0b;
-}
+            --text-dark: #1e293b;
+            --text-light: #e2e8f0;
+            --text-muted-dark: #64748b;
+            --text-muted-light: #94a3b8;
 
-body.light-mode{
-  --bg-1:#f9fbfd;
-  --bg-2:#f1f6fb;
-  --glass-bg:rgba(255,255,255,.75);
-  --border:rgba(0,0,0,.1);
-  --text:#1a212a;
-  --heading:#101820;
-  --muted:#6c7a89;
-  --accent:#2b8bec;
-  --accent-dim:rgba(43,139,236,.15);
-  --shadow:0 8px 32px rgba(0,0,0,.1);
-}
+            --accent-blue: #3b82f6;
+            --accent-blue-dark: #2563eb;
+            --accent-teal: #06b6d4;
 
-*{ box-sizing:border-box; }
-html,body{
-  margin:0; padding:0; width:100%;
-  font-family:'Poppins',sans-serif;
-  background:var(--bg-1); color:var(--text);
-  overflow-x:hidden;
-}
-html{ color-scheme: dark light; }
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --border-light: rgba(0, 0, 0, 0.1);
 
-a{ color:var(--accent); text-decoration:none; transition:color .2s; }
-a:hover{ color:#b5e9ff; }
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 
-.brand-accent,.brand-blue{ color:var(--brand-blue); }
+            --radius: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-/* Theme Toggle Icon */
-.theme-toggle-btn{
-  margin-left:1rem; background:var(--glass-bg);
-  border:1px solid var(--border); border-radius:50%;
-  padding:.4rem; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color:var(--accent); transition:background .3s, transform .2s;
-}
-.theme-toggle-btn:hover{ background:var(--accent-dim); transform:translateY(-2px); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* =========================
-   Animated Backgrounds
-   ========================= */
-body::before{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:-3;
-  background:
-    radial-gradient(at 10% 30%, rgba(108,61,242,.4) 0%, transparent 70%),
-    radial-gradient(at 90% 20%, rgba(76,201,240,.35) 0%, transparent 70%),
-    radial-gradient(at 30% 80%, rgba(247,37,133,.35) 0%, transparent 70%);
-  animation:moveAurora 30s ease-in-out infinite;
-  filter:blur(70px);
-}
-@keyframes moveAurora{
-  0%{ background-position:0% 50%,100% 0%,50% 100%; }
-  50%{ background-position:50% 0%,50% 100%,0% 50%; }
-  100%{ background-position:100% 50%,0% 100%,100% 0%; }
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-/* Optional spot blobs (extra glow) */
-.blur-stage{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-2; }
-.blur-stage .spot{
-  position:absolute; border-radius:50%; filter:blur(110px); mix-blend-mode:screen; opacity:.9;
-  will-change:transform;
-}
-.blur-stage .spot1{ width:500px; height:500px; top:-10%; left:-10%;
-  background:radial-gradient(circle,#8338ec 0%, transparent 70%);
-  animation:float1 35s ease-in-out infinite alternate;
-}
-.blur-stage .spot2{ width:450px; height:450px; bottom:-20%; right:-15%;
-  background:radial-gradient(circle,#4cc9f0 0%, transparent 70%);
-  animation:float2 30s ease-in-out infinite alternate-reverse;
-}
-.blur-stage .spot3{ width:350px; height:350px; top:40%; left:60%;
-  background:radial-gradient(circle,#f72585 0%, transparent 70%);
-  animation:float3 28s ease-in-out infinite alternate;
-}
-.blur-stage .spot4{ width:500px; height:500px; bottom:15%; left:30%;
-  background:radial-gradient(circle,#ffbe0b 0%, transparent 70%);
-  animation:float4 32s ease-in-out infinite alternate;
-}
-@keyframes float1{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(50px,60px) scale(1.2)} 100%{transform:translate(-40px,-50px) scale(.9)} }
-@keyframes float2{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-60px,-50px) scale(1.15)} 100%{transform:translate(50px,40px) scale(1.05)} }
-@keyframes float3{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-40px) scale(1.2)} 100%{transform:translate(-30px,60px) scale(1)} }
-@keyframes float4{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-50px,40px) scale(1.1)} 100%{transform:translate(40px,-30px) scale(.95)} }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--light-bg);
+            overflow-x: hidden;
+        }
 
-/* =========================
-   Navigation
-   ========================= */
-.nav-wrap{
-  position:fixed; top:0; left:0; width:100%;
-  padding:12px 20px; z-index:99;
-  background:rgba(20,30,50,.6);
-  backdrop-filter:blur(var(--blur));
-  box-shadow:0 2px 12px rgba(0,0,0,.45);
-  border-bottom:1px solid var(--border);
-}
-body.light-mode .nav-wrap{
-  background:rgba(255,255,255,.6);
-  border-bottom:1px solid rgba(0,0,0,.1);
-  box-shadow:0 2px 12px rgba(0,0,0,.1);
-}
-.nav{ max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-.nav-brand{ font-size:1.3rem; font-weight:600; color:var(--heading); }
-.nav-links{ display:flex; gap:16px; }
-.nav-links a{
-  padding:8px 14px; border-radius:var(--radius); color:var(--text);
-  transition:background .3s, color .3s;
-}
-.nav-links a:hover{ background:var(--accent-dim); color:var(--text); }
+        /* Dark mode class */
+        body.dark-mode {
+            color: var(--text-light);
+            background: var(--dark-bg);
+        }
 
-.nav-toggle{ display:none; background:transparent; border:none; cursor:pointer; width:40px; height:40px; position:relative; margin-left:12px; }
-.nav-toggle .burger,
-.nav-toggle .burger::before,
-.nav-toggle .burger::after{
-  content:""; position:absolute; width:24px; height:2px; background:var(--text);
-  left:8px; transition:transform .3s, opacity .3s; transform-origin:center;
-}
-.nav-toggle .burger::before{ top:8px; }
-.nav-toggle .burger::after{ bottom:8px; }
-.nav.open .nav-toggle .burger{ transform:rotate(45deg); }
-.nav.open .nav-toggle .burger::before{ transform:rotate(-90deg) translate(-6px,6px); }
-.nav.open .nav-toggle .burger::after{ opacity:0; }
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
 
-@media (max-width:768px){
-  .nav-links{
-    display:none; position:absolute; top:100%; right:0; left:0;
-    background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-    border-bottom:1px solid var(--border);
-    flex-direction:column; gap:12px; padding:16px 20px;
-  }
-  .nav.open .nav-links{ display:flex; }
-  .nav-toggle{ display:block; }
-  .nav-links a{ width:100%; padding:12px 0; }
-  .nav-links .theme-toggle-btn{ margin-left:0; margin-top:12px; align-self:flex-start; }
-}
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h2 { font-size: clamp(2rem, 4vw, 3rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
 
-/* =========================
-   Hero & Sections
-   ========================= */
-.hero{
-  padding:120px 20px 80px;
-  display:flex; align-items:center; justify-content:center; text-align:center; flex-direction:column;
-}
-.hero h1{ font-size:clamp(34px,5vw,56px); margin:0 0 20px; color:var(--heading); line-height:1.2; }
-.hero p{ font-size:1.1rem; max-width:700px; margin:0 auto 30px; color:var(--muted); }
-.hero-media{ margin-top:24px; }
-.hero-media img,.hero-media video{
-  width:min(100%,900px); border-radius:24px; display:block; margin:0 auto; box-shadow:var(--shadow);
-}
+        p { margin-bottom: 1rem; }
 
-.cta-buttons{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
-.btn{
-  cursor:pointer; display:inline-block; padding:12px 20px; border-radius:var(--radius);
-  background:var(--accent-dim); color:var(--accent); font-weight:600; border:1px solid var(--accent-dim);
-  transition:transform .2s, background .2s;
-}
-.btn:hover{ transform:translateY(-2px); background:rgba(143,211,255,.25); }
-.btn:active{ transform:translateY(0); }
-.btn.primary{ background:#1fbe6c33; color:#69db7c; border-color:#1fbe6c33; }
-.btn.primary:hover{ background:#1fbe6c4d; }
+        /* ===== UTILITY CLASSES ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-section{ padding:80px 0; }
-section .container{ max-width:1200px; margin:0 auto; padding:0 20px; }
-.section-title{ text-align:center; margin-bottom:50px; }
-.section-title h2{ font-size:2.4rem; color:var(--heading); margin-bottom:12px; }
-.section-title p{ font-size:1rem; color:var(--muted); max-width:600px; margin:0 auto; }
+        .section {
+            padding: 6rem 0;
+        }
 
-/* =========================
-   Steps
-   ========================= */
-.steps{ display:grid; gap:30px; }
-@media (min-width:768px){ .steps{ grid-template-columns:repeat(3,1fr); } }
-@media (max-width:767px){ .steps{ gap:20px; } }
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
 
-.step-card{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid var(--border); border-radius:var(--radius);
-  padding:30px; box-shadow:var(--shadow);
-  opacity:0; transform:translateY(30px);
-  transition:opacity .6s ease-out, transform .6s ease-out, box-shadow .25s;
-}
-.step-card.visible{ opacity:1; transform:translateY(0); }
-.step-card:hover{ transform:translateY(-6px); box-shadow:0 12px 40px rgba(0,0,0,.35); }
-body:not(.light-mode) .step-card:hover{
-  box-shadow:0 0 42px rgba(143,211,255,.45), 0 16px 50px rgba(0,0,0,.5);
-}
-.step-number{
-  font-size:1.8rem; font-weight:700; width:48px; height:48px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center; margin-bottom:20px; color:#000; background:var(--accent);
-}
-.step-card h3{ margin:0 0 10px; font-size:1.4rem; color:var(--heading); }
-.steps .step-card:nth-child(1) .step-number{ background:var(--step1-color); color:#fff; }
-.steps .step-card:nth-child(2) .step-number{ background:var(--step2-color); color:#001018; }
-.steps .step-card:nth-child(3) .step-number{ background:var(--step3-color); color:#2b1d00; }
-.step-card p{ margin:0; font-size:.95rem; color:var(--muted); line-height:1.5; }
-.steps .step-card:nth-child(1).visible{ transition-delay:.1s; }
-.steps .step-card:nth-child(2).visible{ transition-delay:.25s; }
-.steps .step-card:nth-child(3).visible{ transition-delay:.4s; }
+        .section-title h2 {
+            margin-bottom: 1rem;
+        }
 
-/* =========================
-   Services
-   ========================= */
-.services-grid{ display:grid; gap:30px; }
-@media (min-width:768px){ .services-grid{ grid-template-columns:repeat(3,1fr); } }
+        .section-title p {
+            color: var(--text-muted-dark);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-.service-card{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid var(--border); border-radius:var(--radius);
-  padding:30px; display:flex; flex-direction:column; box-shadow:var(--shadow);
-  transition:transform .25s, box-shadow .25s;
-}
-.service-card:hover{ transform:translateY(-6px); box-shadow:0 12px 40px rgba(0,0,0,.35); }
-body:not(.light-mode) .service-card:hover{
-  box-shadow:0 0 42px rgba(143,211,255,.45), 0 16px 50px rgba(0,0,0,.5);
-}
-.services-grid .service-card:nth-child(1) svg{ color:#ffbe0b; }
-.services-grid .service-card:nth-child(2) svg{ color:#4cc9f0; }
-.services-grid .service-card:nth-child(3) svg{ color:#69db7c; }
-.services-grid .service-card:nth-child(4) svg{ color:#c77dff; }
-.services-grid .service-card:nth-child(5) svg{ color:#ffa74d; }
-.services-grid .service-card:nth-child(6) svg{ color:#f72585; }
-.service-card svg{ width:46px; height:46px; margin-bottom:20px; color:var(--accent); }
-.service-card h3{ margin:0 0 10px; font-size:1.4rem; color:var(--heading); }
-.service-card p{ margin:0 0 14px; font-size:.95rem; color:var(--muted); line-height:1.5; }
-.service-card ul{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
-.service-card ul li{
-  display:flex; align-items:center; font-size:.95rem; color:var(--muted);
-}
-.service-card ul li::before{
-  content:'✓'; color:#69db7c; margin-right:10px; font-weight:700;
-}
+        body.dark-mode .section-title p {
+            color: var(--text-muted-light);
+        }
 
-/* =========================
-   Map
-   ========================= */
-.map-card{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
-}
-#map{ width:100%; height:400px; border-radius:var(--radius); }
-.map-controls{
-  display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:20px;
-}
-.map-controls button{
-  flex:0 1 auto; padding:10px; border:none; border-radius:var(--radius);
-  background:var(--accent-dim); color:var(--accent); font-weight:600; transition:background .2s; cursor:pointer;
-}
-.map-controls button:hover{ background:rgba(143,211,255,.3); }
-.map-controls button:active{ background:rgba(143,211,255,.25); }
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
 
-/* =========================
-   About
-   ========================= */
-.about-grid{ display:grid; gap:30px; }
-@media (min-width:768px){ .about-grid{ grid-template-columns:1fr 1fr; } }
-.about-card{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:var(--radius); padding:40px; box-shadow:var(--shadow);
-}
-.about-card ul{ list-style:none; padding:0; margin-top:20px; }
-.about-card ul li{ display:flex; align-items:center; margin-bottom:10px; font-size:1rem; color:var(--muted); }
-.about-card ul li::before{ content:'•'; color:var(--accent); margin-right:10px; font-size:1.2rem; }
+        body.dark-mode .header {
+            background: rgba(17, 24, 39, 0.95);
+            border-bottom: 1px solid var(--border-dark);
+        }
 
-/* =========================
-   Jobs
-   ========================= */
-.jobs-grid{ display:grid; gap:30px; }
-@media (min-width:992px){ .jobs-grid{ grid-template-columns:1fr 1fr; } }
-.job-list{ display:grid; gap:20px; }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
-.job-card{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
-  transition:transform .25s, box-shadow .25s;
-}
-.job-card:hover{ transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.35); }
-body:not(.light-mode) .job-card:hover{
-  box-shadow:0 0 42px rgba(143,211,255,.45), 0 16px 50px rgba(0,0,0,.5);
-}
-.job-card .badge{
-  display:inline-block; padding:4px 8px; border-radius:12px;
-  background:rgba(143,211,255,.15); color:var(--accent); font-size:.75rem; margin-bottom:8px;
-}
-.job-card h4{ margin:0 0 6px; font-size:1.2rem; color:var(--heading); }
-.job-card p{ margin:0 0 10px; font-size:.95rem; color:var(--muted); }
-.job-tags{ display:flex; gap:6px; flex-wrap:wrap; }
-.job-tags span{
-  font-size:.75rem; padding:4px 8px; border-radius:12px; background:rgba(255,255,255,.08); color:var(--muted);
-}
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
 
-/* =========================
-   Forms (schön & konsistent)
-   ========================= */
-form{ display:grid; gap:20px; margin-top:20px; }
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
 
-/* Inputs + Multi-Select Trigger */
-form input[type="text"],
-form input[type="email"],
-form input[type="tel"],
-.ms-btn{
-  width:100%; padding:18px 22px;
-  border-radius:var(--field-radius);
-  border:1px solid #e5e7eb; background:#fff; color:#111;
-  font-family:'Poppins',sans-serif;
-  transition:border-color .2s, box-shadow .2s, background-color .2s;
-  accent-color:var(--accent);
-}
-.ms-btn{ color:#6c757d; }
-.ms-btn.selected{ color:#111; }
+        .nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
 
-form input::placeholder,
-form textarea::placeholder{ color:#808ea3; }
+        body.dark-mode .nav a {
+            color: var(--text-light);
+        }
 
-/* Other fields */
-form input[type="file"],
-form select,
-form textarea{
-  width:100%; padding:14px;
-  border-radius:var(--radius);
-  border:1px solid #e5e7eb; background:#fff; color:#111;
-  font-family:'Poppins',sans-serif; transition:border-color .2s, box-shadow .2s;
-  accent-color:var(--accent);
-}
+        .nav a:hover {
+            color: var(--accent-blue);
+        }
 
-/* Hover & Focus */
-form input:hover,
-form select:hover,
-form textarea:hover,
-.ms-btn:hover{ border-color:#d0d7e2; }
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
 
-form input:focus,
-form select:focus,
-form textarea:focus,
-.ms-btn:focus{
-  outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
-}
+        body.dark-mode .theme-toggle {
+            border-color: var(--border-dark);
+        }
 
-/* Intervall-Dropdown im Fokus: schwarz auf weiß */
-#formQuote select:focus,
-#formApply select:focus{
-  background:#fff; color:#111;
-}
+        .theme-toggle:hover {
+            background: var(--light-bg-2);
+            transform: translateY(-2px);
+        }
 
-/* Datei-Upload Button schöner */
-input[type="file"]::-webkit-file-upload-button,
-input[type="file"]::file-selector-button{
-  border:0; border-radius:12px; padding:10px 14px;
-  background:var(--accent-dim); color:var(--accent);
-  font-weight:600; cursor:pointer;
-}
-input[type="file"]::-webkit-file-upload-button:hover,
-input[type="file"]::file-selector-button:hover{
-  background:rgba(143,211,255,.28);
-}
+        body.dark-mode .theme-toggle:hover {
+            background: var(--dark-bg-2);
+        }
 
-/* Grid: Name/E-Mail – rechte Spalte etwas schmaler */
-.grid-2{ display:grid; gap:20px; grid-template-columns:1fr; }
-@media (min-width:600px){
-  .grid-2{ grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); }
-}
-@media (min-width:860px){
-  #formQuote .grid-2, #formApply .grid-2{
-    grid-template-columns:1.1fr .9fr;
-  }
-}
-#formApply .grid-2 > div, #formQuote .grid-2 > div{ width:100%; }
-#formApply .grid-2 input, #formQuote .grid-2 input{ width:100%; }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
 
-/* Consent-Zeile */
-.consent{ display:flex; align-items:flex-start; gap:10px; font-size:.9rem; color:var(--muted); }
-.consent input{ margin-top:4px; flex-shrink:0; }
-.consent a{ color:#fff; text-decoration:underline; }
-body.light-mode .consent a{ color:#111; }
+        body.dark-mode .mobile-menu-toggle {
+            color: var(--text-light);
+        }
 
-/* Rückmeldungen */
-.note{ font-size:.85rem; color:var(--muted); }
-.success{ color:#69db7c; margin-top:10px; font-size:.9rem; }
-.error{ color:#ef476f; margin-top:10px; font-size:.9rem; }
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a0f1a 0%, #1e293b 100%);
+        }
 
-/* Custom Multi-Select */
-.multi{ position:relative; }
-.ms-btn::after{
-  content:'▼'; font-size:.8em; margin-left:10px; transition:transform .3s;
-}
-.ms-btn[aria-expanded="true"]::after{ transform:rotate(180deg); }
-.ms-menu{
-  position:absolute; left:0; right:0; top:calc(100% + 6px);
-  background:var(--bg-2); color:var(--text); border-radius:14px;
-  border:1px solid rgba(0,0,0,.12); box-shadow:0 12px 30px rgba(0,0,0,.25);
-  padding:10px; display:none; z-index:10; max-height:250px; overflow-y:auto;
-}
-body.light-mode .ms-menu{ background:#fff; color:#111; border-color:rgba(0,0,0,.15); }
-.ms-menu label{
-  display:flex; align-items:center; gap:10px; padding:10px 8px; cursor:pointer; border-radius:8px; transition:background .2s;
-}
-.ms-menu label:hover{ background:var(--accent-dim); }
-.ms-menu input[type="checkbox"]{ width:16px; height:16px; accent-color:var(--accent); flex-shrink:0; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80&auto=format&fit=crop') center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
 
-/* Form-Buttons */
-form button{
-  align-self:flex-start; padding:12px 20px; border:none; border-radius:var(--radius);
-  background:linear-gradient(180deg, var(--accent) 0%, #7cc9ff 100%); color:#0b0f16;
-  font-weight:600; cursor:pointer; transition:filter .2s, transform .2s; box-shadow:0 8px 24px rgba(143,211,255,.28);
-}
-form button:hover{ filter:brightness(1.05); transform:translateY(-2px); }
-form button:active{ transform:translateY(0); }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(10, 15, 26, 0.9) 0%, rgba(30, 41, 59, 0.85) 100%);
+            z-index: 1;
+        }
 
-/* Kleine Hinweise */
-.form-hint{ font-size:.8rem; color:var(--muted); margin-top:6px; }
-.file-help{ font-size:.85rem; color:var(--muted); margin-top:6px; }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
 
-/* =========================
-   FAQ
-   ========================= */
-.faq-grid{ display:grid; gap:15px; }
-.faq-item{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
-  cursor:pointer; transition:background .2s;
-}
-.faq-item.open{ background:rgba(20,30,50,.75); }
-body.light-mode .faq-item.open{ background:rgba(255,255,255,.92); }
-body.light-mode .faq-item.open .faq-question,
-body.light-mode .faq-item.open .faq-answer{ color:var(--text); }
+        .hero h1 {
+            color: white;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
 
-.faq-question{
-  display:flex; justify-content:space-between; align-items:center;
-  color:var(--heading); font-weight:600; font-size:1.1rem;
-}
-.faq-toggle{ font-size:1.5rem; color:var(--accent); transition:transform .3s; }
-.faq-item.open .faq-toggle{ transform:rotate(180deg); }
-.faq-answer{
-  max-height:0; overflow:hidden; opacity:0; transition:max-height .4s ease, opacity .4s ease; margin-top:0;
-}
-.faq-item.open .faq-answer{
-  max-height:500px; opacity:1; margin-top:12px; color:var(--text); font-size:.95rem; line-height:1.5;
-}
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
 
-/* =========================
-   Contact
-   ========================= */
-.contact-grid{ display:grid; gap:30px; }
-@media (min-width:992px){ .contact-grid{ grid-template-columns:1fr 1fr; } }
-.contact-info,.contact-form{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:40px; box-shadow:var(--shadow);
-}
-.contact-info ul{ list-style:none; padding:0; margin:0; }
-.contact-info li{ display:flex; align-items:center; margin-bottom:14px; color:var(--muted); font-size:.95rem; }
-.contact-info li svg{ width:18px; height:18px; margin-right:12px; color:var(--accent); }
-.contact-form h3{ margin-top:0; font-size:1.6rem; color:var(--heading); margin-bottom:14px; }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-/* =========================
-   Footer (merged, final)
-   ========================= */
-footer{
-  background:rgba(13,17,23,.9); backdrop-filter:blur(10px);
-  padding:40px 20px; margin-top:160px;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-}
-footer .footer-grid{
-  max-width:1200px; margin:0 auto; display:grid; gap:30px; justify-items:flex-start; text-align:left;
-}
-@media (min-width:768px){ footer .footer-grid{ grid-template-columns:1fr 1fr 1fr; } }
-footer h4{ margin:0 0 10px; color:var(--heading); font-size:1.3rem; }
-footer ul{ list-style:none; padding:0; margin:0; }
-footer ul li{ margin-bottom:8px; }
-footer ul li a{ color:var(--muted); font-size:.95rem; transition:color .2s; }
-footer ul li a:hover{ color:var(--accent); }
-.footer-bottom{ margin-top:30px; font-size:.85rem; text-align:center; color:var(--muted); }
-.footer-bottom span{ color:var(--accent); }
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            font-size: 1rem;
+        }
 
-body.light-mode footer{ background:rgba(255,255,255,.9); color:var(--text); }
-body.light-mode footer h4{ color:var(--heading); }
-body.light-mode footer ul li a{ color:var(--text); }
-body.light-mode footer ul li a:hover{ color:var(--accent); }
-body.light-mode .about-card,
-body.light-mode .contact-info,
-body.light-mode .contact-form{ border:1px solid rgba(0,0,0,.08); }
-body.light-mode .footer-bottom{ color:var(--text); }
+        .btn-primary {
+            background: var(--accent-blue);
+            color: white;
+            border: 2px solid var(--accent-blue);
+        }
 
-/* =========================
-   Entrance Effects
-   ========================= */
-.enter{
-  opacity:0; transform:translateY(40px); filter:blur(6px);
-  transition:opacity .8s ease-out, transform .8s ease-out, filter .8s ease-out;
-}
-.enter.visible{ opacity:1; transform:translateY(0); filter:blur(0); }
+        .btn-primary:hover {
+            background: var(--accent-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
 
-/* =========================
-   Tags
-   ========================= */
-.tag{ font-size:.75rem; padding:4px 8px; border-radius:12px; font-weight:500; display:inline-block; }
-.tag.green{  background:rgba(95,232,140,.25); color:#5fe88c; }
-.tag.purple{ background:rgba(199,125,255,.25); color:#c77dff; }
-.tag.blue{   background:rgba(76,201,240,.25); color:#4cc9f0; }
-.tag.orange{ background:rgba(255,167,77,.25); color:#ffa74d; }
-.tag.yellow{ background:rgba(255,224,102,.25); color:#ffe066; }
-.tag.pink{   background:rgba(247,37,133,.25); color:#f72585; }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
 
-body.light-mode .tag.green{  background:rgba(95,232,140,.25); color:#2f8852; }
-body.light-mode .tag.purple{ background:rgba(199,125,255,.25); color:#7e43b3; }
-body.light-mode .tag.blue{   background:rgba(76,201,240,.25); color:#2c7aa8; }
-body.light-mode .tag.orange{ background:rgba(255,167,77,.25); color:#c26620; }
-body.light-mode .tag.yellow{ background:rgba(255,224,102,.25); color:#ac8418; }
-body.light-mode .tag.pink{   background:rgba(247,37,133,.25); color:#b61d61; }
-body.light-mode .job-card p{ color:var(--text); }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
 
-/* =========================
-   Accessibility / UX
-   ========================= */
-.nav-links a:focus-visible,
-.btn:focus-visible,
-.map-controls button:focus-visible,
-.faq-item:focus-visible,
-.ms-btn:focus-visible{
-  outline:2px solid var(--accent);
-  outline-offset:3px;
-}
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite;
+        }
 
-/* Prefer-reduced-motion */
-@media (prefers-reduced-motion: reduce){
-  body::before, .blur-stage .spot{ animation:none !important; }
-  .enter{ transition:none !important; opacity:1 !important; transform:none !important; filter:none !important; }
-}
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
 
-/* Backdrop-filter Fallback */
-@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))){
-  .nav-wrap, .step-card, .service-card, .about-card, .map-card,
-  .contact-form, .contact-info, .faq-item, .job-card{
-    background:rgba(17,27,47,.85);
-  }
-}
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
 
-</style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        /* ===== WORKFLOW SECTION ===== */
+        .workflow {
+            background: var(--light-bg-2);
+            position: relative;
+        }
 
-<link rel="stylesheet" href="leon-all10.css">
-<script defer src="leon-all10.js"></script>
+        body.dark-mode .workflow {
+            background: var(--dark-bg-2);
+        }
 
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
 
-<!-- ===== SEO & Social (All-10-Pack) ===== -->
-<link rel="canonical" href="https://hausmeisterservice-spasowski.de/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hausmeisterservice Spasowski – Angebot & Bewerbung">
-<meta property="og:description" content="Schnell ein Angebot anfordern oder direkt bewerben. Zuverlässiger Service, faire Preise, kurze Reaktionszeiten.">
-<meta property="og:image" content="/assets/og-image.jpg">
-<meta property="og:url" content="https://hausmeisterservice-spasowski.de/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hausmeisterservice Spasowski – Angebot & Bewerbung">
-<meta name="twitter:description" content="Schnell ein Angebot anfordern oder direkt bewerben. Zuverlässiger Service, faire Preise, kurze Reaktionszeiten.">
-<meta name="twitter:image" content="/assets/og-image.jpg">
+        .step-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+        }
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Hausmeisterservice Spasowski – SD TIM GmbH",
-  "image": "https://hausmeisterservice-spasowski.de/assets/og-image.jpg",
-  "url": "https://hausmeisterservice-spasowski.de/",
-  "telephone": "+49-XXX-XXXXXXX",
-  "email": "info@hausmeisterservice-spasowski.de",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Forsthauswinkel 6",
-    "postalCode": "45891",
-    "addressLocality": "Gelsenkirchen",
-    "addressCountry": "DE"
-  },
-  "areaServed": "NRW",
-  "openingHoursSpecification": [{
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-    "opens": "08:00",
-    "closes": "17:00"
-  }]
-}
-</script>
+        body.dark-mode .step-card {
+            background: var(--dark-bg-3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
 
-<style>
-/* === Tablet-Fix für „Unsere Leistungen“ (6 Karten) === */
-/* Bessere Anpassung an kleinere Tablets: 1 Spalte auf sehr klein,
-   2 Spalten auf Tablet, 3 Spalten auf groß – mit schönen Abständen. */
-#leistungen .services-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: clamp(16px, 2.4vw, 28px);
-  align-items: stretch;
-}
-#leistungen .service-card{
-  height: 100%;                /* Karten gleich hoch innerhalb der Zeile */
-}
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
 
-/* Erzwinge 2 Spalten speziell für Tablet-Breite */
-@media (min-width: 680px) and (max-width: 1023px){
-  #leistungen .services-grid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
 
-/* Ab ~1200px klar auf 3 Spalten */
-@media (min-width: 1200px){
-  #leistungen .services-grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+        .step-card h3 {
+            margin-bottom: 1rem;
+        }
 
-/* Kleinste Geräte: etwas engere Polsterung, damit nichts quetscht */
-@media (max-width: 399px){
-  #leistungen .service-card{ padding: 22px; }
-}
-</style>
+        .step-card p {
+            color: var(--text-muted-dark);
+            margin-bottom: 0;
+        }
+
+        body.dark-mode .step-card p {
+            color: var(--text-muted-light);
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        .services {
+            position: relative;
+        }
+
+        .services-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40%;
+            height: 80%;
+            background: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80&auto=format&fit=crop') center/cover;
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .service-card {
+            background: var(--dark-bg-2);
+            border-color: var(--border-dark);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-blue);
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .service-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--text-muted-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .service-card p {
+            color: var(--text-muted-light);
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-muted-dark);
+        }
+
+        body.dark-mode .service-card li {
+            color: var(--text-muted-light);
+        }
+
+        .service-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        /* ===== TRUST SECTION WITH IMAGE ===== */
+        .trust-section {
+            background: var(--light-bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .trust-section {
+            background: var(--dark-bg-2);
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .trust-image {
+            position: relative;
+            height: 500px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .trust-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trust-content h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .trust-content p {
+            color: var(--text-muted-dark);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+
+        body.dark-mode .trust-content p {
+            color: var(--text-muted-light);
+        }
+
+        .trust-features {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .trust-feature {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .trust-feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .trust-feature-icon svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .trust-feature-content h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .trust-feature-content p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* ===== MAP SECTION ===== */
+        .map-section {
+            background: white;
+        }
+
+        body.dark-mode .map-section {
+            background: var(--dark-bg);
+        }
+
+        .map-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            height: 500px;
+        }
+
+        body.dark-mode .map-container {
+            background: var(--dark-bg-3);
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        .map-controls button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-light);
+            background: white;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .map-controls button {
+            background: var(--dark-bg-3);
+            border-color: var(--border-dark);
+            color: var(--text-light);
+        }
+
+        .map-controls button:hover,
+        .map-controls button.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            background: var(--light-bg);
+        }
+
+        body.dark-mode .about {
+            background: var(--dark-bg);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .about-card {
+            background: var(--light-bg-2);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .about-card {
+            background: var(--dark-bg-2);
+            border-color: var(--border-dark);
+        }
+
+        .about-card h3 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+
+        .about-card p {
+            color: var(--text-muted-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .about-card p {
+            color: var(--text-muted-light);
+        }
+
+        .about-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-card li {
+            padding: 0.75rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-muted-dark);
+        }
+
+        body.dark-mode .about-card li {
+            color: var(--text-muted-light);
+        }
+
+        .about-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        /* ===== JOBS SECTION ===== */
+        .jobs {
+            background: var(--light-bg-2);
+        }
+
+        body.dark-mode .jobs {
+            background: var(--dark-bg-2);
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .job-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .job-card {
+            background: var(--dark-bg-3);
+            border-color: var(--border-dark);
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .job-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-blue);
+            color: white;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .job-card h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .job-card p {
+            color: var(--text-muted-dark);
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .job-card p {
+            color: var(--text-muted-light);
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .job-tag {
+            padding: 0.375rem 0.75rem;
+            background: var(--light-bg-2);
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            color: var(--text-muted-dark);
+        }
+
+        body.dark-mode .job-tag {
+            background: var(--dark-bg-2);
+            color: var(--text-muted-light);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact {
+            background: white;
+        }
+
+        body.dark-mode .contact {
+            background: var(--dark-bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-icon svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .contact-item h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: var(--text-muted-dark);
+            margin: 0;
+        }
+
+        body.dark-mode .contact-item p {
+            color: var(--text-muted-light);
+        }
+
+        .contact-form {
+            background: var(--light-bg-2);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+        }
+
+        body.dark-mode .contact-form {
+            background: var(--dark-bg-2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background: var(--dark-bg-3);
+            border-color: var(--border-dark);
+            color: var(--text-light);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark-bg);
+            color: var(--text-light);
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-muted-light);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-dark);
+            padding-top: 1.5rem;
+            text-align: center;
+            color: var(--text-muted-light);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                min-height: 80vh;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .trust-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .trust-image {
+                height: 300px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-grid,
+            .services-grid,
+            .about-grid,
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Intersection Observer classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
-    <!-- Swirling blurred background colours -->
-    <div class="blur-stage">
-        <div class="spot spot1"></div>
-        <div class="spot spot2"></div>
-        <div class="spot spot3"></div>
-        <div class="spot spot4"></div>
-    </div>
-<!-- Navigation -->
-<div class="nav-wrap">
-    <div class="nav">
-        <div class="nav-brand">Hausmeister<span class="brand-blue">service</span></div>
-        <div class="nav-links">
-            <a href="#leistungen">Leistungen</a>
-            <a href="#workflow">Ablauf</a>
-            <a href="#about">Über uns</a>
-            <a href="#karriere">Karriere</a>
-            <a href="#faq">FAQ</a>
-            <a href="#kontakt">Kontakt</a>
-            <button id="langToggle" class="theme-toggle-btn" aria-label="Sprache umschalten">EN</button>
-                        <button id="themeToggle" class="theme-toggle-btn" aria-label="Farbschema wechseln">🌗</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Hausmeisterservice Spasowski</a>
+            <nav class="nav">
+                <a href="#workflow">Ablauf</a>
+                <a href="#leistungen">Leistungen</a>
+                <a href="#karte">Einsatzgebiet</a>
+                <a href="#about">Über uns</a>
+                <a href="#karriere">Karriere</a>
+                <a href="#kontakt">Kontakt</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Theme umschalten">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    </svg>
+                </button>
+            </nav>
+            <button class="mobile-menu-toggle" aria-label="Menü öffnen">☰</button>
         </div>
-        <button id="navToggle" class="nav-toggle" aria-label="Menü öffnen">
-            <span class="burger"></span>
-        </button>
-    </div>
-</div>
+    </header>
 
-<div class="cta-bar" role="navigation" aria-label="Hauptaktionen">
-  <a class="btn primary"   href="#formQuote" aria-label="Zum Formular Angebot anfordern">Angebot anfordern</a>
-  <a class="btn secondary" href="#formApply" aria-label="Zum Formular Bewerben">Bewerben</a>
-</div>
-
-
-
-<!-- Hero -->
-<section class="hero">
-    <div class="container">
-        <h1 class="enter">Hausmeister- &amp; Objektservice auf den Sie sich verlassen können</h1>
-        <p class="enter">Seit 2021 sorgen wir mit klaren Prozessen und zuverlässigen Mitarbeitern für gepflegte Immobilien in Nordrhein‑Westfalen.</p>
-        <div class="cta-buttons enter">
-            <a href="#kontakt" class="btn primary">Angebot anfordern</a>
-            <a href="#leistungen" class="btn secondary">Leistungen ansehen</a>
-        </div>
-    </div>
-</section>
-
-<!-- Workflow / Steps -->
-<section id="workflow">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">So arbeiten wir</h2>
-            <p class="enter">Ihr Weg zu professioneller Objektbetreuung in nur drei Schritten</p>
-        </div>
-        <div class="steps">
-            <div class="step-card enter">
-                <div class="step-number" aria-label="Schritt 1">1</div>
-                <h3>Erstberatung & Besichtigung</h3>
-                <p>Wir begutachten Ihr Objekt vor Ort, klären Ihre Wünsche und erstellen eine Bedarfsanalyse.</p>
-            </div>
-            <div class="step-card enter">
-                <div class="step-number" aria-label="Schritt 2">2</div>
-                <h3>Transparente Angebote</h3>
-                <p>Sie erhalten ein klar strukturiertes Angebot, abgestimmt auf Objektgröße und gewünschte Intervalle.</p>
-            </div>
-            <div class="step-card enter">
-                <div class="step-number" aria-label="Schritt 3">3</div>
-                <h3>Regelmäßige Betreuung</h3>
-                <p>Unsere Mitarbeiter kümmern sich zuverlässig um Ihr Objekt – dokumentiert und planbar.</p>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>Hausmeister- & Objektservice auf den Sie sich verlassen können</h1>
+            <p>Seit 2021 sorgen wir mit klaren Prozessen und zuverlässigen Mitarbeitern für gepflegte Immobilien in Nordrhein-Westfalen.</p>
+            <div class="cta-buttons">
+                <a href="#kontakt" class="btn btn-primary">Angebot anfordern</a>
+                <a href="#leistungen" class="btn btn-secondary">Leistungen ansehen</a>
             </div>
         </div>
-    </div>
-</section>
+        <div class="scroll-indicator">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
 
-<!-- Leistungen / Services -->
-<section id="leistungen">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Unsere Leistungen</h2>
-            <p class="enter">Modular &amp; flexibel – individuell buchbar oder als Paket</p>
-        </div>
-        <div class="services-grid">
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
-                <h3>Objektbetreuung</h3>
-                <p>Regelmäßige Sichtkontrollen, Funktionsprüfung der Haustechnik, Störungsmanagement und Koordination externer Gewerke.</p>
-                <ul>
-                    <li>Sichtkontrollen</li>
-                    <li>Haustechnik im Blick</li>
-                    <li>Störungsmanagement</li>
-                </ul>
+    <!-- Workflow Section -->
+    <section class="workflow section" id="workflow">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>So arbeiten wir</h2>
+                <p>Ihr Weg zu professioneller Objektbetreuung in nur drei Schritten</p>
             </div>
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.4 4.2h4.4l-3.6 2.6 1.4 4.2-3.6-2.6-3.6 2.6 1.4-4.2-3.6-2.6h4.4z"/></svg>
-                <h3>Treppenhausreinigung</h3>
-                <p>Kehren, Wischen und Reinigung von Geländern, Fenstern sowie Keller- und Eingangsbereichen.</p>
-                <ul>
-                    <li>Kehren & Wischen</li>
-                    <li>Geländer & Fenster</li>
-                    <li>Keller & Eingänge</li>
-                </ul>
-            </div>
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4s-4.2.9-5.65 2.35C4.9 7.79 4 9.79 4 12c0 2.21.9 4.21 2.35 5.65C7.79 19.1 9.79 20 12 20s4.21-.9 5.65-2.35C19.1 16.21 20 14.21 20 12c0-2.21-.9-4.21-2.35-5.65zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
-                <h3>Grünpflege</h3>
-                <p>Rasenmähen, Hecken schneiden und Pflege von Beeten – saisonal geplant.</p>
-                <ul>
-                    <li>Rasen & Hecken</li>
-                    <li>Beetpflege</li>
-                    <li>Laubentsorgung</li>
-                </ul>
-            </div>
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 19l-9.1-9.1c.9-2.2.4-4.7-1.3-6.5-2-2-5-2.4-7.4-1.3L9 6.3l-6.3-4.2-1.4 1.4 4.2 6.3-5.2 4.1c1.1 2.4 2.9 4.5 5.2 5.5l4.1-5.2 6.3 4.2 1.4-1.4 4.2-6.3c1.1 2.4 1.2 5.2-.1 7.5l-2.4 2.4.7.7 2.1-2.1c.8.8 2 .8 2.8 0l2.1-2.1c.8-.8.8-2 0-2.8z"/></svg>
-                <h3>Kleinreparaturen</h3>
-                <p>Leuchtmittelwechsel, Türschlösser, Silikonfugen und kleine Instandsetzungen – sauber, schnell, ordentlich.</p>
-                <ul>
-                    <li>Leuchtmittel</li>
-                    <li>Türschlösser</li>
-                    <li>Silikonfugen</li>
-                </ul>
-            </div>
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                <h3>Mülltonnenservice</h3>
-                <p>Bereitstellung und Leerung von Tonnen sowie Sauberkeit im Hofbereich.</p>
-                <ul>
-                    <li>Tonnenservice</li>
-                    <li>Hofreinigung</li>
-                </ul>
-            </div>
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <h3>Sonderaufgaben</h3>
-                <p>Entrümpelungen, Notdienste, Winterdienst und weitere individuelle Aufträge.</p>
-                <ul>
-                    <li>Entrümpelung</li>
-                    <li>Winterdienst</li>
-                    <li>Notdienste</li>
-                </ul>
+            <div class="steps-grid">
+                <div class="step-card reveal">
+                    <div class="step-number">1</div>
+                    <h3>Erstberatung & Besichtigung</h3>
+                    <p>Wir begutachten Ihr Objekt vor Ort, klären Ihre Wünsche und erstellen eine Bedarfsanalyse.</p>
+                </div>
+                <div class="step-card reveal">
+                    <div class="step-number">2</div>
+                    <h3>Transparente Angebote</h3>
+                    <p>Sie erhalten ein klar strukturiertes Angebot, abgestimmt auf Objektgröße und gewünschte Intervalle.</p>
+                </div>
+                <div class="step-card reveal">
+                    <div class="step-number">3</div>
+                    <h3>Regelmäßige Betreuung</h3>
+                    <p>Unsere Mitarbeiter kümmern sich zuverlässig um Ihr Objekt – dokumentiert und planbar.</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Einsatzgebiet / Map -->
-<section id="karte">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Unser Einsatzgebiet</h2>
-            <p class="enter">Zuverlässiger Service für Dortmund, Köln und Umgebung</p>
+    <!-- Services Section -->
+    <section class="services section" id="leistungen">
+        <div class="services-image"></div>
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Unsere Leistungen</h2>
+                <p>Modular & flexibel – individuell buchbar oder als Paket</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <h3>Objektbetreuung</h3>
+                    <p>Regelmäßige Sichtkontrollen, Funktionsprüfung der Haustechnik, Störungsmanagement und Koordination externer Gewerke.</p>
+                    <ul>
+                        <li>Sichtkontrollen</li>
+                        <li>Haustechnik im Blick</li>
+                        <li>Störungsmanagement</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                    </div>
+                    <h3>Treppenhausreinigung</h3>
+                    <p>Kehren, Wischen und Reinigung von Geländern, Fenstern sowie Keller- und Eingangsbereichen.</p>
+                    <ul>
+                        <li>Kehren & Wischen</li>
+                        <li>Geländer & Fenster</li>
+                        <li>Keller & Eingänge</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </div>
+                    <h3>Grünpflege</h3>
+                    <p>Rasenmähen, Hecken schneiden und Pflege von Beeten – saisonal geplant.</p>
+                    <ul>
+                        <li>Rasen & Hecken</li>
+                        <li>Beetpflege</li>
+                        <li>Laubentsorgung</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3>Kleinreparaturen</h3>
+                    <p>Leuchtmittelwechsel, Türschlösser, Silikonfugen und kleine Instandsetzungen – sauber, schnell, ordentlich.</p>
+                    <ul>
+                        <li>Leuchtmittel</li>
+                        <li>Türschlösser</li>
+                        <li>Silikonfugen</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                    </div>
+                    <h3>Mülltonnenservice</h3>
+                    <p>Bereitstellung und Leerung von Tonnen sowie Sauberkeit im Hofbereich.</p>
+                    <ul>
+                        <li>Tonnenservice</li>
+                        <li>Hofreinigung</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </div>
+                    <h3>Sonderaufgaben</h3>
+                    <p>Entrümpelungen, Notdienste, Winterdienst und weitere individuelle Aufträge.</p>
+                    <ul>
+                        <li>Entrümpelung</li>
+                        <li>Winterdienst</li>
+                        <li>Notdienste</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="map-card enter">
-            <div id="map"></div>
+    </section>
+
+    <!-- Trust Section with Image -->
+    <section class="trust-section section">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-image reveal">
+                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80&auto=format&fit=crop" alt="Professionelle Objektbetreuung" loading="lazy">
+                </div>
+                <div class="trust-content">
+                    <h2 class="reveal">Vertrauen durch Professionalität</h2>
+                    <p class="reveal">Mit klaren Prozessen und zuverlässiger Ausführung sorgen wir dafür, dass Ihre Immobilie in besten Händen ist.</p>
+                    <div class="trust-features">
+                        <div class="trust-feature reveal">
+                            <div class="trust-feature-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="trust-feature-content">
+                                <h3>Pünktlich & planbar</h3>
+                                <p>Feste Touren und klare Intervalle – Sie wissen immer, wann wir da sind.</p>
+                            </div>
+                        </div>
+                        <div class="trust-feature reveal">
+                            <div class="trust-feature-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <div class="trust-feature-content">
+                                <h3>Sauber & sorgfältig</h3>
+                                <p>Standardisierte Checklisten garantieren gleichbleibende Qualität.</p>
+                            </div>
+                        </div>
+                        <div class="trust-feature reveal">
+                            <div class="trust-feature-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <div class="trust-feature-content">
+                                <h3>Verbindlich & fair</h3>
+                                <p>Transparente Kommunikation und umfassende Betriebshaftpflicht.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section section" id="karte">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Unser Einsatzgebiet</h2>
+                <p>Zuverlässiger Service für Dortmund, Köln und Umgebung</p>
+            </div>
+            <div class="map-container reveal">
+                <div id="map"></div>
+            </div>
             <div class="map-controls">
-                <button id="btnDortmund" aria-pressed="false">Dortmund</button>
-                <button id="btnKoeln" aria-pressed="false">Köln</button>
-                <button id="btnGelsenkirchen" aria-pressed="false">Gelsenkirchen</button>
-                <button id="btnDuisburg" aria-pressed="false">Duisburg</button>
-                <button id="btnOberhausen" aria-pressed="false">Oberhausen</button>
-                <button id="btnDuesseldorf" aria-pressed="false">Düsseldorf</button>
-                <button id="btnReset" aria-pressed="false">Übersicht</button>
+                <button id="btnDortmund">Dortmund</button>
+                <button id="btnKoeln">Köln</button>
+                <button id="btnGelsenkirchen">Gelsenkirchen</button>
+                <button id="btnDuisburg">Duisburg</button>
+                <button id="btnOberhausen">Oberhausen</button>
+                <button id="btnDuesseldorf">Düsseldorf</button>
+                <button id="btnReset">Übersicht</button>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Über uns / About -->
-<section id="about">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Über uns</h2>
-            <p class="enter">Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski steht seit 2021 für verlässliche Objektpflege in NRW</p>
-        </div>
-        <div class="about-grid">
-            <div class="about-card enter">
-                <h3>Warum wir?</h3>
-                <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
-                <ul>
-                    <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
-                    <li>Sauber & sorgfältig: standardisierte Checklisten</li>
-                    <li>Verbindlich & fair: transparente Kommunikation</li>
-                </ul>
-            </div>
-            <div class="about-card enter">
-                <h3>Unser Versprechen</h3>
-                <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung.  Wir sind versichert und arbeiten nach höchsten Standards.</p>
-                <ul>
-                    <li>Umfassende Betriebshaftpflicht</li>
-                    <li>Regelmäßige Fortbildungen</li>
-                    <li>Dokumentierte Arbeit</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Karriere / Jobs -->
-<section id="karriere">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Offene Stellen</h2>
-            <p class="enter">Bereichern Sie unser Team – bewerben Sie sich jetzt!</p>
-        </div>
-        <div class="jobs-grid">
-            <div class="job-list">
-                <div class="job-card enter">
-                    <span class="badge">Vollzeit</span>
-                    <h4>Hausmeister:in (m/w/d)</h4>
-                    <p>Vollzeit – Tourenbetreuung, Kleinreparaturen, Grundpflege in Dortmund & Bochum.</p>
-                    <div class="job-tags">
-                        <span class="tag green">Führerschein B</span><span class="tag purple">Handwerkliches Geschick</span>
-                    </div>
-                </div>
-                <div class="job-card enter">
-                    <span class="badge">Teilzeit</span>
-                    <h4>Reinigungskraft (m/w/d)</h4>
-                    <p>Teilzeit – Treppenhaus- & Grundreinigung in Wohn- und Gewerbeimmobilien.</p>
-                    <div class="job-tags">
-                        <span class="tag yellow">Erfahrung erwünscht</span><span class="tag blue">Zuverlässigkeit</span>
-                    </div>
-                </div>
-                <div class="job-card enter">
-                    <span class="badge">Flexibel</span>
-                    <h4>Facility Service Allrounder (m/w/d)</h4>
-                    <p>Flexibel – Unterstützung bei Gartenpflege, Entrümpelungen und Sonderaufgaben.</p>
-                    <div class="job-tags">
-                        <span class="tag pink">Teamfähig</span><span class="tag orange">Einsatzbereit</span>
-                    </div>
-                </div>
-            </div>
-            <div class="about-card enter">
-                <h3>Jetzt bewerben</h3>
-                <form id="formApply" novalidate>
-                    <input type="hidden" name="formType" value="Bewerbung">
-                    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
-                    <div class="grid-2">
-                        <div><label for="firstName">Vorname <span class="required">*</span></label>
-                        <input id="firstName" name="firstName" required placeholder="Max" autocomplete="given-name"></div>
-                        <div><label for="lastName">Nachname <span class="required">*</span></label>
-                        <input id="lastName" name="lastName" required placeholder="Mustermann" autocomplete="family-name"></div>
-                    </div>
-                    <div>
-                        <label for="emailApply">E‑Mail <span class="required">*</span></label>
-                        <input id="emailApply" name="email" type="email" required placeholder="mail@beispiel.de" autocomplete="email">
-                    </div>
-                    <div>
-                        <label for="telApply">Telefon <span class="required">*</span></label>
-                        <input id="telApply" name="tel" type="tel" required placeholder="0123 456789" autocomplete="tel">
-                    </div>
-                    <div class="multi">
-                        <label>Wunsch‑Stelle <span class="required">*</span></label>
-                        <button type="button" class="ms-btn" aria-haspopup="listbox" aria-expanded="false">Bitte wählen…</button>
-                        <div class="ms-menu" role="listbox">
-                             <!-- Checkboxes will be inserted by JavaScript -->
-                        </div>
-                        <select name="position" required multiple style="display: none;">
-                            <option value="Hausmeister:in">Hausmeister:in</option>
-                            <option value="Reinigungskraft">Reinigungskraft</option>
-                            <option value="Facility Service Allrounder">Facility Service Allrounder</option>
-                            <option value="Gärtner:in">Gärtner:in</option>
-                            <option value="Bürokraft">Bürokraft</option>
-                            <option value="Sonstige">Sonstige</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="messageApply">Erfahrung</label>
-                        <textarea id="messageApply" name="message" placeholder="Kurz zu Ihrer Erfahrung"></textarea>
-                    </div>
-                    <div>
-                        <label for="cv">Lebenslauf (PDF, max. 5MB)</label>
-                        <input id="cv" type="file" name="cv" accept="application/pdf">
-                    </div>
-                    <div class="consent">
-                        <input type="checkbox" id="applyDSE" name="dataConsent" value="Einverstanden" required>
-                        <label for="applyDSE">Ich stimme der <a href="#datenschutz">Verarbeitung meiner Daten</a> zum Zweck der Bewerbungsabwicklung zu.<span class="required">*</span></label>
-                    </div>
-                    <button type="submit" id="applyBtn">Bewerbung absenden</button>
-                    <p class="form-hint">Die Angaben sind erforderlich, um Ihre Bewerbung zu bearbeiten. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
-                    <div class="note" id="applyNote" aria-live="polite"></div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Häufige Fragen</h2>
-            <p class="enter">Hier finden Sie Antworten zu unseren Dienstleistungen</p>
-        </div>
-        <div class="faq-grid">
-             <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Wie schnell können Sie starten?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>In der Regel innerhalb von 7–14 Tagen. In dringenden Fällen können wir auch schneller reagieren.  Nach der Erstbesichtigung erstellen wir einen individuellen Zeitplan für Ihr Objekt.</p>
-                </div>
-            </div>
-            <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Welche Intervalle bieten Sie an?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Wir bieten flexible Intervalle: täglich, wöchentlich, 14‑tägig, monatlich oder nach individueller Absprache – je nach Nutzung und Bedarf.</p>
-                </div>
-            </div>
-            <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Bieten Sie Winterdienst an?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Ja, wir bieten Winterdienst mit Bereitschaft in der Saison (November–März).  Dazu gehören Räumen, Streuen und die Dokumentation aller Einsätze.</p>
-                </div>
-            </div>
-            <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Machen Sie Elektroarbeiten?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Nein, Elektroinstallationen gehören nicht zu unserem Leistungsumfang.  Wir übernehmen den Leuchtmittelwechsel und koordinieren Fachbetriebe.</p>
-                </div>
-            </div>
-            <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Sind Sie versichert?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Ja, wir arbeiten mit einer umfassenden Betriebshaftpflichtversicherung.  Auf Wunsch stellen wir Ihnen entsprechende Nachweise zur Verfügung.</p>
-                </div>
-            </div>
-            <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Wie kalkulieren Sie Preise?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Unsere Preise richten sich nach Objektgröße, Zustand, Intervall und Leistungsumfang.  Sie erhalten immer ein transparentes Angebot ohne versteckte Kosten.</p>
-                </div>
-            </div>
-            <div class="faq-item enter">
-                <div class="faq-question">
-                    <span>Haben Sie weitere Fragen?</span>
-                    <span class="faq-toggle">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Kontaktieren Sie uns gerne per Telefon oder E‑Mail.  Wir helfen Ihnen persönlich weiter.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Kontakt / Contact -->
-<section id="kontakt">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Kontakt</h2>
-            <p class="enter">Kontaktieren Sie uns – wir melden uns innerhalb von 24–48 Stunden</p>
-        </div>
-        <div class="contact-grid">
-            <div class="contact-info enter">
-                <ul>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
-                        Frosthauswinkel 6, 45891 Gelsenkirchen Deutschland
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6.5l-1.4-1.4-8.6 8.6-4.3-4.3-1.4 1.4 5.7 5.7z"/></svg>
-                        +49 1517 1468541
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                        info@hausmeisterservice-spasowski.de
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3H8c-1.1 0-2 .9-2 2v2H4v2h2v6H4v2h2v2c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2h2v-2h-2V9h2V7h-2V5c0-1.1-.9-2-2-2zm0 14H8v2h8v-2zm0-4H8v2h8v-2zm0-4H8v2h8V9z"/></svg>
-                        Bürozeiten: Mo–Fr 8:00–17:00
-                    </li>
-                </ul>
-            </div>
-            <div class="contact-form enter">
-                <h3>Angebot anfordern</h3>
-                <form id="formQuote" novalidate>
-                    <input type="hidden" name="formType" value="Angebot">
-                    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
-                    <div>
-                        <label for="firma">Firma/Name <span class="required">*</span></label>
-                        <input id="firma" name="firma" required placeholder="Ihr Name oder Firma" autocomplete="organization">
-                    </div>
-                    <div>
-                        <label for="emailQuote">E‑Mail <span class="required">*</span></label>
-                        <input id="emailQuote" name="email" type="email" required placeholder="mail@beispiel.de" autocomplete="email">
-                    </div>
-                    <div>
-                        <label for="phoneQuote">Telefon <span class="required">*</span></label>
-                        <input id="phoneQuote" name="phone" type="tel" required placeholder="0123 456789" autocomplete="tel">
-                    </div>
-                    <div>
-                        <label for="addressQuote">Objektadresse <span class="required">*</span></label>
-                        <input id="addressQuote" name="address" required placeholder="Straße, PLZ Ort" autocomplete="street-address">
-                    </div>
-                    <div class="multi">
-                        <label>Gewünschte Leistungen</label>
-                        <button type="button" class="ms-btn" aria-haspopup="listbox" aria-expanded="false">Bitte wählen…</button>
-                        <div class="ms-menu" role="listbox">
-                            <!-- Checkboxes will be inserted by JavaScript -->
-                        </div>
-                        <select name="services" multiple style="display: none;">
-                            <option value="Objektbetreuung">Objektbetreuung</option>
-                            <option value="Treppenhausreinigung">Treppenhausreinigung</option>
-                            <option value="Grünpflege">Grünpflege</option>
-                            <option value="Kleinreparaturen">Kleinreparaturen</option>
-                            <option value="Mülltonnenservice">Mülltonnenservice</option>
-                            <option value="Winterdienst">Winterdienst</option>
-                            <option value="Sonderaufgaben">Sonderaufgaben</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="intervallQuote">Intervall</label>
-                        <select id="intervallQuote" name="intervall">
-                            <option value="" selected disabled>Bitte wählen…</option>
-                            <option>Täglich</option>
-                            <option>Wöchentlich</option>
-                            <option>14‑tägig</option>
-                            <option>Monatlich</option>
-                            <option>Einmalig</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="messageQuote">Nachricht (optional)</label>
-                        <textarea id="messageQuote" name="message" placeholder="Beschreiben Sie Ihr Objekt und Ihre Wünsche…"></textarea>
-                    </div>
-                    <div class="consent">
-                        <input type="checkbox" id="quoteDSE" name="dataConsent" value="Einverstanden" required>
-                        <label for="quoteDSE">Ich stimme der <a href="#datenschutz">Verarbeitung meiner Daten</a> zum Zweck der Angebotserstellung zu.<span class="required">*</span></label>
-                    </div>
-                    <button type="submit" id="quoteBtn">Angebot anfordern</button>
-                    <p class="form-hint">Die Angaben sind erforderlich, um Ihr Angebot zu erstellen. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
-                    <div class="note" id="quoteNote" aria-live="polite"></div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-    
-<!-- ===== Trust/Conversion Section (All-10-Pack) ===== -->
-<section id="impressum" class="enter" style="max-width:1000px;margin:120px auto 0;padding:30px;border-radius:20px;background:var(--glass-bg);border:1px solid var(--border);box-shadow:var(--shadow);">
-        <h2 style="margin-top:0">Impressum</h2>
-        <p>Angaben gemäß § 5 TMG</p>
-        <p><strong>Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski<br/>
-        SD&nbsp;TIM&nbsp;GmbH</strong><br/>
-        Forsthauswinkel 6<br/>
-        45891 Gelsenkirchen<br/>
-        Deutschland</p>
-        <p><strong>Registereintrag:</strong><br/>
-        Eintragung im Handelsregister.<br/>
-        Registergericht: Amtsgericht Gelsenkirchen<br/>
-        Registernummer: HRB 18970</p>
-        <p><strong>Kontakt:</strong><br/>
-        Telefon: Bitte ergänzen<br/>
-        E‑Mail: info@hausmeisterservice-spasowski.de</p>
-        <p><strong>Umsatzsteuer-ID:</strong><br/>
-        Umsatzsteuer‑Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: Bitte ergänzen</p>
-        <p><strong>Vertreten durch:</strong><br/>
-        Geschäftsführung: Bitte ergänzen</p>
     </section>
-    <section id="datenschutz" class="enter" style="max-width:1000px;margin:24px auto 0;padding:30px;border-radius:20px;background:var(--glass-bg);border:1px solid var(--border);box-shadow:var(--shadow);">
-        <h2 style="margin-top:0">Datenschutz</h2>
-        <p>Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst.
-        Wir behandeln Ihre personenbezogenen Daten vertraulich und
-        entsprechend der gesetzlichen Datenschutzvorschriften sowie
-        dieser Datenschutzerklärung.</p>
-        <p><strong>Datenerfassung auf unserer Website</strong></p>
-        <p>Bei jedem Zugriff auf unsere Website werden durch unseren
-        Hosting‑Provider automatisch Informationen in sogenannten
-        Server‑Log‑Dateien erhoben und gespeichert, die Ihr
-        Browser automatisch an uns übermittelt. Dies sind:</p>
-        <ul>
-            <li>Browsertyp und Browserversion</li>
-            <li>verwendetes Betriebssystem</li>
-            <li>Referrer URL</li>
-            <li>Hostname des zugreifenden Rechners</li>
-            <li>Uhrzeit der Serveranfrage</li>
-            <li>IP‑Adresse</li>
-        </ul>
-        <p>Eine Zusammenführung dieser Daten mit anderen Datenquellen wird
-        nicht vorgenommen. Die Erfassung dieser Daten erfolgt auf
-        Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber
-        hat ein berechtigtes Interesse an der technisch fehlerfreien
-        Darstellung und der Optimierung seiner Website – hierzu müssen
-        die Server‑Log‑Files erfasst werden.</p>
-        <p><strong>Umgang mit Kontaktanfragen</strong></p>
-        <p>Wenn Sie uns per E‑Mail kontaktieren, werden Ihre Angaben aus
-        der E‑Mail inklusive der von Ihnen dort angegebenen Kontaktdaten
-        zwecks Bearbeitung der Anfrage und für den Fall von
-        Anschlussfragen bei uns gespeichert. Diese Daten geben wir
-        nicht ohne Ihre Einwilligung weiter. Die Verarbeitung der in
-        der E‑Mail eingegebenen Daten erfolgt somit ausschließlich auf
-        Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).
-        Sie können diese Einwilligung jederzeit widerrufen.</p>
-        <p><strong>Ihre Rechte</strong></p>
-        <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen
-        jederzeit das Recht auf unentgeltliche Auskunft über Ihre
-        gespeicherten personenbezogenen Daten, deren Herkunft und
-        Empfänger und den Zweck der Datenverarbeitung sowie ggf. ein
-        Recht auf Berichtigung, Sperrung oder Löschung dieser Daten.
-        Hierzu sowie zu weiteren Fragen zum Thema personenbezogene
-        Daten können Sie sich jederzeit unter der im Impressum
-        angegebenen Adresse an uns wenden.</p>
-        <p><strong>SSL‑ bzw. TLS‑Verschlüsselung</strong></p>
-        <p>Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der
-        Übertragung vertraulicher Inhalte, wie zum Beispiel Anfragen,
-        die Sie an uns als Seitenbetreiber senden, eine SSL- bzw.
-        TLS‑Verschlüsselung. Sie erkennen eine verschlüsselte
-        Verbindung daran, dass die Adresszeile des Browsers von
-        „http://” auf „https://” wechselt und an dem Schloss‑Symbol
-        in Ihrer Browserzeile.</p>
+
+    <!-- About Section -->
+    <section class="about section" id="about">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Über uns</h2>
+                <p>Hausmeisterservice Spasowski steht seit 2021 für verlässliche Objektpflege in NRW</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card reveal">
+                    <h3>Warum wir?</h3>
+                    <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
+                    <ul>
+                        <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
+                        <li>Sauber & sorgfältig: standardisierte Checklisten</li>
+                        <li>Verbindlich & fair: transparente Kommunikation</li>
+                    </ul>
+                </div>
+                <div class="about-card reveal">
+                    <h3>Unser Versprechen</h3>
+                    <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung. Wir sind versichert und arbeiten nach höchsten Standards.</p>
+                    <ul>
+                        <li>Umfassende Betriebshaftpflicht</li>
+                        <li>Regelmäßige Fortbildungen</li>
+                        <li>Dokumentierte Arbeit</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </section>
-    
-<footer>
-    <div class="footer-grid">
-        <div>
-            <h4>Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski</h4>
-            <p>Zuverlässige Objektbetreuung in NRW.  Sauber.  Schnell.  Sorgfältig.</p>
-            <p>Adresse: [Straße, PLZ Ort], Dortmund</p>
-            <p>E-Mail: info@hausmeisterservice-spasowski.de</p>
-        </div>
-        <div>
-            <h4>Navigation</h4>
-            <ul>
-                <li><a href="#leistungen">Leistungen</a></li>
-                <li><a href="#workflow">Ablauf</a></li>
-                <li><a href="#about">Über uns</a></li>
-                <li><a href="#karriere">Karriere</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#kontakt">Kontakt</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Rechtliches</h4>
-            <ul>
-                <li><a href="#impressum">Impressum</a></li>
-                <li><a href="#datenschutz">Datenschutz</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        © <span id="year"></span> Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski.  Alle Rechte vorbehalten.
-    </div>
-</footer>
 
-<!-- Leaflet JS for Map -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-    // Set the current year in the footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <!-- Jobs Section -->
+    <section class="jobs section" id="karriere">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Offene Stellen</h2>
+                <p>Bereichern Sie unser Team – bewerben Sie sich jetzt!</p>
+            </div>
+            <div class="jobs-grid">
+                <div class="job-card reveal">
+                    <span class="job-badge">Vollzeit</span>
+                    <h3>Hausmeister:in (m/w/d)</h3>
+                    <p>Vollzeit – Tourenbetreuung, Kleinreparaturen, Grundpflege in Dortmund & Bochum.</p>
+                    <div class="job-tags">
+                        <span class="job-tag">Führerschein B</span>
+                        <span class="job-tag">Handwerkliches Geschick</span>
+                    </div>
+                </div>
+                <div class="job-card reveal">
+                    <span class="job-badge">Teilzeit</span>
+                    <h3>Reinigungskraft (m/w/d)</h3>
+                    <p>Teilzeit – Treppenhaus- & Grundreinigung in Wohn- und Gewerbeimmobilien.</p>
+                    <div class="job-tags">
+                        <span class="job-tag">Erfahrung erwünscht</span>
+                        <span class="job-tag">Zuverlässigkeit</span>
+                    </div>
+                </div>
+                <div class="job-card reveal">
+                    <span class="job-badge">Flexibel</span>
+                    <h3>Facility Service Allrounder (m/w/d)</h3>
+                    <p>Flexibel – Unterstützung bei Gartenpflege, Entrümpelungen und Sonderaufgaben.</p>
+                    <div class="job-tags">
+                        <span class="job-tag">Teamfähig</span>
+                        <span class="job-tag">Einsatzbereit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Smooth scroll behaviour for nav and CTA links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href.length > 1) {
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    document.querySelector('.nav')?.classList.remove('open');
-                }
+    <!-- Contact Section -->
+    <section class="contact section" id="kontakt">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Kontakt</h2>
+                <p>Lassen Sie uns gemeinsam Ihr Objekt professionell betreuen</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item reveal">
+                        <div class="contact-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Telefon</h3>
+                            <p>+49 (0) 231 / 123 456 78</p>
+                        </div>
+                    </div>
+                    <div class="contact-item reveal">
+                        <div class="contact-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>E-Mail</h3>
+                            <p>info@hausmeisterservice-spasowski.de</p>
+                        </div>
+                    </div>
+                    <div class="contact-item reveal">
+                        <div class="contact-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Adresse</h3>
+                            <p>Musterstraße 123<br>44000 Dortmund</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form reveal">
+                    <h3 style="margin-bottom: 1.5rem;">Angebot anfordern</h3>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-Mail *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Gewünschte Leistung</label>
+                            <select id="service" name="service">
+                                <option value="">Bitte wählen</option>
+                                <option value="objektbetreuung">Objektbetreuung</option>
+                                <option value="treppenhausreinigung">Treppenhausreinigung</option>
+                                <option value="gruenpflege">Grünpflege</option>
+                                <option value="kleinreparaturen">Kleinreparaturen</option>
+                                <option value="muelltonnenservice">Mülltonnenservice</option>
+                                <option value="sonderaufgaben">Sonderaufgaben</option>
+                                <option value="komplett">Komplettbetreuung</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Nachricht *</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Anfrage senden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Hausmeisterservice Spasowski</h3>
+                    <p>Professionelle Objektbetreuung in NRW seit 2021</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Leistungen</h3>
+                    <a href="#leistungen">Objektbetreuung</a>
+                    <a href="#leistungen">Treppenhausreinigung</a>
+                    <a href="#leistungen">Grünpflege</a>
+                    <a href="#leistungen">Kleinreparaturen</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Unternehmen</h3>
+                    <a href="#about">Über uns</a>
+                    <a href="#karriere">Karriere</a>
+                    <a href="#kontakt">Kontakt</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Rechtliches</h3>
+                    <a href="#">Impressum</a>
+                    <a href="#">Datenschutz</a>
+                    <a href="#">AGB</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Hausmeisterservice Spasowski. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+
+            const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+
+            if (theme === 'dark') {
+                themeToggle.innerHTML = '<svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>';
+            } else {
+                themeToggle.innerHTML = '<svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>';
             }
         });
-    });
 
-    // FAQ toggle functionality
-    document.querySelectorAll('.faq-item').forEach(function(item) {
-        item.addEventListener('click', function() {
-            this.classList.toggle('open');
-        });
-    });
-
-    // Initialize Leaflet map
-    var map = L.map('map', { scrollWheelZoom: false }).setView([51.5136, 7.4653], 9);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    var markers = {
-        'Dortmund': L.marker([51.5136, 7.4653]).addTo(map).bindPopup('Dortmund'),
-        'Köln': L.marker([50.9352, 6.9531]).addTo(map).bindPopup('Köln'),
-        'Gelsenkirchen': L.marker([51.5177, 7.0857]).addTo(map).bindPopup('Gelsenkirchen'),
-        'Duisburg': L.marker([51.4344, 6.7623]).addTo(map).bindPopup('Duisburg'),
-        'Oberhausen': L.marker([51.4964, 6.8638]).addTo(map).bindPopup('Oberhausen'),
-        'Düsseldorf': L.marker([51.2277, 6.7735]).addTo(map).bindPopup('Düsseldorf')
-    };
-
-    function flyToCity(city) {
-        var coords = {
-            'Dortmund': [51.5136, 7.4653], 'Köln': [50.9352, 6.9531],
-            'Gelsenkirchen': [51.5177, 7.0857], 'Duisburg': [51.4344, 6.7623],
-            'Oberhausen': [51.4964, 6.8638], 'Düsseldorf': [51.2277, 6.7735]
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
-        var coord = coords[city];
-        if (coord) {
-            map.flyTo(coord, 12);
-            if (markers[city]) markers[city].openPopup();
-        }
-    }
 
-    function setActiveMapButton(btnId) {
-        document.querySelectorAll('.map-controls button').forEach(b => b.setAttribute('aria-pressed', 'false'));
-        const activeBtn = document.getElementById(btnId);
-        if (activeBtn) activeBtn.setAttribute('aria-pressed', 'true');
-    }
-
-    document.getElementById('btnDortmund').onclick = () => { flyToCity('Dortmund'); setActiveMapButton('btnDortmund'); };
-    document.getElementById('btnKoeln').onclick    = () => { flyToCity('Köln'); setActiveMapButton('btnKoeln'); };
-    document.getElementById('btnGelsenkirchen').onclick = () => { flyToCity('Gelsenkirchen'); setActiveMapButton('btnGelsenkirchen'); };
-    document.getElementById('btnDuisburg').onclick     = () => { flyToCity('Duisburg'); setActiveMapButton('btnDuisburg'); };
-    document.getElementById('btnOberhausen').onclick   = () => { flyToCity('Oberhausen'); setActiveMapButton('btnOberhausen'); };
-    document.getElementById('btnDuesseldorf').onclick  = () => { flyToCity('Düsseldorf'); setActiveMapButton('btnDuesseldorf'); };
-    document.getElementById('btnReset').onclick = () => { map.flyTo([51.47, 7.0], 9); setActiveMapButton('btnReset'); };
-
-    // --- NEW: Custom Multi-Select Dropdown Logic ---
-    function setupMultiSelect(container) {
-        const btn = container.querySelector('.ms-btn');
-        const menu = container.querySelector('.ms-menu');
-        const select = container.querySelector('select');
-        const options = Array.from(select.options);
-
-        menu.innerHTML = ''; // Clear existing menu items if any
-        options.forEach(option => {
-            if (option.disabled) return;
-            const item = document.createElement('label');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = option.value;
-            checkbox.id = `ms-${select.name}-${option.value.replace(/\s+/g, '-')}`;
-            item.htmlFor = checkbox.id;
-            item.appendChild(checkbox);
-            item.appendChild(document.createTextNode(' ' + option.textContent));
-            menu.appendChild(item);
-        });
-
-        const checkboxes = menu.querySelectorAll('input[type="checkbox"]');
-
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isExpanded = menu.style.display === 'block';
-            menu.style.display = isExpanded ? 'none' : 'block';
-            btn.setAttribute('aria-expanded', !isExpanded);
-        });
-
-        function updateSelection() {
-            const selected = [];
-            checkboxes.forEach((checkbox, index) => {
-                const correspondingOption = options.find(opt => opt.value === checkbox.value);
-                if(correspondingOption) {
-                    correspondingOption.selected = checkbox.checked;
-                }
-                if (checkbox.checked) {
-                    selected.push(checkbox.parentElement.textContent.trim());
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
-            
-            if (selected.length) {
-                btn.textContent = selected.join(', ');
-                btn.classList.add('selected');
-            } else {
-                btn.textContent = 'Bitte wählen…';
-                btn.classList.remove('selected');
-            }
-            select.dispatchEvent(new Event('change')); 
-        }
+        }, observerOptions);
 
-        menu.addEventListener('change', updateSelection);
-        
-        document.addEventListener('click', () => {
-            menu.style.display = 'none';
-            btn.setAttribute('aria-expanded', 'false');
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Map initialization
+        const map = L.map('map').setView([51.4332, 7.6616], 9);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // City locations
+        const cities = {
+            dortmund: { lat: 51.5136, lng: 7.4653, name: 'Dortmund' },
+            koeln: { lat: 50.9375, lng: 6.9603, name: 'Köln' },
+            gelsenkirchen: { lat: 51.5122, lng: 7.0997, name: 'Gelsenkirchen' },
+            duisburg: { lat: 51.4344, lng: 6.7623, name: 'Duisburg' },
+            oberhausen: { lat: 51.4963, lng: 6.8516, name: 'Oberhausen' },
+            duesseldorf: { lat: 51.2277, lng: 6.7735, name: 'Düsseldorf' }
+        };
+
+        // Add markers
+        Object.values(cities).forEach(city => {
+            L.marker([city.lat, city.lng])
+                .addTo(map)
+                .bindPopup(`<b>${city.name}</b><br>Wir sind für Sie da!`);
         });
-    }
 
-    document.querySelectorAll('.multi').forEach(setupMultiSelect);
+        // City buttons
+        document.querySelectorAll('.map-controls button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const cityKey = this.id.replace('btn', '').toLowerCase();
 
-    // Formspree endpoint
-    const FORMSPREE = "https://formspree.io/f/xjkopowr";
+                document.querySelectorAll('.map-controls button').forEach(b => b.classList.remove('active'));
 
-    // --- REVISED: Generic form submission handler to work around file upload limits ---
-    async function sendForm(form, noteEl, btn) {
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
-        const originalFormData = new FormData(form);
-        const fileInput = form.querySelector('input[type="file"]');
-        let fileAttached = false;
-        
-        if (fileInput && fileInput.files.length > 0) {
-            if (fileInput.files[0].size > 5 * 1024 * 1024) {
-                noteEl.className = "error";
-                noteEl.textContent = "Die Datei ist zu groß (max. 5 MB).";
-                return;
-            }
-            fileAttached = true;
-        }
-
-        // We will not send the file itself to avoid Formspree errors on free plans.
-        // Instead, we notify that the CV will be sent separately.
-        if (fileAttached) {
-            originalFormData.delete('cv'); // Remove the actual file from form data
-            originalFormData.append('lebenslauf_info', `Bewerber hat einen Lebenslauf hochgeladen, der separat per E-Mail ankommt: ${fileInput.files[0].name}`);
-        }
-
-        btn.disabled = true;
-        const prevText = btn.textContent;
-        btn.textContent = "Sende…";
-        
-        try {
-            const res = await fetch(FORMSPREE, {
-                method: "POST",
-                body: originalFormData,
-                headers: { "Accept": "application/json" }
+                if (cityKey === 'reset') {
+                    map.setView([51.4332, 7.6616], 9);
+                } else if (cities[cityKey]) {
+                    this.classList.add('active');
+                    map.setView([cities[cityKey].lat, cities[cityKey].lng], 12);
+                }
             });
+        });
 
-            if (res.ok) {
-                btn.textContent = "Gesendet ✅";
-                noteEl.className = "success";
-                if (fileAttached) {
-                     noteEl.innerHTML = `Vielen Dank! Ihre Bewerbung wurde gesendet.<br><strong>Wichtig:</strong> Bitte senden Sie Ihren Lebenslauf jetzt noch separat an <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`;
-                } else {
-                     noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Vielen Dank für Ihre Anfrage! Wir melden uns in Kürze bei Ihnen.');
+            this.reset();
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.offsetTop;
+                    const offsetPosition = elementPosition - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
                 }
-                form.reset();
-                form.querySelectorAll('.multi').forEach(multi => {
-                    const msBtn = multi.querySelector('.ms-btn');
-                    if(msBtn) {
-                       msBtn.textContent = 'Bitte wählen…';
-                       msBtn.classList.remove('selected');
-                    }
-                });
-            } else {
-                 const errorData = await res.json();
-                 throw new Error(errorData.error || "Fehler beim Senden.");
-            }
-        } catch (err) {
-            btn.textContent = "Nochmal versuchen";
-            noteEl.className = "error";
-            noteEl.textContent = "Upps, ein Fehler ist aufgetreten. Bitte später erneut versuchen.";
-            console.error(err);
-        } finally {
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = prevText;
-                if (noteEl.classList.contains('success')) {
-                    noteEl.innerHTML = "";
-                    noteEl.className = "note";
-                }
-            }, 8000); // Longer timeout for the user to read the message
-        }
-    }
-
-    document.getElementById('formQuote').addEventListener('submit', function(e) {
-        e.preventDefault();
-        sendForm(this, document.getElementById('quoteNote'), document.getElementById('quoteBtn'));
-    });
-    document.getElementById('formApply').addEventListener('submit', function(e) {
-        e.preventDefault();
-        sendForm(this, document.getElementById('applyNote'), document.getElementById('applyBtn'));
-    });
-
-    // IntersectionObserver for entrance animations
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                io.unobserve(entry.target);
-            }
+            });
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
-    document.querySelectorAll('.enter, .step-card').forEach(el => io.observe(el));
-
-    // Theme toggle
-    const themeToggleBtn = document.getElementById('themeToggle');
-    function applyStoredTheme() {
-        const saved = localStorage.getItem('theme');
-        if (saved === 'light') {
-            document.body.classList.add('light-mode');
-        } else {
-            document.body.classList.remove('light-mode');
-        }
-    }
-    applyStoredTheme();
-    themeToggleBtn?.addEventListener('click', () => {
-        const isLight = document.body.classList.toggle('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    });
-
-    // Mobile navigation toggle
-    const navToggleBtn = document.getElementById('navToggle');
-    const navElement = document.querySelector('.nav');
-    navToggleBtn?.addEventListener('click', () => navElement.classList.toggle('open'));
-
-    // Staggered reveal for hero elements
-    window.addEventListener('load', () => {
-        document.querySelectorAll('.hero .enter').forEach((el, idx) => {
-            setTimeout(() => el.classList.add('visible'), idx * 200);
-        });
-    });
-    
-    // Text-to-speech accessibility features (unchanged)
-    let currentUtterance = null;
-    function speakText(text) {
-        if (speechSynthesis.speaking) {
-            speechSynthesis.cancel();
-        }
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'de-DE';
-        currentUtterance = utterance;
-        speechSynthesis.speak(utterance);
-    }
-</script>
-
-
-
-<script>
-(function() {
-  const storageKey = 'site-lang';
-  const get = (sel) => document.querySelector(sel);
-  const setText = (sel, text) => {
-    const el = get(sel);
-    if (!el) return;
-    if (!el.dataset.origHtml) el.dataset.origHtml = el.innerHTML;
-    el.textContent = text;
-  };
-  const setHtml = (sel, html) => {
-    const el = get(sel);
-    if (!el) return;
-    if (!el.dataset.origHtml) el.dataset.origHtml = el.innerHTML;
-    el.innerHTML = html;
-  };
-  const setAttr = (sel, attr, val) => {
-    const el = get(sel);
-    if (!el) return;
-    if (!el.dataset['origAttr_'+attr]) el.dataset['origAttr_'+attr] = el.getAttribute(attr) || '';
-    el.setAttribute(attr, val);
-  };
-  const setOptionTexts = (selectSel, texts) => {
-    const sel = get(selectSel);
-    if (!sel) return;
-    if (!sel.dataset.origHtml) sel.dataset.origHtml = sel.innerHTML;
-    const opts = sel.querySelectorAll('option');
-    texts.forEach((t, i) => { if (opts[i]) opts[i].textContent = t; });
-  };
-
-  function applyEN() {
-    document.documentElement.setAttribute('lang','en');
-
-    // Nav
-    setText('.nav-links a[href="#leistungen"]', 'Services');
-    setText('.nav-links a[href="#workflow"]', 'Process');
-    setText('.nav-links a[href="#about"]', 'About');
-    setText('.nav-links a[href="#karriere"]', 'Jobs');
-    setText('.nav-links a[href="#faq"]', 'FAQ');
-    setText('.nav-links a[href="#kontakt"]', 'Contact');
-
-    // CTA
-    setText('.cta-bar .btn.primary', 'Request quote');
-    setText('.cta-bar .btn.secondary', 'Apply');
-
-    // Hero
-    setText('.hero h1', 'Facility & property services you can rely on');
-    setText('.hero p', 'Since 2021 we keep properties in North Rhine-Westphalia in great shape with clear processes and reliable staff.');
-    setText('.cta-buttons .btn.primary', 'Request quote');
-    setText('.cta-buttons .btn.secondary', 'View services');
-
-    // Workflow
-    setText('#workflow .section-title h2', 'How we work');
-    setText('#workflow .section-title p', 'Your path to professional property care in three steps');
-    setText('#workflow .steps .step-card:nth-child(1) h3', 'Initial consultation & inspection');
-    setText('#workflow .steps .step-card:nth-child(1) p', 'We inspect your property on site, clarify your needs and create a requirements analysis.');
-    setText('#workflow .steps .step-card:nth-child(2) h3', 'Transparent quotes');
-    setText('#workflow .steps .step-card:nth-child(2) p', 'You receive a clearly structured offer tailored to property size and desired intervals.');
-    setText('#workflow .steps .step-card:nth-child(3) h3', 'Regular care');
-    setText('#workflow .steps .step-card:nth-child(3) p', 'Our staff reliably look after your property – documented and predictable.');
-
-    // Services
-    setText('#leistungen .section-title h2', 'Our services');
-    setText('#leistungen .section-title p', 'Modular & flexible – book individually or as a bundle');
-    setText('#leistungen .service-card:nth-child(1) h3', 'Property caretaking');
-    setText('#leistungen .service-card:nth-child(1) p', 'Regular visual checks, monitoring building services, incident handling and coordination of external trades.');
-    setText('#leistungen .service-card:nth-child(1) ul li:nth-child(1)', 'Visual checks');
-    setText('#leistungen .service-card:nth-child(1) ul li:nth-child(2)', 'Building services oversight');
-    setText('#leistungen .service-card:nth-child(1) ul li:nth-child(3)', 'Incident handling');
-
-    setText('#leistungen .service-card:nth-child(2) h3', 'Stairwell cleaning');
-    setText('#leistungen .service-card:nth-child(2) p', 'Sweeping, mopping and cleaning handrails, windows as well as basement and entrance areas.');
-    setText('#leistungen .service-card:nth-child(2) ul li:nth-child(1)', 'Sweeping & mopping');
-    setText('#leistungen .service-card:nth-child(2) ul li:nth-child(2)', 'Handrails & windows');
-    setText('#leistungen .service-card:nth-child(2) ul li:nth-child(3)', 'Basements & entrances');
-
-    setText('#leistungen .service-card:nth-child(3) h3', 'Groundskeeping');
-    setText('#leistungen .service-card:nth-child(3) p', 'Lawn mowing, hedge trimming and bed care – planned by season.');
-    setText('#leistungen .service-card:nth-child(3) ul li:nth-child(1)', 'Lawns & hedges');
-    setText('#leistungen .service-card:nth-child(3) ul li:nth-child(2)', 'Bed care');
-    setText('#leistungen .service-card:nth-child(3) ul li:nth-child(3)', 'Leaf disposal');
-
-    setText('#leistungen .service-card:nth-child(4) h3', 'Minor repairs');
-    setText('#leistungen .service-card:nth-child(4) p', 'Replacing bulbs, door locks, silicone joints and small fixes – neat, fast, tidy.');
-    setText('#leistungen .service-card:nth-child(4) ul li:nth-child(1)', 'Light bulbs');
-    setText('#leistungen .service-card:nth-child(4) ul li:nth-child(2)', 'Door locks');
-    setText('#leistungen .service-card:nth-child(4) ul li:nth-child(3)', 'Silicone joints');
-
-    setText('#leistungen .service-card:nth-child(5) h3', 'Waste-bin service');
-    setText('#leistungen .service-card:nth-child(5) p', 'Setting out and emptying bins plus cleanliness in the yard area.');
-    setText('#leistungen .service-card:nth-child(5) ul li:nth-child(1)', 'Bin service');
-    setText('#leistungen .service-card:nth-child(5) ul li:nth-child(2)', 'Yard cleaning');
-
-    setText('#leistungen .service-card:nth-child(6) h3', 'Special tasks');
-    setText('#leistungen .service-card:nth-child(6) p', 'Clearances, emergency services, winter service and other bespoke jobs.');
-    setText('#leistungen .service-card:nth-child(6) ul li:nth-child(1)', 'Clearances');
-    setText('#leistungen .service-card:nth-child(6) ul li:nth-child(2)', 'Winter service');
-    setText('#leistungen .service-card:nth-child(6) ul li:nth-child(3)', 'Emergency services');
-
-    // Map
-    setText('#karte .section-title h2', 'Our service area');
-    setText('#karte .section-title p', 'Reliable service for Dortmund, Cologne and surrounding areas');
-    setText('#karte #btnDortmund', 'Dortmund');
-    setText('#karte #btnKoeln', 'Cologne');
-    setText('#karte #btnGelsenkirchen', 'Gelsenkirchen');
-    setText('#karte #btnDuisburg', 'Duisburg');
-    setText('#karte #btnOberhausen', 'Oberhausen');
-    setText('#karte #btnDuesseldorf', 'Düsseldorf');
-    setText('#karte #btnReset', 'Overview');
-
-    // About
-    setText('#about .section-title h2', 'About us');
-    const aboutSubtitle = document.querySelector('#about .section-title p');
-    if (aboutSubtitle) aboutSubtitle.textContent = 'Hausmeisterservice Spasowski has stood for reliable property care in NRW since 2021';
-    setText('#about .about-card:nth-child(1) h3', 'Why us?');
-    setText('#about .about-card:nth-child(1) p', 'Our team combines hands-on experience with efficient processes – for results you can see.');
-    setText('#about .about-card:nth-child(1) ul li:nth-child(1)', 'Punctual & predictable: fixed routes and clear intervals');
-    setText('#about .about-card:nth-child(1) ul li:nth-child(2)', 'Clean & thorough: standardised checklists');
-    setText('#about .about-card:nth-child(1) ul li:nth-child(3)', 'Reliable & fair: transparent communication');
-    setText('#about .about-card:nth-child(2) h3', 'Our promise');
-    setText('#about .about-card:nth-child(2) p', 'Enjoy the comfort of a single point of contact and reliable execution. We are insured and work to the highest standards.');
-    setText('#about .about-card:nth-child(2) ul li:nth-child(1)', 'Comprehensive liability insurance');
-    setText('#about .about-card:nth-child(2) ul li:nth-child(2)', 'Regular training');
-    setText('#about .about-card:nth-child(2) ul li:nth-child(3)', 'Documented work');
-
-    // Jobs
-    setText('#karriere .section-title h2', 'Open positions');
-    setText('#karriere .section-title p', 'Join our team – apply now!');
-
-    setText('#karriere .job-list .job-card:nth-child(1) .badge', 'Full-time');
-    setText('#karriere .job-list .job-card:nth-child(1) h4', 'Caretaker (m/f/d)');
-    setText('#karriere .job-list .job-card:nth-child(1) p', 'Full-time – Route-based caretaking, minor repairs, general upkeep in Dortmund & Bochum.');
-    setText('#karriere .job-list .job-card:nth-child(1) .job-tags .tag.green', 'Class B licence');
-    setText('#karriere .job-list .job-card:nth-child(1) .job-tags .tag.purple', 'Manual skills');
-
-    setText('#karriere .job-list .job-card:nth-child(2) .badge', 'Part-time');
-    setText('#karriere .job-list .job-card:nth-child(2) h4', 'Cleaner (m/f/d)');
-    setText('#karriere .job-list .job-card:nth-child(2) p', 'Part-time – Stairwell and basic cleaning in residential and commercial properties.');
-    setText('#karriere .job-list .job-card:nth-child(2) .job-tags .tag.yellow', 'Experience preferred');
-    setText('#karriere .job-list .job-card:nth-child(2) .job-tags .tag.blue', 'Reliability');
-
-    setText('#karriere .job-list .job-card:nth-child(3) .badge', 'Flexible');
-    setText('#karriere .job-list .job-card:nth-child(3) h4', 'General facility assistant (m/f/d)');
-    setText('#karriere .job-list .job-card:nth-child(3) p', 'Flexible – Support with groundskeeping, clearances and special tasks.');
-    setText('#karriere .job-list .job-card:nth-child(3) .job-tags .tag.pink', 'Team player');
-    setText('#karriere .job-list .job-card:nth-child(3) .job-tags .tag.orange', 'Hands-on');
-
-    setText('#karriere .about-card h3', 'Apply now');
-
-    // Apply form
-    setHtml('label[for="firstName"]', 'First name <span class="required">*</span>');
-    setHtml('label[for="lastName"]', 'Last name <span class="required">*</span>');
-    setHtml('label[for="emailApply"]', 'Email <span class="required">*</span>');
-    setHtml('label[for="telApply"]', 'Phone <span class="required">*</span>');
-    setHtml('#formApply .multi label', 'Desired position <span class="required">*</span>');
-    const msBtnsApply = document.querySelectorAll('#formApply .ms-btn');
-    msBtnsApply.forEach(btn => btn.textContent = 'Bitte wählen……');
-    setText('label[for="messageApply"]', 'Experience');
-    setAttr('#messageApply', 'placeholder', 'Briefly outline your experience');
-    setText('label[for="cv"]', 'CV (PDF, max. 5MB)');
-    setHtml('label[for="applyDSE"]', 'I agree to the <a href="#datenschutz">processing of my data</a> for the purpose of handling my application.<span class="required">*</span>');
-    setText('#applyBtn', 'Submit application');
-    const applyHint = document.querySelector('#formApply .form-hint');
-    if (applyHint) applyHint.textContent = 'The information provided is required to process your application. See our privacy policy for more details.';
-
-    // Quote form
-    setText('#kontakt .contact-form h3', 'Request a quote');
-    setHtml('label[for="firma"]', 'Company / Name <span class="required">*</span>');
-    setHtml('label[for="emailQuote"]', 'Email <span class="required">*</span>');
-    setHtml('label[for="phoneQuote"]', 'Phone <span class="required">*</span>');
-    setHtml('label[for="addressQuote"]', 'Property address <span class="required">*</span>');
-    setText('#formQuote .multi label', 'Requested services');
-    const msBtnsQuote = document.querySelectorAll('#formQuote .ms-btn');
-    msBtnsQuote.forEach(btn => btn.textContent = 'Bitte wählen……');
-    setText('label[for="intervallQuote"]', 'Interval');
-    setOptionTexts('#intervallQuote', [
-      'Bitte wählen……', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
-    ]);
-    setText('label[for="messageQuote"]', 'Message (optional)');
-    setHtml('label[for="quoteDSE"]', 'I agree to the <a href="#datenschutz">processing of my data</a> for the purpose of preparing a quote.<span class="required">*</span>');
-    setText('#quoteBtn', 'Request quote');
-    const quoteHint = document.querySelector('#formQuote .form-hint');
-    if (quoteHint) quoteHint.textContent = 'The information provided is required to prepare your quote. See our privacy policy for more details.';
-
-    // FAQ
-    setText('#faq .section-title h2', 'Frequently asked questions');
-    setText('#faq .section-title p', 'Here you can find answers about our services');
-    setText('#faq .faq-item:nth-child(1) .faq-question span:first-child', 'How quickly can you start?');
-    setText('#faq .faq-item:nth-child(1) .faq-answer p', 'Usually within 7–14 days. In urgent cases we can react faster. After the initial inspection we create an individual schedule for your property.');
-    setText('#faq .faq-item:nth-child(2) .faq-question span:first-child', 'What intervals do you offer?');
-    setText('#faq .faq-item:nth-child(2) .faq-answer p', 'We offer flexible intervals: daily, weekly, every 14 days, monthly or by individual arrangement – depending on use and need.');
-    setText('#faq .faq-item:nth-child(3) .faq-question span:first-child', 'Do you offer winter service?');
-    setText('#faq .faq-item:nth-child(3) .faq-answer p', 'Yes, we offer winter service with on-call duty in the season (November–March). This includes clearing, gritting and documentation of all deployments.');
-    setText('#faq .faq-item:nth-child(4) .faq-question span:first-child', 'Do you do electrical work?');
-    setText('#faq .faq-item:nth-child(4) .faq-answer p', 'No, electrical installations are not part of our scope. We replace bulbs and coordinate specialist companies.');
-    setText('#faq .faq-item:nth-child(5) .faq-question span:first-child', 'Are you insured?');
-    setText('#faq .faq-item:nth-child(5) .faq-answer p', 'Yes, we work with comprehensive liability insurance. Proof can be provided on request.');
-    setText('#faq .faq-item:nth-child(6) .faq-question span:first-child', 'How do you calculate prices?');
-    setText('#faq .faq-item:nth-child(6) .faq-answer p', 'Our prices depend on property size, condition, interval and scope of services. You always receive a transparent offer with no hidden costs.');
-    setText('#faq .faq-item:nth-child(7) .faq-question span:first-child', 'Any other questions?');
-    setText('#faq .faq-item:nth-child(7) .faq-answer p', 'Feel free to contact us by phone or email. We are happy to help personally.');
-
-    // Contact section
-    setText('#kontakt .section-title h2', 'Contact');
-    setText('#kontakt .section-title p', 'Contact us – we’ll respond within 24–48 hours');
-
-    // Legal sections: replace full content
-    setHtml('#impressum', `<h2 style="margin-top:0">Imprint</h2>
-<p>Information pursuant to § 5 TMG</p>
-<p><strong>Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski<br/>
-SD&nbsp;TIM&nbsp;GmbH</strong><br/>
-Forsthauswinkel&nbsp;6<br/>
-45891&nbsp;Gelsenkirchen<br/>
-Germany</p>
-<p><strong>Register entry:</strong><br/>
-Entry in the commercial register.<br/>
-Register court: Local Court Gelsenkirchen<br/>
-Register number: HRB&nbsp;18970</p>
-<p><strong>Contact:</strong><br/>
-Phone: Please add<br/>
-Email: info@hausmeisterservice-spasowski.de</p>
-<p><strong>VAT ID:</strong><br/>
-VAT identification number pursuant to §&nbsp;27&nbsp;a German VAT Act: Please add</p>
-<p><strong>Represented by:</strong><br/>
-Managing director(s): Please add</p>`);
-    setHtml('#datenschutz', `<h2 style="margin-top:0">Privacy Policy</h2>
-<p>We take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations as well as this privacy policy.</p>
-
-<p><strong>Data collection on our website</strong></p>
-<p>Every time you access our website, information is automatically collected and stored by our hosting provider in so‑called server log files which your browser automatically transmits to us. These are:</p>
-<ul>
-  <li>Browser type and version</li>
-  <li>Operating system used</li>
-  <li>Referrer URL</li>
-  <li>Hostname of the accessing computer</li>
-  <li>Time of the server request</li>
-  <li>IP address</li>
-</ul>
-<p>This data is not merged with other data sources. The collection of this data is based on Art.&nbsp;6&nbsp;(1)&nbsp;lit.&nbsp;f GDPR. The website operator has a legitimate interest in the technically error‑free presentation and optimisation of its website — for this, the server log files must be recorded.</p>
-
-<p><strong>Handling contact requests</strong></p>
-<p>If you contact us by email, the information you provide, including the contact details you enter there, will be stored by us for the purpose of processing the enquiry and in case of follow‑up questions. We do not share this data without your consent. The processing of the data entered in the email is therefore based exclusively on your consent (Art.&nbsp;6&nbsp;(1)&nbsp;lit.&nbsp;a GDPR). You can revoke this consent at any time.</p>
-
-<p><strong>Your rights</strong></p>
-<p>Within the framework of the applicable legal provisions, you have the right at any time to free information about your stored personal data, its origin and recipients and the purpose of data processing and, if applicable, a right to rectification, blocking or deletion of this data. For this purpose, as well as for further questions on the subject of personal data, you can contact us at any time at the address given in the imprint.</p>
-
-<p><strong>SSL/TLS encryption</strong></p>
-<p>For security reasons and to protect the transmission of confidential content, such as enquiries you send to us as the site operator, this site uses SSL or TLS encryption. You can recognise an encrypted connection by the fact that the address line of the browser changes from “http://” to “https://” and by the lock symbol in your browser line.</p>`);
-
-    // Footer
-    setText('footer .footer-grid > div:nth-child(2) h4', 'Navigation');
-    setText('footer .footer-grid > div:nth-child(2) a[href="#leistungen"]', 'Services');
-    setText('footer .footer-grid > div:nth-child(2) a[href="#workflow"]', 'Process');
-    setText('footer .footer-grid > div:nth-child(2) a[href="#about"]', 'About us');
-    setText('footer .footer-grid > div:nth-child(2) a[href="#karriere"]', 'Careers');
-    setText('footer .footer-grid > div:nth-child(2) a[href="#faq"]', 'FAQ');
-    setText('footer .footer-grid > div:nth-child(2) a[href="#kontakt"]', 'Contact');
-
-    setText('footer .footer-grid > div:nth-child(3) h4', 'Legal');
-    setText('footer .footer-grid > div:nth-child(3) a[href="#impressum"]', 'Imprint');
-    setText('footer .footer-grid > div:nth-child(3) a[href="#datenschutz"]', 'Privacy Policy');
-
-    setText('footer .footer-grid > div:nth-child(1) p:nth-of-type(1)', 'Reliable property care in NRW.  Clean.  Fast.  Thorough.');
-    const fAddr = document.querySelector('footer .footer-grid > div:nth-child(1) p:nth-of-type(2)');
-    if (fAddr) { if (!fAddr.dataset.origHtml) fAddr.dataset.origHtml = fAddr.innerHTML; fAddr.innerHTML = fAddr.innerHTML.replace(/^Adresse:/, 'Address:'); }
-    const fMail = document.querySelector('footer .footer-grid > div:nth-child(1) p:nth-of-type(3)');
-    if (fMail) { if (!fMail.dataset.origHtml) fMail.dataset.origHtml = fMail.innerHTML; fMail.innerHTML = fMail.innerHTML.replace(/^E‑?Mail:/, 'Email:'); }
-    const fb = document.querySelector('.footer-bottom');
-    if (fb) { if (!fb.dataset.origHtml) fb.dataset.origHtml = fb.innerHTML; fb.innerHTML = fb.innerHTML.replace('Alle Rechte vorbehalten.', 'All rights reserved.'); }
-
-
-    // --- Extra EN tweaks (Aura patch) ---
-    // Map section
-    setText('#karte .section-title h2', 'Our service area');
-    setText('#karte .section-title p', 'Reliable service for Dortmund, Cologne and surrounding areas');
-    setText('#btnKoeln', 'Cologne');
-    setText('#btnDuesseldorf', 'Dusseldorf'); // per request: simple "u", not ü
-    setText('#btnReset', 'Overview');
-
-    // Contact section
-    setText('#kontakt .section-title h2', 'Contact');
-    setText('#kontakt .section-title p', 'Contact us – we\'ll get back to you within 24–48 hours');
-    (function(){
-      const addrLi = document.querySelector('#kontakt .contact-info li:nth-child(1)');
-      if (addrLi) {
-        if (!addrLi.dataset.origHtml) addrLi.dataset.origHtml = addrLi.innerHTML;
-        addrLi.innerHTML = addrLi.innerHTML.replace('Straße, PLZ Ort','Street, Postcode City').replace('Deutschland','Germany');
-      }
-      const hoursLi = document.querySelector('#kontakt .contact-info li:nth-child(4)');
-      if (hoursLi) {
-        if (!hoursLi.dataset.origHtml) hoursLi.dataset.origHtml = hoursLi.innerHTML;
-        hoursLi.innerHTML = hoursLi.innerHTML.replace('Bürozeiten:','Office hours:').replace('Mo–Fr','Mon–Fri');
-      }
-    })();
-
-    // Footer address detail
-    (function(){
-      const fAddr = document.querySelector('footer .footer-grid > div:nth-child(1) p:nth-of-type(2)');
-      if (fAddr) {
-        if (!fAddr.dataset.origHtml) fAddr.dataset.origHtml = fAddr.innerHTML;
-        fAddr.innerHTML = fAddr.innerHTML.replace('Straße, PLZ Ort','Street, Postcode City');
-      }
-    })();
-
-    // Quote form placeholders
-    setAttr('#firma', 'placeholder', 'Your name or company');
-    setAttr('#emailQuote', 'placeholder', 'name@example.com');
-    setAttr('#addressQuote', 'placeholder', 'Street, Postcode City');
-    setAttr('#messageQuote', 'placeholder', 'Describe your property and requirements…');
-
-    // Apply form placeholders
-    setAttr('#emailApply', 'placeholder', 'name@example.com');
-    setAttr('#telApply', 'placeholder', '0123 456789');
-    (function(){
-      const ln = document.querySelector('#lastName');
-      if (ln) { if (!ln.dataset.origAttr_placeholder) ln.dataset.origAttr_placeholder = ln.getAttribute('placeholder') || ''; ln.setAttribute('placeholder','Smith'); }
-    })();
-
-    // Translate multi-select option texts (underlying <select>)
-    setOptionTexts('#formApply select[name="position"]', [
-      'Caretaker (m/f/d)',
-      'Cleaner (m/f/d)',
-      'General facility assistant (m/f/d)',
-      'Gardener (m/f/d)',
-      'Office clerk (m/f/d)',
-      'Other'
-    ]);
-    setOptionTexts('#formQuote select[name="services"]', [
-      'Property caretaking',
-      'Stairwell cleaning',
-      'Green maintenance',
-      'Minor repairs',
-      'Waste bin service',
-      'Winter service',
-      'Special tasks'
-    ]);
-
-    // Also update visible custom multi-select labels (if already rendered)
-    (function(){
-      const setMs = (rootSel, texts) => {
-        const labels = document.querySelectorAll(rootSel + ' .ms-menu label');
-        labels.forEach((lab, i) => {
-          const wanted = texts[i];
-          if (typeof wanted !== 'string') return;
-          // find trailing text node
-          const tn = Array.from(lab.childNodes).reverse().find(n => n.nodeType === Node.TEXT_NODE);
-          if (tn) tn.textContent = ' ' + wanted;
-        });
-      };
-      setMs('#formApply', ['Caretaker (m/f/d)','Cleaner (m/f/d)','General facility assistant (m/f/d)','Gardener (m/f/d)','Office clerk (m/f/d)','Other']);
-      setMs('#formQuote', ['Property caretaking','Stairwell cleaning','Green maintenance','Minor repairs','Waste bin service','Winter service','Special tasks']);
-    })();
-
-    // Graceful hint for file input (can’t force OS button text)
-    (function(){
-      const cv = document.getElementById('cv');
-      if (cv) {
-        let help = cv.nextElementSibling;
-        if (!help || !help.classList || !help.classList.contains('file-help')) {
-          help = document.createElement('div');
-          help.className = 'file-help';
-          cv.insertAdjacentElement('afterend', help);
-          cv.addEventListener('change', () => {
-            help.textContent = (cv.files && cv.files[0]) ? ('Selected: ' + cv.files[0].name) : 'No file chosen';
-          });
-        }
-        help.textContent = (cv.files && cv.files[0]) ? ('Selected: ' + cv.files[0].name) : 'No file chosen';
-      }
-    })();
-
-    // Title & toggle
-    document.title = 'Facility Services – Objektpflege NRW';
-    const btn = document.getElementById('langToggle');
-    if (btn) btn.textContent = 'DE';
-  }
-
-  function applyDE() {
-    document.documentElement.setAttribute('lang','de');
-
-    // --- Extra DE restores (Aura patch) ---
-    // Restore custom ms-menu labels back to German (if present)
-    (function(){
-      const setMs = (rootSel, texts) => {
-        const labels = document.querySelectorAll(rootSel + ' .ms-menu label');
-        labels.forEach((lab, i) => {
-          const wanted = texts[i];
-          if (typeof wanted !== 'string') return;
-          const tn = Array.from(lab.childNodes).reverse().find(n => n.nodeType === Node.TEXT_NODE);
-          if (tn) tn.textContent = ' ' + wanted;
-        });
-      };
-      setMs('#formApply', ['Hausmeister:in','Reinigungskraft','Facility\u00A0Service\u00A0Allrounder','Gärtner:in','Bürokraft','Sonstige']);
-      setMs('#formQuote', ['Objektbetreuung','Treppenhausreinigung','Grünpflege','Kleinreparaturen','Mülltonnenservice','Winterdienst','Sonderaufgaben']);
-    })();
-    (function(){
-      const cv = document.getElementById('cv');
-      if (cv && cv.nextElementSibling && cv.nextElementSibling.classList && cv.nextElementSibling.classList.contains('file-help')) {
-        const help = cv.nextElementSibling;
-        help.textContent = (cv.files && cv.files[0]) ? ('Ausgewählt: ' + cv.files[0].name) : 'Keine Datei ausgewählt';
-      }
-    })();
-
-    // Restore any element with stored original HTML
-    document.querySelectorAll('[data-orig-html]').forEach(el => { el.innerHTML = el.dataset.origHtml; });
-    // Restore attributes where stored
-    document.querySelectorAll('[data-orig-attr_placeholder]').forEach(el => { el.setAttribute('placeholder', el.dataset.origAttr_placeholder); });
-    document.title = 'Hausmeisterservice – Objektpflege NRW';
-    const btn = document.getElementById('langToggle');
-    if (btn) btn.textContent = 'EN';
-  }
-
-  function setLang(lang) {
-    if (lang === 'en') applyEN(); else applyDE();
-    try { localStorage.setItem(storageKey, lang); } catch(e) {}
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const saved = (localStorage.getItem(storageKey) || 'de');
-    setLang(saved);
-    const btn = document.getElementById('langToggle');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('lang') || 'de';
-        setLang(current === 'de' ? 'en' : 'de');
-      });
-    }
-  });
-})();
-</script>
-
-
-
+    </script>
 </body>
 </html>
