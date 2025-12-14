@@ -30,7 +30,7 @@
   --accent-dim:rgba(143,211,255,.18);
   --radius:16px;          /* Karten/Buttons moderat rund */
   --blur:18px;
-  --field-radius:18px;    /* Form-Felder moderat rund */
+  --field-radius:8px;     /* Form-Felder einheitlich rund */
   --shadow:0 8px 32px rgba(0,0,0,.25);
 
   /* Brand */
@@ -357,7 +357,7 @@ form input[type="file"],
 form select,
 form textarea{
   width:100%; padding:14px;
-  border-radius:var(--radius);
+  border-radius:var(--field-radius);
   border:1px solid #e5e7eb; background:#fff; color:#111;
   font-family:'Poppins',sans-serif; transition:border-color .2s, box-shadow .2s;
   accent-color:var(--accent);
@@ -1285,6 +1285,15 @@ body.light-mode .job-card p{ color:var(--text); }
     document.getElementById('btnDuesseldorf').onclick  = () => { flyToCity('Düsseldorf'); setActiveMapButton('btnDuesseldorf'); };
     document.getElementById('btnReset').onclick = () => { map.flyTo([51.47, 7.0], 9); setActiveMapButton('btnReset'); };
 
+    // Language helper function
+    function getCurrentLang() {
+        try {
+            return localStorage.getItem('site-lang') || 'de';
+        } catch(e) {
+            return 'de';
+        }
+    }
+
     // --- NEW: Custom Multi-Select Dropdown Logic ---
     function setupMultiSelect(container) {
         const btn = container.querySelector('.ms-btn');
@@ -1331,7 +1340,8 @@ body.light-mode .job-card p{ color:var(--text); }
                 btn.textContent = selected.join(', ');
                 btn.classList.add('selected');
             } else {
-                btn.textContent = 'Bitte wählen…';
+                const lang = getCurrentLang();
+                btn.textContent = lang === 'en' ? 'Please choose...' : 'Bitte wählen…';
                 btn.classList.remove('selected');
             }
             select.dispatchEvent(new Event('change')); 
@@ -1357,6 +1367,7 @@ body.light-mode .job-card p{ color:var(--text); }
             return;
         }
 
+        const lang = getCurrentLang();
         const originalFormData = new FormData(form);
         const fileInput = form.querySelector('input[type="file"]');
         let fileAttached = false;
@@ -1374,12 +1385,15 @@ body.light-mode .job-card p{ color:var(--text); }
         // Instead, we notify that the CV will be sent separately.
         if (fileAttached) {
             originalFormData.delete('cv'); // Remove the actual file from form data
-            originalFormData.append('lebenslauf_info', `Bewerber hat einen Lebenslauf hochgeladen, der separat per E-Mail ankommt: ${fileInput.files[0].name}`);
+            const cvInfoMsg = lang === 'en'
+                ? `Applicant has uploaded a CV that will be sent separately via email: ${fileInput.files[0].name}`
+                : `Bewerber hat einen Lebenslauf hochgeladen, der separat per E-Mail ankommt: ${fileInput.files[0].name}`;
+            originalFormData.append('lebenslauf_info', cvInfoMsg);
         }
 
         btn.disabled = true;
         const prevText = btn.textContent;
-        btn.textContent = "Sende…";
+        btn.textContent = lang === 'en' ? "Sending…" : "Sende…";
         
         try {
             const res = await fetch(FORMSPREE, {
@@ -1392,26 +1406,33 @@ body.light-mode .job-card p{ color:var(--text); }
                 btn.textContent = "Gesendet ✅";
                 noteEl.className = "success";
                 if (fileAttached) {
-                     noteEl.innerHTML = `Vielen Dank! Ihre Bewerbung wurde gesendet.<br><strong>Wichtig:</strong> Bitte senden Sie Ihren Lebenslauf jetzt noch separat an <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`;
+                     noteEl.innerHTML = lang === 'en'
+                        ? `Thank you! Your application has been sent.<br><strong>Important:</strong> Please send your CV separately to <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`
+                        : `Vielen Dank! Ihre Bewerbung wurde gesendet.<br><strong>Wichtig:</strong> Bitte senden Sie Ihren Lebenslauf jetzt noch separat an <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`;
                 } else {
-                     noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
+                     noteEl.textContent = lang === 'en'
+                        ? "Thank you! Your message has been sent."
+                        : "Vielen Dank! Ihre Nachricht wurde gesendet.";
                 }
                 form.reset();
                 form.querySelectorAll('.multi').forEach(multi => {
                     const msBtn = multi.querySelector('.ms-btn');
                     if(msBtn) {
-                       msBtn.textContent = 'Bitte wählen…';
+                       msBtn.textContent = lang === 'en' ? 'Please choose...' : 'Bitte wählen…';
                        msBtn.classList.remove('selected');
                     }
                 });
             } else {
                  const errorData = await res.json();
-                 throw new Error(errorData.error || "Fehler beim Senden.");
+                 const errorMsg = lang === 'en' ? "Error sending." : "Fehler beim Senden.";
+                 throw new Error(errorData.error || errorMsg);
             }
         } catch (err) {
-            btn.textContent = "Nochmal versuchen";
+            btn.textContent = lang === 'en' ? "Try again" : "Nochmal versuchen";
             noteEl.className = "error";
-            noteEl.textContent = "Upps, ein Fehler ist aufgetreten. Bitte später erneut versuchen.";
+            noteEl.textContent = lang === 'en'
+                ? "Oops, an error occurred. Please try again later."
+                : "Upps, ein Fehler ist aufgetreten. Bitte später erneut versuchen.";
             console.error(err);
         } finally {
             setTimeout(() => {
@@ -1644,7 +1665,7 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="telApply"]', 'Phone <span class="required">*</span>');
     setHtml('#formApply .multi label', 'Desired position <span class="required">*</span>');
     const msBtnsApply = document.querySelectorAll('#formApply .ms-btn');
-    msBtnsApply.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsApply.forEach(btn => btn.textContent = 'Please choose...');
     setText('label[for="messageApply"]', 'Experience');
     setAttr('#messageApply', 'placeholder', 'Briefly outline your experience');
     setText('label[for="cv"]', 'CV (PDF, max. 5MB)');
@@ -1661,10 +1682,10 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="addressQuote"]', 'Property address <span class="required">*</span>');
     setText('#formQuote .multi label', 'Requested services');
     const msBtnsQuote = document.querySelectorAll('#formQuote .ms-btn');
-    msBtnsQuote.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsQuote.forEach(btn => btn.textContent = 'Please choose...');
     setText('label[for="intervallQuote"]', 'Interval');
     setOptionTexts('#intervallQuote', [
-      'Bitte wählen……', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
+      'Please choose...', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
     ]);
     setText('label[for="messageQuote"]', 'Message (optional)');
     setHtml('label[for="quoteDSE"]', 'I agree to the <a href="#datenschutz">processing of my data</a> for the purpose of preparing a quote.<span class="required">*</span>');
@@ -1886,7 +1907,10 @@ Managing director(s): Please add</p>`);
       const cv = document.getElementById('cv');
       if (cv && cv.nextElementSibling && cv.nextElementSibling.classList && cv.nextElementSibling.classList.contains('file-help')) {
         const help = cv.nextElementSibling;
-        help.textContent = (cv.files && cv.files[0]) ? ('Ausgewählt: ' + cv.files[0].name) : 'Keine Datei ausgewählt';
+        const lang = getCurrentLang();
+        help.textContent = (cv.files && cv.files[0]) 
+          ? ((lang === 'en' ? 'Selected: ' : 'Ausgewählt: ') + cv.files[0].name) 
+          : (lang === 'en' ? 'No file selected' : 'Keine Datei ausgewählt');
       }
     })();
 
