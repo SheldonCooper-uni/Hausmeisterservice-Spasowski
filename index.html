@@ -129,18 +129,30 @@ body::before{
 .nav-wrap{
   position:fixed; top:0; left:0; width:100%;
   padding:12px 20px; z-index:99;
-  background:rgba(20,30,50,.6);
-  backdrop-filter:blur(var(--blur));
+  background:rgba(20,30,50,0.45);
+  backdrop-filter:blur(24px) saturate(130%);
+  -webkit-backdrop-filter:blur(24px) saturate(130%);
   box-shadow:0 2px 12px rgba(0,0,0,.45);
   border-bottom:1px solid var(--border);
 }
 body.light-mode .nav-wrap{
-  background:rgba(255,255,255,.6);
-  border-bottom:1px solid rgba(0,0,0,.1);
-  box-shadow:0 2px 12px rgba(0,0,0,.1);
+  background:rgba(255,255,255,0.55);
+  backdrop-filter:blur(26px) saturate(120%);
+  -webkit-backdrop-filter:blur(26px) saturate(120%);
+  border-bottom:1px solid rgba(0,0,0,.12);
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
 }
 .nav{ max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-.nav-brand{ font-size:1.3rem; font-weight:600; color:var(--heading); }
+.nav-brand{
+  display:flex; align-items:center; gap:12px;
+  font-size:1.3rem; font-weight:600; color:var(--heading);
+  text-decoration:none;
+  transition:opacity .3s ease;
+}
+.nav-brand:hover{ opacity:0.85; }
+.nav-brand-logo{ height:42px; width:auto; display:block; }
+.nav-brand-text{ display:flex; flex-direction:column; line-height:1.2; }
+.nav-brand-company{ font-size:0.75rem; font-weight:400; color:var(--muted); margin-top:2px; }
 .nav-links{ display:flex; gap:16px; }
 .nav-links a{
   padding:8px 14px; border-radius:var(--radius); color:var(--text);
@@ -162,6 +174,9 @@ body.light-mode .nav-wrap{
 .nav.open .nav-toggle .burger::after{ opacity:0; }
 
 @media (max-width:768px){
+  .nav-brand-logo{ height:36px; }
+  .nav-brand{ font-size:1.1rem; gap:10px; }
+  .nav-brand-company{ font-size:0.65rem; }
   .nav-links{
     display:none; position:absolute; top:100%; right:0; left:0;
     background:var(--glass-bg); backdrop-filter:blur(var(--blur));
@@ -228,24 +243,41 @@ body.light-mode .nav-wrap{
 }
 .btn:active{ transform:translateY(-1px); }
 .btn.primary{
-  background:linear-gradient(135deg, #1fbe6c 0%, #69db7c 100%);
+  background:linear-gradient(135deg, #2b8bec 0%, #4cc9f0 100%);
   color:#ffffff;
   border-color:transparent;
-  box-shadow:0 4px 16px rgba(31,190,108,.25);
+  box-shadow:0 4px 18px rgba(43,139,236,.35);
 }
 .btn.primary:hover{
-  background:linear-gradient(135deg, #1fbe6c 0%, #69db7c 100%);
-  box-shadow:0 8px 28px rgba(31,190,108,.4);
-  filter:brightness(1.1);
+  background:linear-gradient(135deg, #3595f5 0%, #5dd3ff 100%);
+  box-shadow:0 8px 32px rgba(43,139,236,.5);
+  transform:translateY(-3px);
 }
 .btn.secondary{
-  background:rgba(255,255,255,.1);
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(16px) saturate(110%);
+  -webkit-backdrop-filter:blur(16px) saturate(110%);
   color:#ffffff;
-  border:1px solid rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.25);
 }
 .btn.secondary:hover{
-  background:rgba(255,255,255,.15);
-  border-color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.18);
+  backdrop-filter:blur(18px) saturate(115%);
+  -webkit-backdrop-filter:blur(18px) saturate(115%);
+  border-color:rgba(255,255,255,.35);
+}
+body.light-mode .btn.secondary{
+  background:rgba(0,0,0,.08);
+  backdrop-filter:blur(16px) saturate(110%);
+  -webkit-backdrop-filter:blur(16px) saturate(110%);
+  color:var(--text);
+  border:1px solid rgba(0,0,0,.2);
+}
+body.light-mode .btn.secondary:hover{
+  background:rgba(0,0,0,.12);
+  backdrop-filter:blur(18px) saturate(115%);
+  -webkit-backdrop-filter:blur(18px) saturate(115%);
+  border-color:rgba(0,0,0,.28);
 }
 
 section{
@@ -874,7 +906,13 @@ body.light-mode .job-card p{ color:var(--text); }
 <!-- Navigation -->
 <div class="nav-wrap">
     <div class="nav">
-        <div class="nav-brand">Hausmeister<span class="brand-blue">service</span></div>
+        <a href="#" class="nav-brand" aria-label="Zur Startseite">
+            <img src="/assets/logo.png" alt="SD TIM GmbH Logo" class="nav-brand-logo">
+            <div class="nav-brand-text">
+                <div>Hausmeister<span class="brand-blue">service</span></div>
+                <div class="nav-brand-company">Gebäudemanagement</div>
+            </div>
+        </a>
         <div class="nav-links">
             <a href="#leistungen">Leistungen</a>
             <a href="#workflow">Ablauf</a>
