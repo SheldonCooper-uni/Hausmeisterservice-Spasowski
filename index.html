@@ -40,6 +40,10 @@
   --step1-color:#f72585;
   --step2-color:#4cc9f0;
   --step3-color:#ffbe0b;
+
+  /* Background Images - easy to change */
+  --bg-workflow:url('/assets/workflow.webp');
+  --bg-leistungen:url('/assets/leistungen.webp');
 }
 
 body.light-mode{
@@ -325,24 +329,50 @@ section .container{ max-width:1200px; margin:0 auto; padding:0 20px; }
   position:absolute;
   inset:0;
   background:linear-gradient(to bottom,
-    rgba(249,251,253,0.98) 0%,
-    rgba(249,251,253,0.96) 50%,
-    rgba(249,251,253,0.98) 100%);
+    rgba(249,251,253,0.96) 0%,
+    rgba(249,251,253,0.92) 50%,
+    rgba(249,251,253,0.96) 100%);
   z-index:1;
 }
 body:not(.light-mode) .section-with-image::before{
   background:linear-gradient(to bottom,
-    rgba(13,17,23,0.94) 0%,
-    rgba(13,17,23,0.90) 50%,
-    rgba(13,17,23,0.94) 100%);
+    rgba(13,17,23,0.88) 0%,
+    rgba(13,17,23,0.82) 50%,
+    rgba(13,17,23,0.88) 100%);
 }
 .section-with-image > *{ position:relative; z-index:2; }
 
+/* Glass Panel for section titles over images */
+.section-with-image .section-title{
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:24px;
+  padding:40px 32px;
+  box-shadow:0 8px 32px rgba(0,0,0,.18);
+  max-width:900px;
+  margin:0 auto 60px;
+}
+body:not(.light-mode) .section-with-image .section-title{
+  background:rgba(17,27,47,.35);
+  backdrop-filter:blur(22px) saturate(150%);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 8px 40px rgba(0,0,0,.35);
+}
+.section-with-image .section-title h2{
+  text-shadow:0 2px 12px rgba(0,0,0,0.25);
+}
+body:not(.light-mode) .section-with-image .section-title h2{
+  text-shadow:0 2px 16px rgba(0,0,0,0.45);
+}
+
 #leistungen.section-with-image{
-  background-image:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80');
+  background-image:var(--bg-leistungen);
 }
 #workflow.section-with-image{
-  background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80');
+  background-image:var(--bg-workflow);
 }
 
 /* Smooth section transitions */
@@ -473,6 +503,21 @@ body:not(.light-mode) .step-card:hover{
 .service-card:hover::before{ opacity:1; }
 body:not(.light-mode) .service-card:hover{
   box-shadow:0 0 48px rgba(143,211,255,.5), 0 20px 60px rgba(0,0,0,.6);
+}
+
+/* Light Mode: cleaner, lighter service cards */
+body.light-mode .service-card{
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(20px) saturate(120%);
+  -webkit-backdrop-filter:blur(20px) saturate(120%);
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 4px 16px rgba(0,0,0,.04);
+}
+body.light-mode .service-card:hover{
+  background:rgba(255,255,255,.95);
+  border-color:rgba(43,139,236,.18);
+  box-shadow:0 8px 28px rgba(0,0,0,.08);
+  transform:translateY(-8px);
 }
 .services-grid .service-card:nth-child(1) svg{ color:#ffbe0b; }
 .services-grid .service-card:nth-child(2) svg{ color:#4cc9f0; }
