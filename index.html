@@ -10,6 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" as="style">
     <title>Hausmeisterservice – Objektpflege NRW</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" href="/assets/favicon.ico">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Leaflet CSS for Map -->
@@ -778,6 +783,29 @@ body.light-mode .faq-item.open .faq-answer{ color:var(--text); }
 .contact-form h3{ margin-top:0; font-size:1.6rem; color:var(--heading); margin-bottom:14px; }
 
 /* =========================
+   Tabs
+   ========================= */
+.tabs-container{
+  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
+  border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:40px; box-shadow:var(--shadow);
+}
+.tabs-nav{
+  display:flex; gap:8px; margin-bottom:28px; border-bottom:2px solid var(--border);
+}
+.tab-btn{
+  background:transparent; border:none; padding:12px 24px; cursor:pointer;
+  color:var(--muted); font-size:1rem; font-weight:500; transition:all .3s;
+  border-bottom:3px solid transparent; margin-bottom:-2px; font-family:'Poppins',sans-serif;
+}
+.tab-btn:hover{ color:var(--text); }
+.tab-btn.active{
+  color:var(--accent); border-bottom-color:var(--accent);
+}
+.tab-content{ display:none; }
+.tab-content.active{ display:block; }
+body.light-mode .tabs-container{ border:1px solid rgba(0,0,0,.08); }
+
+/* =========================
    Footer (merged, final)
    ========================= */
 footer{
@@ -1121,29 +1149,11 @@ body.light-mode .job-card p{ color:var(--text); }
             <p class="enter">Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski steht seit 2021 für verlässliche Objektpflege in NRW</p>
         </div>
         <div class="about-grid">
-            <div class="about-card enter">
-                <h3>Warum wir?</h3>
-                <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
-                <ul>
-                    <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
-                    <li>Sauber & sorgfältig: standardisierte Checklisten</li>
-                    <li>Verbindlich & fair: transparente Kommunikation</li>
-                </ul>
-            </div>
-            <div class="about-card enter">
-                <h3>Unser Versprechen</h3>
-                <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung.  Wir sind versichert und arbeiten nach höchsten Standards.</p>
-                <ul>
-                    <li>Umfassende Betriebshaftpflicht</li>
-                    <li>Regelmäßige Fortbildungen</li>
-                    <li>Dokumentierte Arbeit</li>
-                </ul>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Karriere / Jobs -->
 <section id="karriere">
     <div class="container">
         <div class="section-title">
@@ -1177,58 +1187,7 @@ body.light-mode .job-card p{ color:var(--text); }
                     </div>
                 </div>
             </div>
-            <div class="about-card enter">
-                <h3>Jetzt bewerben</h3>
-                <form id="formApply" novalidate>
-                    <input type="hidden" name="formType" value="Bewerbung">
-                    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
-                    <div class="grid-2">
-                        <div><label for="firstName">Vorname <span class="required">*</span></label>
-                        <input id="firstName" name="firstName" required placeholder="Max" autocomplete="given-name"></div>
-                        <div><label for="lastName">Nachname <span class="required">*</span></label>
-                        <input id="lastName" name="lastName" required placeholder="Mustermann" autocomplete="family-name"></div>
                     </div>
-                    <div>
-                        <label for="emailApply">E‑Mail <span class="required">*</span></label>
-                        <input id="emailApply" name="email" type="email" required placeholder="mail@beispiel.de" autocomplete="email">
-                    </div>
-                    <div>
-                        <label for="telApply">Telefon <span class="required">*</span></label>
-                        <input id="telApply" name="tel" type="tel" required placeholder="0123 456789" autocomplete="tel">
-                    </div>
-                    <div class="multi">
-                        <label>Wunsch‑Stelle <span class="required">*</span></label>
-                        <button type="button" class="ms-btn" aria-haspopup="listbox" aria-expanded="false">Bitte wählen…</button>
-                        <div class="ms-menu" role="listbox">
-                             <!-- Checkboxes will be inserted by JavaScript -->
-                        </div>
-                        <select name="position" required multiple style="display: none;">
-                            <option value="Hausmeister:in">Hausmeister:in</option>
-                            <option value="Reinigungskraft">Reinigungskraft</option>
-                            <option value="Facility Service Allrounder">Facility Service Allrounder</option>
-                            <option value="Gärtner:in">Gärtner:in</option>
-                            <option value="Bürokraft">Bürokraft</option>
-                            <option value="Sonstige">Sonstige</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="messageApply">Erfahrung</label>
-                        <textarea id="messageApply" name="message" placeholder="Kurz zu Ihrer Erfahrung"></textarea>
-                    </div>
-                    <div>
-                        <label for="cv">Lebenslauf (PDF, max. 5MB)</label>
-                        <input id="cv" type="file" name="cv" accept="application/pdf">
-                    </div>
-                    <div class="consent">
-                        <input type="checkbox" id="applyDSE" name="dataConsent" value="Einverstanden" required>
-                        <label for="applyDSE">Ich stimme der <a href="#datenschutz">Verarbeitung meiner Daten</a> zum Zweck der Bewerbungsabwicklung zu.<span class="required">*</span></label>
-                    </div>
-                    <button type="submit" id="applyBtn">Bewerbung absenden</button>
-                    <p class="form-hint">Die Angaben sind erforderlich, um Ihre Bewerbung zu bearbeiten. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
-                    <div class="note" id="applyNote" aria-live="polite"></div>
-                </form>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -1335,9 +1294,13 @@ body.light-mode .job-card p{ color:var(--text); }
                     </li>
                 </ul>
             </div>
-            <div class="contact-form enter">
-                <h3>Angebot anfordern</h3>
-                <form id="formQuote" novalidate>
+            <div class="tabs-container enter">
+                <div class="tabs-nav">
+                    <button type="button" class="tab-btn active" data-tab="formQuote">Angebot anfordern</button>
+                    <button type="button" class="tab-btn" data-tab="formApply">Bewerben</button>
+                </div>
+                <div id="tab-formQuote" class="tab-content active">
+                    <form id="formQuote" novalidate>
                     <input type="hidden" name="formType" value="Angebot">
                     <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
                     <div>
@@ -1395,6 +1358,57 @@ body.light-mode .job-card p{ color:var(--text); }
                     <p class="form-hint">Die Angaben sind erforderlich, um Ihr Angebot zu erstellen. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
                     <div class="note" id="quoteNote" aria-live="polite"></div>
                 </form>
+                </div>
+                <div id="tab-formApply" class="tab-content">
+<form id="formApply" novalidate>
+                    <input type="hidden" name="formType" value="Bewerbung">
+                    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
+                    <div class="grid-2">
+                        <div><label for="firstName">Vorname <span class="required">*</span></label>
+                        <input id="firstName" name="firstName" required placeholder="Max" autocomplete="given-name"></div>
+                        <div><label for="lastName">Nachname <span class="required">*</span></label>
+                        <input id="lastName" name="lastName" required placeholder="Mustermann" autocomplete="family-name"></div>
+                    </div>
+                    <div>
+                        <label for="emailApply">E‑Mail <span class="required">*</span></label>
+                        <input id="emailApply" name="email" type="email" required placeholder="mail@beispiel.de" autocomplete="email">
+                    </div>
+                    <div>
+                        <label for="telApply">Telefon <span class="required">*</span></label>
+                        <input id="telApply" name="tel" type="tel" required placeholder="0123 456789" autocomplete="tel">
+                    </div>
+                    <div class="multi">
+                        <label>Wunsch‑Stelle <span class="required">*</span></label>
+                        <button type="button" class="ms-btn" aria-haspopup="listbox" aria-expanded="false">Bitte wählen…</button>
+                        <div class="ms-menu" role="listbox">
+                             <!-- Checkboxes will be inserted by JavaScript -->
+                        </div>
+                        <select name="position" required multiple style="display: none;">
+                            <option value="Hausmeister:in">Hausmeister:in</option>
+                            <option value="Reinigungskraft">Reinigungskraft</option>
+                            <option value="Facility Service Allrounder">Facility Service Allrounder</option>
+                            <option value="Gärtner:in">Gärtner:in</option>
+                            <option value="Bürokraft">Bürokraft</option>
+                            <option value="Sonstige">Sonstige</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="messageApply">Erfahrung</label>
+                        <textarea id="messageApply" name="message" placeholder="Kurz zu Ihrer Erfahrung"></textarea>
+                    </div>
+                    <div>
+                        <label for="cv">Lebenslauf (PDF, max. 5MB)</label>
+                        <input id="cv" type="file" name="cv" accept="application/pdf">
+                    </div>
+                    <div class="consent">
+                        <input type="checkbox" id="applyDSE" name="dataConsent" value="Einverstanden" required>
+                        <label for="applyDSE">Ich stimme der <a href="#datenschutz">Verarbeitung meiner Daten</a> zum Zweck der Bewerbungsabwicklung zu.<span class="required">*</span></label>
+                    </div>
+                    <button type="submit" id="applyBtn">Bewerbung absenden</button>
+                    <p class="form-hint">Die Angaben sind erforderlich, um Ihre Bewerbung zu bearbeiten. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
+                    <div class="note" id="applyNote" aria-live="polite"></div>
+                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -1662,10 +1676,12 @@ body.light-mode .job-card p{ color:var(--text); }
             fileAttached = true;
         }
 
-        // We will not send the file itself to avoid Formspree errors on free plans.
-        // Instead, we notify that the CV will be sent separately.
-        if (fileAttached) {
-            originalFormData.delete('cv'); // Remove the actual file from form data
+        // Formspree file upload configuration
+        // Set to true if your Formspree plan supports file uploads, false otherwise
+        const FORMSPREE_SUPPORTS_FILES = false;
+
+        if (fileAttached && !FORMSPREE_SUPPORTS_FILES) {
+            originalFormData.delete('cv'); // Remove file if Formspree doesn't support it
             originalFormData.append('lebenslauf_info', `Bewerber hat einen Lebenslauf hochgeladen, der separat per E-Mail ankommt: ${fileInput.files[0].name}`);
         }
 
@@ -1725,6 +1741,51 @@ body.light-mode .job-card p{ color:var(--text); }
         e.preventDefault();
         sendForm(this, document.getElementById('applyNote'), document.getElementById('applyBtn'));
     });
+    // Tab switching functionality
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetTab = this.dataset.tab;
+
+            // Remove active from all tabs and buttons
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            // Add active to clicked button and corresponding content
+            this.classList.add('active');
+            document.getElementById('tab-' + targetTab).classList.add('active');
+        });
+    });
+
+    // Handle CTA buttons scrolling to correct tab
+    function scrollToContactTab(tabName) {
+        // Scroll to kontakt section
+        document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth' });
+
+        // After scrolling, activate the correct tab
+        setTimeout(() => {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.dataset.tab === tabName) {
+                    btn.click();
+                }
+            });
+        }, 500);
+    }
+
+    // Update CTA button click handlers
+    document.querySelectorAll('a[href="#formQuote"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToContactTab('formQuote');
+        });
+    });
+
+    document.querySelectorAll('a[href="#formApply"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToContactTab('formApply');
+        });
+    });
+
 
     // IntersectionObserver for entrance animations
     const io = new IntersectionObserver((entries) => {
@@ -1936,7 +1997,7 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="telApply"]', 'Phone <span class="required">*</span>');
     setHtml('#formApply .multi label', 'Desired position <span class="required">*</span>');
     const msBtnsApply = document.querySelectorAll('#formApply .ms-btn');
-    msBtnsApply.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsApply.forEach(btn => btn.textContent = 'Please choose...');
     setText('label[for="messageApply"]', 'Experience');
     setAttr('#messageApply', 'placeholder', 'Briefly outline your experience');
     setText('label[for="cv"]', 'CV (PDF, max. 5MB)');
@@ -1944,6 +2005,10 @@ body.light-mode .job-card p{ color:var(--text); }
     setText('#applyBtn', 'Submit application');
     const applyHint = document.querySelector('#formApply .form-hint');
     if (applyHint) applyHint.textContent = 'The information provided is required to process your application. See our privacy policy for more details.';
+
+    // Tab buttons
+    setText('.tab-btn[data-tab="formQuote"]', 'Request quote');
+    setText('.tab-btn[data-tab="formApply"]', 'Apply');
 
     // Quote form
     setText('#kontakt .contact-form h3', 'Request a quote');
@@ -1953,10 +2018,10 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="addressQuote"]', 'Property address <span class="required">*</span>');
     setText('#formQuote .multi label', 'Requested services');
     const msBtnsQuote = document.querySelectorAll('#formQuote .ms-btn');
-    msBtnsQuote.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsQuote.forEach(btn => btn.textContent = 'Please choose...');
     setText('label[for="intervallQuote"]', 'Interval');
     setOptionTexts('#intervallQuote', [
-      'Bitte wählen……', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
+      'Please choose...', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
     ]);
     setText('label[for="messageQuote"]', 'Message (optional)');
     setHtml('label[for="quoteDSE"]', 'I agree to the <a href="#datenschutz">processing of my data</a> for the purpose of preparing a quote.<span class="required">*</span>');
@@ -2083,6 +2148,10 @@ Managing director(s): Please add</p>`);
         fAddr.innerHTML = fAddr.innerHTML.replace('Straße, PLZ Ort','Street, Postcode City');
       }
     })();
+
+    // Tab buttons
+    setText('.tab-btn[data-tab="formQuote"]', 'Request quote');
+    setText('.tab-btn[data-tab="formApply"]', 'Apply');
 
     // Quote form placeholders
     setAttr('#firma', 'placeholder', 'Your name or company');
