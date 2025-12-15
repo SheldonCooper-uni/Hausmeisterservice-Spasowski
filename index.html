@@ -14,6 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Leaflet CSS for Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" href="/assets/favicon.png">
    <style>
 /* =========================
    Theme & Base
@@ -765,6 +770,29 @@ body.light-mode .faq-item.open .faq-answer{ color:var(--text); }
 
 /* =========================
    Contact
+   =========================
+*/
+.tab-controls{
+  display:flex; gap:10px; margin:30px 0; justify-content:center; flex-wrap:wrap;
+}
+.tab-btn{
+  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
+  border:1px solid var(--border); border-radius:30px; padding:12px 30px;
+  color:var(--text); font-size:1rem; cursor:pointer; transition:all 0.3s;
+  font-family:'Poppins',sans-serif; font-weight:500;
+}
+.tab-btn:hover{
+  background:var(--accent-dim); border-color:var(--accent); color:var(--accent);
+}
+.tab-btn.active{
+  background:var(--accent); border-color:var(--accent); color:#fff;
+}
+.tab-content{
+  display:none;
+}
+.tab-content.active{
+  display:block;
+}
    ========================= */
 .contact-grid{ display:grid; gap:30px; }
 @media (min-width:992px){ .contact-grid{ grid-template-columns:1fr 1fr; } }
@@ -859,6 +887,47 @@ body.light-mode .job-card p{ color:var(--text); }
   .contact-form, .contact-info, .faq-item, .job-card{
     background:rgba(17,27,47,.85);
   }
+}
+
+/* =========================
+   Tabs
+   ========================= */
+.tab-controls{
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tab-btn{
+  cursor: pointer;
+  padding: 12px 28px;
+  border-radius: var(--radius);
+  background: var(--glass-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all .3s ease;
+  backdrop-filter: blur(var(--blur));
+}
+.tab-btn:hover{
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.tab-btn.active{
+  background: linear-gradient(135deg, #2b8bec 0%, #4cc9f0 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 18px rgba(43,139,236,.35);
+}
+.tab-content{
+  display: none;
+}
+.tab-content.active{
+  display: block;
+  animation: fadeInUp .5s ease-out;
 }
 
 </style>
@@ -975,8 +1044,8 @@ body.light-mode .job-card p{ color:var(--text); }
 </div>
 
 <div class="cta-bar" role="navigation" aria-label="Hauptaktionen">
-  <a class="btn primary"   href="#formQuote" aria-label="Zum Formular Angebot anfordern">Angebot anfordern</a>
-  <a class="btn secondary" href="#formApply" aria-label="Zum Formular Bewerben">Bewerben</a>
+  <a class="btn primary"   href="#kontakt" data-tab="tab-quote" aria-label="Zum Formular Angebot anfordern">Angebot anfordern</a>
+  <a class="btn secondary" href="#kontakt" data-tab="tab-apply" aria-label="Zum Formular Bewerben">Bewerben</a>
 </div>
 
 
@@ -987,7 +1056,7 @@ body.light-mode .job-card p{ color:var(--text); }
         <h1 class="enter">Hausmeister- &amp; Objektservice auf den Sie sich verlassen können</h1>
         <p class="enter">Seit 2021 sorgen wir mit klaren Prozessen und zuverlässigen Mitarbeitern für gepflegte Immobilien in Nordrhein‑Westfalen.</p>
         <div class="cta-buttons enter">
-            <a href="#kontakt" class="btn primary">Angebot anfordern</a>
+            <a href="#kontakt" class="btn primary" data-tab="tab-quote">Angebot anfordern</a>
             <a href="#leistungen" class="btn secondary">Leistungen ansehen</a>
         </div>
     </div>
@@ -1177,57 +1246,6 @@ body.light-mode .job-card p{ color:var(--text); }
                     </div>
                 </div>
             </div>
-            <div class="about-card enter">
-                <h3>Jetzt bewerben</h3>
-                <form id="formApply" novalidate>
-                    <input type="hidden" name="formType" value="Bewerbung">
-                    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
-                    <div class="grid-2">
-                        <div><label for="firstName">Vorname <span class="required">*</span></label>
-                        <input id="firstName" name="firstName" required placeholder="Max" autocomplete="given-name"></div>
-                        <div><label for="lastName">Nachname <span class="required">*</span></label>
-                        <input id="lastName" name="lastName" required placeholder="Mustermann" autocomplete="family-name"></div>
-                    </div>
-                    <div>
-                        <label for="emailApply">E‑Mail <span class="required">*</span></label>
-                        <input id="emailApply" name="email" type="email" required placeholder="mail@beispiel.de" autocomplete="email">
-                    </div>
-                    <div>
-                        <label for="telApply">Telefon <span class="required">*</span></label>
-                        <input id="telApply" name="tel" type="tel" required placeholder="0123 456789" autocomplete="tel">
-                    </div>
-                    <div class="multi">
-                        <label>Wunsch‑Stelle <span class="required">*</span></label>
-                        <button type="button" class="ms-btn" aria-haspopup="listbox" aria-expanded="false">Bitte wählen…</button>
-                        <div class="ms-menu" role="listbox">
-                             <!-- Checkboxes will be inserted by JavaScript -->
-                        </div>
-                        <select name="position" required multiple style="display: none;">
-                            <option value="Hausmeister:in">Hausmeister:in</option>
-                            <option value="Reinigungskraft">Reinigungskraft</option>
-                            <option value="Facility Service Allrounder">Facility Service Allrounder</option>
-                            <option value="Gärtner:in">Gärtner:in</option>
-                            <option value="Bürokraft">Bürokraft</option>
-                            <option value="Sonstige">Sonstige</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="messageApply">Erfahrung</label>
-                        <textarea id="messageApply" name="message" placeholder="Kurz zu Ihrer Erfahrung"></textarea>
-                    </div>
-                    <div>
-                        <label for="cv">Lebenslauf (PDF, max. 5MB)</label>
-                        <input id="cv" type="file" name="cv" accept="application/pdf">
-                    </div>
-                    <div class="consent">
-                        <input type="checkbox" id="applyDSE" name="dataConsent" value="Einverstanden" required>
-                        <label for="applyDSE">Ich stimme der <a href="#datenschutz">Verarbeitung meiner Daten</a> zum Zweck der Bewerbungsabwicklung zu.<span class="required">*</span></label>
-                    </div>
-                    <button type="submit" id="applyBtn">Bewerbung absenden</button>
-                    <p class="form-hint">Die Angaben sind erforderlich, um Ihre Bewerbung zu bearbeiten. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
-                    <div class="note" id="applyNote" aria-live="polite"></div>
-                </form>
-            </div>
         </div>
     </div>
 </section>
@@ -1314,6 +1332,15 @@ body.light-mode .job-card p{ color:var(--text); }
             <h2 class="enter">Kontakt</h2>
             <p class="enter">Kontaktieren Sie uns – wir melden uns innerhalb von 24–48 Stunden</p>
         </div>
+
+        <!-- Tab Controls -->
+        <div class="tab-controls">
+            <button class="tab-btn active" data-target="tab-quote">Angebot anfordern</button>
+            <button class="tab-btn" data-target="tab-apply">Bewerben</button>
+        </div>
+
+        <!-- Tab: Angebot anfordern -->
+        <div id="tab-quote" class="tab-content active">
         <div class="contact-grid">
             <div class="contact-info enter">
                 <ul>
@@ -1395,6 +1422,94 @@ body.light-mode .job-card p{ color:var(--text); }
                     <p class="form-hint">Die Angaben sind erforderlich, um Ihr Angebot zu erstellen. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
                     <div class="note" id="quoteNote" aria-live="polite"></div>
                 </form>
+            </div>
+        </div>
+        </div>
+        </div>
+
+        <!-- Tab: Bewerben -->
+        <div id="tab-apply" class="tab-content">
+            <div class="contact-grid">
+                <div class="contact-info enter">
+                    <h3>Offene Stellen</h3>
+                    <div class="job-list">
+                        <div class="job-card enter">
+                            <span class="badge">Vollzeit</span>
+                            <h4>Hausmeister:in (m/w/d)</h4>
+                            <p>Vollzeit – Tourenbetreuung, Kleinreparaturen, Grundpflege in Dortmund & Bochum.</p>
+                            <div class="job-tags">
+                                <span class="tag green">Führerschein B</span><span class="tag purple">Handwerkliches Geschick</span>
+                            </div>
+                        </div>
+                        <div class="job-card enter">
+                            <span class="badge">Teilzeit</span>
+                            <h4>Reinigungskraft (m/w/d)</h4>
+                            <p>Teilzeit – Treppenhaus- & Grundreinigung in Wohn- und Gewerbeimmobilien.</p>
+                            <div class="job-tags">
+                                <span class="tag yellow">Erfahrung erwünscht</span><span class="tag blue">Zuverlässigkeit</span>
+                            </div>
+                        </div>
+                        <div class="job-card enter">
+                            <span class="badge">Flexibel</span>
+                            <h4>Facility Service Allrounder (m/w/d)</h4>
+                            <p>Flexibel – Unterstützung bei Gartenpflege, Entrümpelungen und Sonderaufgaben.</p>
+                            <div class="job-tags">
+                                <span class="tag pink">Teamfähig</span><span class="tag orange">Einsatzbereit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form enter">
+                    <h3>Jetzt bewerben</h3>
+                    <form id="formApply" novalidate>
+                        <input type="hidden" name="formType" value="Bewerbung">
+                        <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
+                        <div class="grid-2">
+                            <div><label for="firstName">Vorname <span class="required">*</span></label>
+                            <input id="firstName" name="firstName" required placeholder="Max" autocomplete="given-name"></div>
+                            <div><label for="lastName">Nachname <span class="required">*</span></label>
+                            <input id="lastName" name="lastName" required placeholder="Mustermann" autocomplete="family-name"></div>
+                        </div>
+                        <div>
+                            <label for="emailApply">E‑Mail <span class="required">*</span></label>
+                            <input id="emailApply" name="email" type="email" required placeholder="mail@beispiel.de" autocomplete="email">
+                        </div>
+                        <div>
+                            <label for="telApply">Telefon <span class="required">*</span></label>
+                            <input id="telApply" name="tel" type="tel" required placeholder="0123 456789" autocomplete="tel">
+                        </div>
+                        <div class="multi">
+                            <label>Wunsch‑Stelle <span class="required">*</span></label>
+                            <button type="button" class="ms-btn" aria-haspopup="listbox" aria-expanded="false">Bitte wählen…</button>
+                            <div class="ms-menu" role="listbox">
+                                 <!-- Checkboxes will be inserted by JavaScript -->
+                            </div>
+                            <select name="position" required multiple style="display: none;">
+                                <option value="Hausmeister:in">Hausmeister:in</option>
+                                <option value="Reinigungskraft">Reinigungskraft</option>
+                                <option value="Facility Service Allrounder">Facility Service Allrounder</option>
+                                <option value="Gärtner:in">Gärtner:in</option>
+                                <option value="Bürokraft">Bürokraft</option>
+                                <option value="Sonstige">Sonstige</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="messageApply">Erfahrung</label>
+                            <textarea id="messageApply" name="message" placeholder="Kurz zu Ihrer Erfahrung"></textarea>
+                        </div>
+                        <div>
+                            <label for="cv">Lebenslauf (PDF, max. 5MB)</label>
+                            <input id="cv" type="file" name="cv" accept="application/pdf">
+                        </div>
+                        <div class="consent">
+                            <input type="checkbox" id="applyDSE" name="dataConsent" value="Einverstanden" required>
+                            <label for="applyDSE">Ich stimme der <a href="#datenschutz">Verarbeitung meiner Daten</a> zum Zweck der Bewerbungsabwicklung zu.<span class="required">*</span></label>
+                        </div>
+                        <button type="submit" id="applyBtn">Bewerbung absenden</button>
+                        <p class="form-hint">Die Angaben sind erforderlich, um Ihre Bewerbung zu bearbeiten. Weitere Informationen finden Sie in unserer <a href="#datenschutz">Datenschutzerklärung</a>.</p>
+                        <div class="note" id="applyNote" aria-live="polite"></div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -1641,6 +1756,7 @@ body.light-mode .job-card p{ color:var(--text); }
 
     // Formspree endpoint
     const FORMSPREE = "https://formspree.io/f/xjkopowr";
+    let multiSelectPlaceholder = "Bitte wählen…";
 
     // --- REVISED: Generic form submission handler to work around file upload limits ---
     async function sendForm(form, noteEl, btn) {
@@ -1662,13 +1778,9 @@ body.light-mode .job-card p{ color:var(--text); }
             fileAttached = true;
         }
 
-        // We will not send the file itself to avoid Formspree errors on free plans.
-        // Instead, we notify that the CV will be sent separately.
-        if (fileAttached) {
-            originalFormData.delete('cv'); // Remove the actual file from form data
-            originalFormData.append('lebenslauf_info', `Bewerber hat einen Lebenslauf hochgeladen, der separat per E-Mail ankommt: ${fileInput.files[0].name}`);
-        }
-
+        // Try to send the file with the form data
+        // If Formspree rejects it, we'll handle the error below
+        
         btn.disabled = true;
         const prevText = btn.textContent;
         btn.textContent = "Sende…";
@@ -1681,24 +1793,29 @@ body.light-mode .job-card p{ color:var(--text); }
             });
 
             if (res.ok) {
-                btn.textContent = "Gesendet ✅";
+                btn.textContent = "Gesendet ✅";
                 noteEl.className = "success";
-                if (fileAttached) {
-                     noteEl.innerHTML = `Vielen Dank! Ihre Bewerbung wurde gesendet.<br><strong>Wichtig:</strong> Bitte senden Sie Ihren Lebenslauf jetzt noch separat an <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`;
-                } else {
-                     noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
-                }
+                // Success message - file was sent successfully (or no file attached)
+                noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
                 form.reset();
                 form.querySelectorAll('.multi').forEach(multi => {
                     const msBtn = multi.querySelector('.ms-btn');
                     if(msBtn) {
-                       msBtn.textContent = 'Bitte wählen…';
+                       msBtn.textContent = multiSelectPlaceholder;
                        msBtn.classList.remove('selected');
                     }
                 });
             } else {
                  const errorData = await res.json();
-                 throw new Error(errorData.error || "Fehler beim Senden.");
+                 // Check if error is about file uploads
+                 const errorMsg = errorData.error || "";
+                 if (fileAttached && (errorMsg.toLowerCase().includes('file') || errorMsg.toLowerCase().includes('attachment'))) {
+                     // File upload not supported - ask user to email it
+                     noteEl.className = "error";
+                     noteEl.innerHTML = `Dateianhänge werden nicht unterstützt.<br><strong>Bitte senden Sie Ihren Lebenslauf separat an:</strong> <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>`;
+                 } else {
+                     throw new Error(errorMsg || "Fehler beim Senden.");
+                 }
             }
         } catch (err) {
             btn.textContent = "Nochmal versuchen";
@@ -1715,6 +1832,9 @@ body.light-mode .job-card p{ color:var(--text); }
                 }
             }, 8000); // Longer timeout for the user to read the message
         }
+                }
+            }, 8000); // Longer timeout for the user to read the message
+        }
     }
 
     document.getElementById('formQuote').addEventListener('submit', function(e) {
@@ -1724,6 +1844,43 @@ body.light-mode .job-card p{ color:var(--text); }
     document.getElementById('formApply').addEventListener('submit', function(e) {
         e.preventDefault();
         sendForm(this, document.getElementById('applyNote'), document.getElementById('applyBtn'));
+    });
+
+    // Tab switching functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    function switchTab(targetId) {
+        // Remove active class from all tabs and buttons
+        tabContents.forEach(content => content.classList.remove('active'));
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to target tab and its button
+        const targetTab = document.getElementById(targetId);
+        const targetBtn = document.querySelector(`[data-target="${targetId}"]`);
+        if (targetTab) targetTab.classList.add('active');
+        if (targetBtn) targetBtn.classList.add('active');
+    }
+    
+    // Handle tab button clicks
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            switchTab(targetId);
+        });
+    });
+    
+    // Handle CTA buttons with data-tab attributes
+    document.querySelectorAll('a[data-tab], button[data-tab]').forEach(cta => {
+        cta.addEventListener('click', (e) => {
+            const tabId = cta.getAttribute('data-tab');
+            if (tabId) {
+                // Small delay to allow smooth scroll to complete
+                setTimeout(() => {
+                    switchTab(tabId);
+                }, 300);
+            }
+        });
     });
 
     // IntersectionObserver for entrance animations
@@ -1812,6 +1969,7 @@ body.light-mode .job-card p{ color:var(--text); }
 
   function applyEN() {
     document.documentElement.setAttribute('lang','en');
+    multiSelectPlaceholder = 'Please choose…';
 
     // Nav
     setText('.nav-links a[href="#leistungen"]', 'Services');
@@ -1936,7 +2094,7 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="telApply"]', 'Phone <span class="required">*</span>');
     setHtml('#formApply .multi label', 'Desired position <span class="required">*</span>');
     const msBtnsApply = document.querySelectorAll('#formApply .ms-btn');
-    msBtnsApply.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsApply.forEach(btn => btn.textContent = 'Please choose…');
     setText('label[for="messageApply"]', 'Experience');
     setAttr('#messageApply', 'placeholder', 'Briefly outline your experience');
     setText('label[for="cv"]', 'CV (PDF, max. 5MB)');
@@ -1953,10 +2111,10 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="addressQuote"]', 'Property address <span class="required">*</span>');
     setText('#formQuote .multi label', 'Requested services');
     const msBtnsQuote = document.querySelectorAll('#formQuote .ms-btn');
-    msBtnsQuote.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsQuote.forEach(btn => btn.textContent = 'Please choose…');
     setText('label[for="intervallQuote"]', 'Interval');
     setOptionTexts('#intervallQuote', [
-      'Bitte wählen……', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
+      'Please choose…', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
     ]);
     setText('label[for="messageQuote"]', 'Message (optional)');
     setHtml('label[for="quoteDSE"]', 'I agree to the <a href="#datenschutz">processing of my data</a> for the purpose of preparing a quote.<span class="required">*</span>');
@@ -2158,6 +2316,7 @@ Managing director(s): Please add</p>`);
 
   function applyDE() {
     document.documentElement.setAttribute('lang','de');
+    multiSelectPlaceholder = 'Bitte wählen…';
 
     // --- Extra DE restores (Aura patch) ---
     // Restore custom ms-menu labels back to German (if present)
