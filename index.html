@@ -10,11 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" as="style">
     <title>Hausmeisterservice – Objektpflege NRW</title>
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-    <link rel="icon" href="/assets/favicon.ico">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Leaflet CSS for Map -->
@@ -1150,44 +1145,44 @@ body.light-mode .job-card p{ color:var(--text); }
         </div>
         <div class="about-grid">
             </div>
-        </div>
     </div>
 </section>
 
+<!-- Karriere / Jobs -->
 <section id="karriere">
     <div class="container">
         <div class="section-title">
             <h2 class="enter">Offene Stellen</h2>
-            <p class="enter">Bereichern Sie unser Team – bewerben Sie sich jetzt!</p>
+            <p class="enter">Bereichern Sie unser Team – bewerben Sie sich jetzt!</p>
         </div>
         <div class="jobs-grid">
             <div class="job-list">
                 <div class="job-card enter">
                     <span class="badge">Vollzeit</span>
                     <h4>Hausmeister:in (m/w/d)</h4>
-                    <p>Vollzeit – Tourenbetreuung, Kleinreparaturen, Grundpflege in Dortmund & Bochum.</p>
+                    <p>Vollzeit – Tourenbetreuung, Kleinreparaturen, Grundpflege in Dortmund & Bochum.</p>
                     <div class="job-tags">
-                        <span class="tag green">Führerschein B</span><span class="tag purple">Handwerkliches Geschick</span>
+                        <span class="tag green">Führerschein B</span><span class="tag purple">Handwerkliches Geschick</span>
                     </div>
                 </div>
                 <div class="job-card enter">
                     <span class="badge">Teilzeit</span>
                     <h4>Reinigungskraft (m/w/d)</h4>
-                    <p>Teilzeit – Treppenhaus- & Grundreinigung in Wohn- und Gewerbeimmobilien.</p>
+                    <p>Teilzeit – Treppenhaus- & Grundreinigung in Wohn- und Gewerbeimmobilien.</p>
                     <div class="job-tags">
                         <span class="tag yellow">Erfahrung erwünscht</span><span class="tag blue">Zuverlässigkeit</span>
                     </div>
                 </div>
                 <div class="job-card enter">
                     <span class="badge">Flexibel</span>
-                    <h4>Facility Service Allrounder (m/w/d)</h4>
-                    <p>Flexibel – Unterstützung bei Gartenpflege, Entrümpelungen und Sonderaufgaben.</p>
+                    <h4>Facility Service Allrounder (m/w/d)</h4>
+                    <p>Flexibel – Unterstützung bei Gartenpflege, Entrümpelungen und Sonderaufgaben.</p>
                     <div class="job-tags">
                         <span class="tag pink">Teamfähig</span><span class="tag orange">Einsatzbereit</span>
                     </div>
                 </div>
             </div>
-                    </div>
+        </div>
     </div>
 </section>
 
@@ -1294,7 +1289,7 @@ body.light-mode .job-card p{ color:var(--text); }
                     </li>
                 </ul>
             </div>
-            <div class="tabs-container enter">
+                        <div class="tabs-container enter">
                 <div class="tabs-nav">
                     <button type="button" class="tab-btn active" data-tab="formQuote">Angebot anfordern</button>
                     <button type="button" class="tab-btn" data-tab="formApply">Bewerben</button>
@@ -1360,7 +1355,7 @@ body.light-mode .job-card p{ color:var(--text); }
                 </form>
                 </div>
                 <div id="tab-formApply" class="tab-content">
-<form id="formApply" novalidate>
+                    <form id="formApply" novalidate>
                     <input type="hidden" name="formType" value="Bewerbung">
                     <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
                     <div class="grid-2">
@@ -1741,6 +1736,8 @@ body.light-mode .job-card p{ color:var(--text); }
         e.preventDefault();
         sendForm(this, document.getElementById('applyNote'), document.getElementById('applyBtn'));
     });
+
+
     // Tab switching functionality
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -1785,7 +1782,6 @@ body.light-mode .job-card p{ color:var(--text); }
             scrollToContactTab('formApply');
         });
     });
-
 
     // IntersectionObserver for entrance animations
     const io = new IntersectionObserver((entries) => {
@@ -1988,7 +1984,7 @@ body.light-mode .job-card p{ color:var(--text); }
     setText('#karriere .job-list .job-card:nth-child(3) .job-tags .tag.pink', 'Team player');
     setText('#karriere .job-list .job-card:nth-child(3) .job-tags .tag.orange', 'Hands-on');
 
-    setText('#karriere .about-card h3', 'Apply now');
+    // Application form moved to contact section tabs
 
     // Apply form
     setHtml('label[for="firstName"]', 'First name <span class="required">*</span>');
@@ -2148,10 +2144,6 @@ Managing director(s): Please add</p>`);
         fAddr.innerHTML = fAddr.innerHTML.replace('Straße, PLZ Ort','Street, Postcode City');
       }
     })();
-
-    // Tab buttons
-    setText('.tab-btn[data-tab="formQuote"]', 'Request quote');
-    setText('.tab-btn[data-tab="formApply"]', 'Apply');
 
     // Quote form placeholders
     setAttr('#firma', 'placeholder', 'Your name or company');
