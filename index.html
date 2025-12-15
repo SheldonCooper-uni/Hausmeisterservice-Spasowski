@@ -1738,7 +1738,7 @@ body.light-mode .job-card p{ color:var(--text); }
                 btn.textContent = selected.join(', ');
                 btn.classList.add('selected');
             } else {
-                btn.textContent = 'Bitte wählen…';
+                btn.textContent = multiSelectPlaceholder;
                 btn.classList.remove('selected');
             }
             select.dispatchEvent(new Event('change')); 
@@ -1757,6 +1757,15 @@ body.light-mode .job-card p{ color:var(--text); }
     // Formspree endpoint
     const FORMSPREE = "https://formspree.io/f/xjkopowr";
     let multiSelectPlaceholder = "Bitte wählen…";
+    let formMessages = {
+        sending: "Sende…",
+        sent: "Gesendet ✅",
+        success: "Vielen Dank! Ihre Nachricht wurde gesendet.",
+        fileTooLarge: "Die Datei ist zu groß (max. 5 MB).",
+        fileNotSupported: `Dateianhänge werden nicht unterstützt.<br><strong>Bitte senden Sie Ihren Lebenslauf separat an:</strong> <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>`,
+        retry: "Nochmal versuchen",
+        error: "Upps, ein Fehler ist aufgetreten. Bitte später erneut versuchen."
+    };
 
     // --- REVISED: Generic form submission handler to work around file upload limits ---
     async function sendForm(form, noteEl, btn) {
@@ -1772,7 +1781,7 @@ body.light-mode .job-card p{ color:var(--text); }
         if (fileInput && fileInput.files.length > 0) {
             if (fileInput.files[0].size > 5 * 1024 * 1024) {
                 noteEl.className = "error";
-                noteEl.textContent = "Die Datei ist zu groß (max. 5 MB).";
+                noteEl.textContent = formMessages.fileTooLarge;
                 return;
             }
             fileAttached = true;
@@ -1783,7 +1792,7 @@ body.light-mode .job-card p{ color:var(--text); }
         
         btn.disabled = true;
         const prevText = btn.textContent;
-        btn.textContent = "Sende…";
+        btn.textContent = formMessages.sending;
         
         try {
             const res = await fetch(FORMSPREE, {
@@ -1793,10 +1802,10 @@ body.light-mode .job-card p{ color:var(--text); }
             });
 
             if (res.ok) {
-                btn.textContent = "Gesendet ✅";
+                btn.textContent = formMessages.sent;
                 noteEl.className = "success";
                 // Success message - file was sent successfully (or no file attached)
-                noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
+                noteEl.textContent = formMessages.success;
                 form.reset();
                 form.querySelectorAll('.multi').forEach(multi => {
                     const msBtn = multi.querySelector('.ms-btn');
@@ -1812,15 +1821,15 @@ body.light-mode .job-card p{ color:var(--text); }
                  if (fileAttached && (errorMsg.toLowerCase().includes('file') || errorMsg.toLowerCase().includes('attachment'))) {
                      // File upload not supported - ask user to email it
                      noteEl.className = "error";
-                     noteEl.innerHTML = `Dateianhänge werden nicht unterstützt.<br><strong>Bitte senden Sie Ihren Lebenslauf separat an:</strong> <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>`;
+                     noteEl.innerHTML = formMessages.fileNotSupported;
                  } else {
                      throw new Error(errorMsg || "Fehler beim Senden.");
                  }
             }
         } catch (err) {
-            btn.textContent = "Nochmal versuchen";
+            btn.textContent = formMessages.retry;
             noteEl.className = "error";
-            noteEl.textContent = "Upps, ein Fehler ist aufgetreten. Bitte später erneut versuchen.";
+            noteEl.textContent = formMessages.error;
             console.error(err);
         } finally {
             setTimeout(() => {
@@ -1970,6 +1979,15 @@ body.light-mode .job-card p{ color:var(--text); }
   function applyEN() {
     document.documentElement.setAttribute('lang','en');
     multiSelectPlaceholder = 'Please choose…';
+    formMessages = {
+        sending: "Sending…",
+        sent: "Sent ✅",
+        success: "Thank you! Your message has been sent.",
+        fileTooLarge: "The file is too large (max. 5 MB).",
+        fileNotSupported: `File attachments are not supported.<br><strong>Please email your CV separately to:</strong> <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>`,
+        retry: "Try again",
+        error: "Oops, an error occurred. Please try again later."
+    };
 
     // Nav
     setText('.nav-links a[href="#leistungen"]', 'Services');
@@ -2317,6 +2335,15 @@ Managing director(s): Please add</p>`);
   function applyDE() {
     document.documentElement.setAttribute('lang','de');
     multiSelectPlaceholder = 'Bitte wählen…';
+    formMessages = {
+        sending: "Sende…",
+        sent: "Gesendet ✅",
+        success: "Vielen Dank! Ihre Nachricht wurde gesendet.",
+        fileTooLarge: "Die Datei ist zu groß (max. 5 MB).",
+        fileNotSupported: `Dateianhänge werden nicht unterstützt.<br><strong>Bitte senden Sie Ihren Lebenslauf separat an:</strong> <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>`,
+        retry: "Nochmal versuchen",
+        error: "Upps, ein Fehler ist aufgetreten. Bitte später erneut versuchen."
+    };
 
     // --- Extra DE restores (Aura patch) ---
     // Restore custom ms-menu labels back to German (if present)
