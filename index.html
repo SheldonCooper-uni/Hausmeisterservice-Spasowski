@@ -2072,6 +2072,13 @@ body.light-mode .job-card p{ color:var(--text); }
     setText('#about .section-title h2', 'About us');
     const aboutSubtitle = document.querySelector('#about .section-title p');
     if (aboutSubtitle) aboutSubtitle.textContent = 'Hausmeisterservice Spasowski has stood for reliable property care in NRW since 2021';
+
+     /* Also update the actual header containers used on the page (we use .glassCard wrappers,
+       so target those selectors too to ensure the visible H2/P update correctly) */
+     setText('#workflow #workflowHeaderSpacing h2', 'How we work');
+     setText('#workflow #workflowHeaderSpacing p', 'Your path to professional property care in three steps');
+     setText('#leistungen .glassCard h2', 'Our services');
+     setText('#leistungen .glassCard p', 'Modular & flexible – book individually or as a bundle');
     setText('#about .about-card:nth-child(1) h3', 'Why us?');
     setText('#about .about-card:nth-child(1) p', 'Our team combines hands-on experience with efficient processes – for results you can see.');
     setText('#about .about-card:nth-child(1) ul li:nth-child(1)', 'Punctual & predictable: fixed routes and clear intervals');
@@ -2379,6 +2386,13 @@ Managing director(s): Please add</p>`);
     setOptionTexts('#intervallQuote', [
       'Bitte wählen…', 'Täglich', 'Wöchentlich', '14‑tägig', 'Monatlich', 'Einmalig'
     ]);
+    // Also restore workflow/services headers to German (in case they were updated)
+    setText('#workflow #workflowHeaderSpacing h2', 'So arbeiten wir');
+    setText('#workflow #workflowHeaderSpacing p', 'Ihr Weg zu professioneller Objektbetreuung in nur drei Schritten');
+    setText('#leistungen .glassCard h2', 'Unsere Leistungen');
+    setText('#leistungen .glassCard p', 'Modular \u00a0& flexibel \u00a0\u2013 individuell buchbar oder als Paket');
+    const aboutSubtitleDE = document.querySelector('#about .section-title p');
+    if (aboutSubtitleDE) aboutSubtitleDE.textContent = 'Hausmeisterservice Spasowski steht seit 2021 für verlässliche Objektpflege in NRW';
   }
 
   function setLang(lang) {
