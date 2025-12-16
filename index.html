@@ -271,17 +271,15 @@ body.light-mode .nav-wrap{
   border-color:rgba(255,255,255,.35);
 }
 body.light-mode .btn.secondary{
-  background:rgba(0,0,0,.08);
-  backdrop-filter:blur(16px) saturate(110%);
-  -webkit-backdrop-filter:blur(16px) saturate(110%);
-  color:var(--text);
-  border:1px solid rgba(0,0,0,.2);
+  background:rgba(255,255,255,0.95); /* hell/weiß */
+  color:#0b0f16; /* dunkler Text für Lesbarkeit */
+  border:1px solid rgba(0,0,0,.08);
+  backdrop-filter:blur(6px) saturate(100%);
+  -webkit-backdrop-filter:blur(6px) saturate(100%);
 }
 body.light-mode .btn.secondary:hover{
-  background:rgba(0,0,0,.12);
-  backdrop-filter:blur(18px) saturate(115%);
-  -webkit-backdrop-filter:blur(18px) saturate(115%);
-  border-color:rgba(0,0,0,.28);
+  background:rgba(255,255,255,1);
+  border-color:rgba(0,0,0,.12);
 }
 
 section{
@@ -573,6 +571,20 @@ body.light-mode .service-card:hover{
 }
 .map-controls button:hover{ background:rgba(143,211,255,.3); }
 .map-controls button:active{ background:rgba(143,211,255,.25); }
+
+/* City button accents */
+#btnDortmund{ background:linear-gradient(90deg,#2b8bec,#4cc9f0); color:#fff; }
+#btnDortmund:hover{ filter:brightness(1.05); }
+#btnKoeln{ background:linear-gradient(90deg,#ffbe0b,#ff9f1c); color:#081018; }
+#btnKoeln:hover{ filter:brightness(1.03); }
+#btnGelsenkirchen{ background:linear-gradient(90deg,#8c6cff,#c77dff); color:#081018; }
+#btnGelsenkirchen:hover{ filter:brightness(1.03); }
+#btnDuisburg{ background:linear-gradient(90deg,#69db7c,#2fbf6e); color:#081018; }
+#btnDuisburg:hover{ filter:brightness(1.03); }
+#btnOberhausen{ background:linear-gradient(90deg,#f72585,#ff6fa3); color:#fff; }
+#btnOberhausen:hover{ filter:brightness(1.05); }
+#btnDuesseldorf{ background:linear-gradient(90deg,#ff6b6b,#ff9a9a); color:#081018; }
+#btnDuesseldorf:hover{ filter:brightness(1.03); }
 
 /* =========================
    About
@@ -952,15 +964,15 @@ body.light-mode .job-card p{ color:var(--text); }
 <div class="nav-wrap">
     <div class="nav">
         <a href="#" class="nav-brand" aria-label="Zur Startseite">
-            <img src="/assets/logo.png" alt="SD TIM GmbH Logo" class="nav-brand-logo">
-            <div class="nav-brand-text">
-                <div>Hausmeister<span class="brand-blue">service</span></div>
-                <div class="nav-brand-company">Gebäudemanagement</div>
-            </div>
+          <img src="assets/sd-tim-logo.png" alt="SD TIM GmbH" class="nav-brand-logo">
+          <div class="nav-brand-text">
+            <div>Hausmeister<span class="brand-blue">service</span></div>
+            <div class="nav-brand-company">Gebäudemanagement</div>
+          </div>
         </a>
         <div class="nav-links">
-            <a href="#leistungen">Leistungen</a>
             <a href="#workflow">Ablauf</a>
+            <a href="#leistungen">Leistungen</a>
             <a href="#about">Über uns</a>
             <a href="#karriere">Karriere</a>
             <a href="#faq">FAQ</a>
@@ -994,12 +1006,103 @@ body.light-mode .job-card p{ color:var(--text); }
 </section>
 
 <!-- Workflow / Steps -->
+  <style>
+  /* Scoped: exact .sectionHeader look & feel (user-provided) */
+  .sectionHeader{
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+
+    padding: 64px 56px;
+    text-align: center;
+
+    background: rgba(10, 16, 26, 0.55);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+
+    box-shadow: 0 22px 70px rgba(0,0,0,0.55);
+  }
+
+  /* Lichtkante links (NICHT flächig, wirklich nur Kante) */
+  .sectionHeader::before{
+    content:"";
+    position:absolute;
+    top: 14px;
+    bottom: 14px;
+    left: 14px;
+
+    width: 4px;
+    border-radius: 999px;
+
+    background: linear-gradient(
+      180deg,
+      rgba(64,196,255,0.00),
+      rgba(64,196,255,0.75),
+      rgba(64,196,255,0.00)
+    );
+
+    box-shadow: 0 0 26px rgba(64,196,255,0.28);
+    pointer-events:none;
+  }
+
+  /* ganz leichte Ambient-Highlights (damit es nicht wie PPT wirkt) */
+  .sectionHeader::after{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    background:
+      radial-gradient(circle at 18% 30%, rgba(64,196,255,0.14), transparent 55%),
+      radial-gradient(circle at 85% 55%, rgba(255,255,255,0.05), transparent 60%);
+    pointer-events:none;
+  }
+
+  /* Noise gegen Leere */
+  .sectionHeader .sectionNoise{
+    position:absolute;
+    inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    pointer-events:none;
+  }
+
+  /* Badge sauber einrasten lassen (bei dir war’s bisschen “drüber”) */
+  .sectionHeader .sectionBadge{
+    position:absolute;
+    top: 14px;
+    left: 18px;
+
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+
+    border-radius: 999px;
+    color: rgba(200,245,255,0.95);
+
+    background: rgba(64,196,255,0.12);
+    border: 1px solid rgba(64,196,255,0.24);
+    box-shadow: 0 0 18px rgba(64,196,255,0.16);
+  }
+
+  /* optional: micro-hover, wirkt “alive” */
+  .sectionHeader:hover::before{
+    box-shadow: 0 0 34px rgba(64,196,255,0.38);
+  }
+  </style>
 <section id="workflow" class="section-with-image">
     <div class="container">
-        <div class="section-title">
-            <h2 class="enter">So arbeiten wir</h2>
-            <p class="enter">Ihr Weg zu professioneller Objektbetreuung in nur drei Schritten</p>
-        </div>
+        <div id="workflowHeaderSpacing" class="glassCard sectionHeaderSpacing" style="--accent-rgb:64,196,255;">
+  <span class="sectionBadge">3 Schritte</span>
+
+  <h2>So arbeiten wir</h2>
+  <p>Ihr Weg zu professioneller Objektbetreuung in nur drei Schritten</p>
+
+  <span class="noise sectionNoise" aria-hidden="true"></span>
+</div>
+        <style>
+          #workflowHeaderSpacing{ margin-bottom:56px; }
+          @media (max-width:768px){ #workflowHeaderSpacing{ margin-bottom:32px; } }
+        </style>
         <div class="steps">
             <div class="step-card enter">
                 <div class="step-number" aria-label="Schritt 1">1</div>
@@ -1021,12 +1124,47 @@ body.light-mode .job-card p{ color:var(--text); }
 </section>
 
 <!-- Leistungen / Services -->
+<style>
+  /* glassCard for section headers (Leistungen) - yellow accent */
+  .glassCard{ --accent-rgb: 64,196,255; position:relative; overflow:hidden; border-radius:22px; background:rgba(10,16,26,0.55); border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(14px); box-shadow:0 22px 70px rgba(0,0,0,0.55); padding:32px 36px; }
+  .glassCard::before{ content:""; position:absolute; top:14px; bottom:14px; left:14px; width:4px; border-radius:999px; background:linear-gradient(180deg, rgba(var(--accent-rgb),0.00), rgba(var(--accent-rgb),0.75), rgba(var(--accent-rgb),0.00)); box-shadow:0 0 26px rgba(var(--accent-rgb),0.28); pointer-events:none; }
+  .glassCard::after{ content:""; position:absolute; inset:-40%; background: radial-gradient(circle at 18% 30%, rgba(var(--accent-rgb),0.14), transparent 55%), radial-gradient(circle at 85% 55%, rgba(255,255,255,0.05), transparent 60%); pointer-events:none; }
+  .glassCard .noise{ position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"); opacity:0.06; mix-blend-mode:overlay; pointer-events:none; }
+  .glassCard .sectionBadge{ position:absolute; top:14px; left:18px; padding:6px 10px; font-size:12px; font-weight:600; border-radius:999px; color:rgba(200,245,255,0.95); background:rgba(var(--accent-rgb),0.12); border:1px solid rgba(var(--accent-rgb),0.24); box-shadow:0 0 18px rgba(var(--accent-rgb),0.16); }
+  .glassCard{ transition:transform .28s ease, box-shadow .28s ease; }
+  .glassCard:hover{ transform:translateY(-8px); box-shadow:0 34px 90px rgba(0,0,0,0.65); }
+  .sectionHeaderSpacing{ margin-bottom:56px; }
+  @media (max-width:768px){ .sectionHeaderSpacing{ margin-bottom:32px; } }
+  /* Light-mode adjustments for glassCard */
+  body.light-mode .glassCard{
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 12px 36px rgba(16,24,40,0.06);
+    color: var(--text);
+  }
+  body.light-mode .glassCard::before{
+    /* slightly subtler glow in light mode */
+    box-shadow: 0 0 18px rgba(var(--accent-rgb),0.16);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb),0.00), rgba(var(--accent-rgb),0.6), rgba(var(--accent-rgb),0.00));
+  }
+  body.light-mode .glassCard::after{
+    background: radial-gradient(circle at 18% 30%, rgba(var(--accent-rgb),0.08), transparent 55%), radial-gradient(circle at 85% 55%, rgba(0,0,0,0.02), transparent 60%);
+  }
+  body.light-mode .glassCard .noise{ opacity:0.03; mix-blend-mode:normal; }
+  body.light-mode .glassCard .sectionBadge{
+    color:var(--heading);
+    background: rgba(var(--accent-rgb),0.08);
+    border: 1px solid rgba(var(--accent-rgb),0.12);
+    box-shadow: 0 6px 14px rgba(var(--accent-rgb),0.08);
+  }
+</style>
 <section id="leistungen" class="section-with-image">
-    <div class="container">
-        <div class="section-title">
-            <h2 class="enter">Unsere Leistungen</h2>
-            <p class="enter">Modular &amp; flexibel – individuell buchbar oder als Paket</p>
-        </div>
+  <div class="container">
+    <div class="glassCard sectionHeaderSpacing" style="--accent-rgb: 255,196,0;">
+      <span class="noise" aria-hidden="true"></span>
+      <h2 class="enter">Unsere Leistungen</h2>
+      <p class="enter">Modular&nbsp;&amp; flexibel&nbsp;– individuell buchbar oder als Paket</p>
+    </div>
         <div class="services-grid">
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
@@ -1121,29 +1259,69 @@ body.light-mode .job-card p{ color:var(--text); }
             <p class="enter">Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski steht seit 2021 für verlässliche Objektpflege in NRW</p>
         </div>
         <div class="about-grid">
-            <div class="about-card enter">
-                <h3>Warum wir?</h3>
-                <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
-                <ul>
-                    <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
-                    <li>Sauber & sorgfältig: standardisierte Checklisten</li>
-                    <li>Verbindlich & fair: transparente Kommunikation</li>
-                </ul>
+            <div class="about-card enter glassCard" style="--accent-rgb:140,100,255;">
+              <span class="noise" aria-hidden="true"></span>
+              <h3>Warum wir?</h3>
+              <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
+              <ul>
+                <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
+                <li>Sauber & sorgfältig: standardisierte Checklisten</li>
+                <li>Verbindlich & fair: transparente Kommunikation</li>
+              </ul>
             </div>
-            <div class="about-card enter">
-                <h3>Unser Versprechen</h3>
-                <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung.  Wir sind versichert und arbeiten nach höchsten Standards.</p>
-                <ul>
-                    <li>Umfassende Betriebshaftpflicht</li>
-                    <li>Regelmäßige Fortbildungen</li>
-                    <li>Dokumentierte Arbeit</li>
-                </ul>
+            <div class="about-card enter glassCard" style="--accent-rgb:90,220,140;">
+              <span class="noise" aria-hidden="true"></span>
+              <h3>Unser Versprechen</h3>
+              <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung.  Wir sind versichert und arbeiten nach höchsten Standards.</p>
+              <ul>
+                <li>Umfassende Betriebshaftpflicht</li>
+                <li>Regelmäßige Fortbildungen</li>
+                <li>Dokumentierte Arbeit</li>
+              </ul>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Karriere / Jobs -->
+<style>
+  /* Make first/last name inputs rounded and ensure white bg in dark mode */
+  #formApply input#firstName,
+  #formApply input#lastName{
+    border-radius:14px; /* more rounded corners */
+    background:#ffffff; /* force white background */
+    color:#0b0f16;
+    border:1px solid rgba(0,0,0,0.08);
+    padding:14px 16px;
+  }
+
+  /* Also apply same treatment to quote form: Firma/Name and Objektadresse */
+  #formQuote input#firma,
+  #formQuote input#addressQuote{
+    border-radius:14px;
+    background:#ffffff;
+    color:#0b0f16;
+    border:1px solid rgba(0,0,0,0.08);
+    padding:14px 16px;
+  }
+
+  /* In case other rules override inputs in dark mode, make sure dark-mode shows white bg */
+  body:not(.light-mode) #formApply input#firstName,
+  body:not(.light-mode) #formApply input#lastName,
+  body:not(.light-mode) #formQuote input#firma,
+  body:not(.light-mode) #formQuote input#addressQuote{
+    background:#ffffff;
+    color:#0b0f16;
+  }
+
+  /* Keep focus visible */
+  #formApply input#firstName:focus,
+  #formApply input#lastName:focus,
+  #formQuote input#firma:focus,
+  #formQuote input#addressQuote:focus{
+    outline:none; box-shadow:0 0 0 4px rgba(43,139,236,0.12); border-color:rgba(43,139,236,0.5);
+  }
+</style>
 <section id="karriere">
     <div class="container">
         <div class="section-title">
@@ -1936,7 +2114,7 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="telApply"]', 'Phone <span class="required">*</span>');
     setHtml('#formApply .multi label', 'Desired position <span class="required">*</span>');
     const msBtnsApply = document.querySelectorAll('#formApply .ms-btn');
-    msBtnsApply.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsApply.forEach(btn => btn.textContent = 'Please choose…');
     setText('label[for="messageApply"]', 'Experience');
     setAttr('#messageApply', 'placeholder', 'Briefly outline your experience');
     setText('label[for="cv"]', 'CV (PDF, max. 5MB)');
@@ -1953,10 +2131,10 @@ body.light-mode .job-card p{ color:var(--text); }
     setHtml('label[for="addressQuote"]', 'Property address <span class="required">*</span>');
     setText('#formQuote .multi label', 'Requested services');
     const msBtnsQuote = document.querySelectorAll('#formQuote .ms-btn');
-    msBtnsQuote.forEach(btn => btn.textContent = 'Bitte wählen……');
+    msBtnsQuote.forEach(btn => btn.textContent = 'Please choose…');
     setText('label[for="intervallQuote"]', 'Interval');
     setOptionTexts('#intervallQuote', [
-      'Bitte wählen……', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
+      'Please choose…', 'Daily', 'Weekly', 'Every 14 days', 'Monthly', 'One-off'
     ]);
     setText('label[for="messageQuote"]', 'Message (optional)');
     setHtml('label[for="quoteDSE"]', 'I agree to the <a href="#datenschutz">processing of my data</a> for the purpose of preparing a quote.<span class="required">*</span>');
@@ -2189,6 +2367,18 @@ Managing director(s): Please add</p>`);
     document.title = 'Hausmeisterservice – Objektpflege NRW';
     const btn = document.getElementById('langToggle');
     if (btn) btn.textContent = 'EN';
+
+    // Restore visible custom multi-select triggers back to German
+    document.querySelectorAll('#formApply .ms-btn, #formQuote .ms-btn').forEach(ms => {
+      ms.textContent = 'Bitte wählen…';
+      ms.classList.remove('selected');
+      ms.setAttribute('aria-expanded', 'false');
+    });
+
+    // Restore the Intervall select first-option labels to German
+    setOptionTexts('#intervallQuote', [
+      'Bitte wählen…', 'Täglich', 'Wöchentlich', '14‑tägig', 'Monatlich', 'Einmalig'
+    ]);
   }
 
   function setLang(lang) {
