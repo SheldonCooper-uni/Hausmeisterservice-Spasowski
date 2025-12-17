@@ -28,7 +28,7 @@
   --muted:#a4b4ce;
   --accent:#8fd3ff;
   --accent-dim:rgba(143,211,255,.18);
-  --radius:16px;          /* Karten/Buttons moderat rund */
+  --radius:18px;          /* Karten/Buttons moderat rund */
   --blur:18px;
   --field-radius:18px;    /* Form-Felder moderat rund */
   --shadow:0 8px 32px rgba(0,0,0,.25);
@@ -162,6 +162,7 @@ body.light-mode .nav-wrap{
   padding:8px 14px; border-radius:var(--radius); color:var(--text);
   transition:background .3s, color .3s;
 }
+        .nav-links a.active{ background:var(--accent-dim); color:var(--text); font-weight:600; }
 .nav-links a:hover{ background:var(--accent-dim); color:var(--text); }
 
 .nav-toggle{ display:none; background:transparent; border:none; cursor:pointer; width:40px; height:40px; position:relative; margin-left:12px; }
@@ -473,6 +474,27 @@ body:not(.light-mode) .step-card:hover{
 /* =========================
    Services
    ========================= */
+   .service-more{ margin-top:14px; }
+.service-more summary{
+  cursor:pointer;
+  list-style:none;
+  color:var(--accent);
+  font-weight:600;
+}
+.service-more summary::-webkit-details-marker{ display:none; }
+.service-more summary::after{
+  content:"▾";
+  margin-left:8px;
+  display:inline-block;
+  transition:transform .2s;
+}
+.service-more[open] summary::after{ transform:rotate(180deg); }
+.service-more p{
+  margin:10px 0 0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
 .services-grid{ display:grid; gap:30px; }
 @media (min-width:768px){ .services-grid{ grid-template-columns:repeat(3,1fr); } }
 
@@ -1162,6 +1184,49 @@ body.light-mode .job-card p{ color:var(--text); }
     border: 1px solid rgba(var(--accent-rgb),0.12);
     box-shadow: 0 6px 14px rgba(var(--accent-rgb),0.08);
   }
+/* Karten: gleiche Basis-Höhe, aber dürfen wachsen */
+#leistungen .service-card{
+  min-height: 440px;         /* Basis – ggf. 420–520 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* "Mehr erfahren" sitzt immer unten */
+#leistungen .service-card ul{
+  margin-bottom: auto;
+}
+
+/* Details klappt auf und Karte wächst – ohne inneres Scroll */
+.service-more{ margin-top:14px; }
+
+.service-more > *:not(summary){
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  margin-top: 0;
+  transition: max-height .35s ease, opacity .2s ease, margin-top .2s ease;
+}
+
+.service-more[open] > *:not(summary){
+  max-height: 800px;         /* groß genug für jeden Text */
+  opacity: 1;
+  margin-top: 10px;
+}
+
+#leistungen .services-grid{
+  align-items: start;  /* verhindert “alle werden gleich hoch” */
+}
+/* FIX: Nur die geöffnete Karte darf wachsen */
+#leistungen .services-grid{
+  align-items: start;
+}
+
+#leistungen .service-card{
+  height: auto !important;   /* killt height:100% */
+  align-self: start;         /* verhindert “mitstrecken” */
+  min-height: 440px;         /* gleiche Grundhöhe (optional) */
+}
+
 </style>
 <section id="leistungen" class="section-with-image">
   <div class="container">
@@ -1180,6 +1245,11 @@ body.light-mode .job-card p{ color:var(--text); }
                     <li>Haustechnik im Blick</li>
                     <li>Störungsmanagement</li>
                 </ul>
+                <details class="service-more">
+  <summary>Mehr erfahren</summary>
+  <p>Wir übernehmen regelmäßige Kontrollgänge, prüfen wichtige Funktionen im Objekt und melden Auffälligkeiten frühzeitig. Auf Wunsch koordinieren wir Handwerkertermine und dokumentieren erledigte Arbeiten kurz und nachvollziehbar.</p>
+</details>
+
             </div>
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.4 4.2h4.4l-3.6 2.6 1.4 4.2-3.6-2.6-3.6 2.6 1.4-4.2-3.6-2.6h4.4z"/></svg>
@@ -1190,6 +1260,11 @@ body.light-mode .job-card p{ color:var(--text); }
                     <li>Geländer & Fenster</li>
                     <li>Keller & Eingänge</li>
                 </ul>
+                <details class="service-more">
+  <summary>Mehr erfahren</summary>
+  <p>Reinigungsumfang und Intervalle stimmen wir mit Ihnen ab (z.B. wöchentlich oder 14-tägig). Neben Boden und Geländern kümmern wir uns auf Wunsch auch um Spinnweben, Ecken/Kanten und stark frequentierte Bereiche im Eingangsbereich.</p>
+</details>
+
             </div>
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4s-4.2.9-5.65 2.35C4.9 7.79 4 9.79 4 12c0 2.21.9 4.21 2.35 5.65C7.79 19.1 9.79 20 12 20s4.21-.9 5.65-2.35C19.1 16.21 20 14.21 20 12c0-2.21-.9-4.21-2.35-5.65zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
@@ -1200,6 +1275,11 @@ body.light-mode .job-card p{ color:var(--text); }
                     <li>Beetpflege</li>
                     <li>Laubentsorgung</li>
                 </ul>
+                <details class="service-more">
+  <summary>Mehr erfahren</summary>
+  <p>Schnitt- und Pflegearbeiten planen wir saisonal, damit Außenanlagen durchgehend ordentlich wirken. Schnittgut/Laub entsorgen wir nach Absprache, und bei Bedarf übernehmen wir auch einfache Nacharbeiten (z.B. Beetkanten, Wege freihalten).</p>
+</details>
+
             </div>
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 19l-9.1-9.1c.9-2.2.4-4.7-1.3-6.5-2-2-5-2.4-7.4-1.3L9 6.3l-6.3-4.2-1.4 1.4 4.2 6.3-5.2 4.1c1.1 2.4 2.9 4.5 5.2 5.5l4.1-5.2 6.3 4.2 1.4-1.4 4.2-6.3c1.1 2.4 1.2 5.2-.1 7.5l-2.4 2.4.7.7 2.1-2.1c.8.8 2 .8 2.8 0l2.1-2.1c.8-.8.8-2 0-2.8z"/></svg>
@@ -1210,6 +1290,11 @@ body.light-mode .job-card p{ color:var(--text); }
                     <li>Türschlösser</li>
                     <li>Silikonfugen</li>
                 </ul>
+                <details class="service-more">
+  <summary>Mehr erfahren</summary>
+  <p>Kleine Instandsetzungen erledigen wir schnell und sauber, bevor daraus echte Schäden werden. Material tauschen wir nach Absprache (z.B. Leuchtmittel/Schließteile), und bei Bedarf dokumentieren wir kurz per Foto, was gemacht wurde.</p>
+</details>
+
             </div>
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
@@ -1219,6 +1304,11 @@ body.light-mode .job-card p{ color:var(--text); }
                     <li>Tonnenservice</li>
                     <li>Hofreinigung</li>
                 </ul>
+                <details class="service-more">
+  <summary>Mehr erfahren</summary>
+  <p>Wir stellen Tonnen termingerecht bereit und sorgen dafür, dass der Tonnenplatz ordentlich bleibt. Auf Wunsch kümmern wir uns auch um das Zurückstellen und einfache Reinigung rund um den Stellplatz.</p>
+</details>
+
             </div>
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -1229,6 +1319,10 @@ body.light-mode .job-card p{ color:var(--text); }
                     <li>Winterdienst</li>
                     <li>Notdienste</li>
                 </ul>
+                <details class="service-more">
+  <summary>Mehr erfahren</summary>
+  <p>Für Sonderaufträge (z.B. Entrümpelungen, Winterdienst, kurzfristige Einsätze) machen wir Ihnen ein klares Angebot mit Umfang und Termin. Ideal, wenn einmal “extra was ansteht”, ohne langfristige Bindung.</p>
+</details>
             </div>
         </div>
     </div>
@@ -1332,6 +1426,17 @@ body.light-mode .job-card p{ color:var(--text); }
   #formQuote input#addressQuote:focus{
     outline:none; box-shadow:0 0 0 4px rgba(43,139,236,0.12); border-color:rgba(43,139,236,0.5);
   }
+
+  footer .footer-grid > div:nth-child(2),
+footer .footer-grid > div:nth-child(3){
+  justify-self: center;
+  text-align: left;
+}
+footer .footer-grid{
+  justify-items: center;
+  text-align: left;
+}
+
 </style>
 <section id="karriere">
     <div class="container">
@@ -2068,6 +2173,38 @@ body.light-mode .job-card p{ color:var(--text); }
     setText('#leistungen .service-card:nth-child(6) ul li:nth-child(2)', 'Winter service');
     setText('#leistungen .service-card:nth-child(6) ul li:nth-child(3)', 'Emergency services');
 
+// --- Service "Mehr erfahren" (Details) -> EN ---
+document.querySelectorAll('#leistungen .service-more summary').forEach(sum => {
+  if (!sum.dataset.origHtml) sum.dataset.origHtml = sum.innerHTML;
+  sum.textContent = 'Learn more';
+});
+
+// Texte in den aufgeklappten Details (je Karte)
+setText('#leistungen .service-card:nth-child(1) .service-more p',
+  'We carry out regular site rounds, check key functions and report issues early. On request, we coordinate trades and document completed work clearly.'
+);
+
+setText('#leistungen .service-card:nth-child(2) .service-more p',
+  'Fixed schedules, clean common areas and a tidy entrance impression – including handrails, windows and basement/entry zones.'
+);
+
+setText('#leistungen .service-card:nth-child(3) .service-more p',
+  'Season-based green maintenance with clean edges and reliable waste disposal – so the outdoor areas always look cared for.'
+);
+
+setText('#leistungen .service-card:nth-child(4) .service-more p',
+  'Small fixes done quickly and neatly – we handle minor issues before they become bigger problems.'
+);
+
+setText('#leistungen .service-card:nth-child(5) .service-more p',
+  'We set out/return bins on time and keep the yard area clean – simple, reliable, documented if needed.'
+);
+
+setText('#leistungen .service-card:nth-child(6) .service-more p',
+  'Flexible support for special jobs: clearances, winter service and urgent cases – tailored to your property.'
+);
+
+
     // Map
     setText('#karte .section-title h2', 'Our service area');
     setText('#karte .section-title p', 'Reliable service for Dortmund, Cologne and surrounding areas');
@@ -2233,6 +2370,7 @@ Managing director(s): Please add</p>`);
     setText('footer .footer-grid > div:nth-child(2) a[href="#karriere"]', 'Careers');
     setText('footer .footer-grid > div:nth-child(2) a[href="#faq"]', 'FAQ');
     setText('footer .footer-grid > div:nth-child(2) a[href="#kontakt"]', 'Contact');
+
 
     setText('footer .footer-grid > div:nth-child(3) h4', 'Legal');
     setText('footer .footer-grid > div:nth-child(3) a[href="#impressum"]', 'Imprint');
@@ -2425,7 +2563,116 @@ Managing director(s): Please add</p>`);
 })();
 </script>
 
+<!-- Quick contact buttons (fixed bottom-right) -->
+<style>
+  .quick-contact{ position:fixed; right:16px; bottom:16px; z-index:1400; display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+  .qc-btn{ display:inline-flex; align-items:center; justify-content:center; width:52px; height:52px; border-radius:999px; color:#fff; text-decoration:none; box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.06); font-size:20px; }
+  .qc-phone{ background:linear-gradient(135deg,#2b8bec 0%, #4cc9f0 100%); }
+  .qc-wa{ background:linear-gradient(135deg,#25D366 0%, #1DA851 100%); }
+  .qc-label{ display:none; margin-right:8px; background:rgba(0,0,0,.45); color:var(--text); padding:6px 10px; border-radius:12px; font-size:.85rem; backdrop-filter:blur(8px); }
+  .qc-item{ display:flex; align-items:center; gap:8px; }
+  .qc-btn:focus{ outline:2px solid var(--accent); outline-offset:3px; }
+  .qc-show-label .qc-label{ display:inline-flex; }
+  @media (max-width:480px){ .qc-btn{ width:48px;height:48px;font-size:18px } .quick-contact{ right:10px; bottom:10px } }
+</style>
 
+<div class="quick-contact" aria-hidden="false">
+  <div class="qc-item">
+    <a class="qc-btn qc-phone" href="tel:+4915172468541" aria-label="Anrufen">📞</a>
+    <span class="qc-label">Anrufen</span>
+  </div>
+  <div class="qc-item">
+    <a class="qc-btn qc-wa" href="https://wa.me/4915172468541" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">💬</a>
+    <span class="qc-label">WhatsApp</span>
+  </div>
+</div>
+
+<script>
+  // show labels on hover/focus for accessibility
+  (function(){
+    const qc = document.querySelector('.quick-contact');
+    if(!qc) return;
+    qc.querySelectorAll('.qc-item').forEach(item => {
+      const btn = item.querySelector('.qc-btn');
+      const label = item.querySelector('.qc-label');
+      if(!btn || !label) return;
+      btn.addEventListener('mouseenter', () => item.classList.add('qc-show-label'));
+      btn.addEventListener('mouseleave', () => item.classList.remove('qc-show-label'));
+      btn.addEventListener('focus', () => item.classList.add('qc-show-label'));
+      btn.addEventListener('blur', () => item.classList.remove('qc-show-label'));
+    });
+  })();
+</script>
+
+<!-- Back to top button -->
+<style>
+  #backToTop{ position:fixed; right:16px; bottom:150px; z-index:1500; width:46px; height:46px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:rgba(17,27,47,.85); color:var(--text); border:1px solid rgba(255,255,255,.06); box-shadow:0 10px 30px rgba(0,0,0,.35); cursor:pointer; opacity:0; transform:translateY(12px); transition:opacity .28s ease, transform .28s ease; }
+  #backToTop.visible{ opacity:1; transform:translateY(0); }
+  #backToTop:focus{ outline:2px solid var(--accent); outline-offset:3px; }
+  @media (max-width:480px){ #backToTop{ right:12px; bottom:120px; width:44px; height:44px } }
+</style>
+
+<button id="backToTop" aria-label="Nach oben">↑</button>
+
+<script>
+  (function(){
+    const btn = document.getElementById('backToTop');
+    if(!btn) return;
+    let ticking = false;
+
+    function checkShow(){
+      const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 520);
+      // Show when user scrolled past first view OR near bottom (impressum/faq)
+      const scrolledEnough = window.scrollY > window.innerHeight * 0.5;
+      if(nearBottom || scrolledEnough){ btn.classList.add('visible'); } else { btn.classList.remove('visible'); }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if(!ticking){ window.requestAnimationFrame(checkShow); ticking = true; }
+    }, { passive:true });
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top:0, behavior:'smooth' });
+      btn.blur();
+    });
+  })();
+</script>
+
+<!-- Active nav link on scroll -->
+<script>
+  (function(){
+    const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    if(!navLinks.length || !sections.length) return;
+
+    let ticking = false;
+    function onScroll(){
+      if(ticking) return;
+      window.requestAnimationFrame(() => {
+        const offset = window.innerHeight * 0.35;
+        let current = null;
+        for(const sec of sections){
+          const rect = sec.getBoundingClientRect();
+          if(rect.top <= offset) current = sec;
+        }
+        navLinks.forEach(a => a.classList.remove('active'));
+        if(current){
+          const sel = '.nav-links a[href="#'+current.id+'"]';
+          const link = document.querySelector(sel);
+          if(link) link.classList.add('active');
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+
+    document.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('load', onScroll);
+    document.addEventListener('DOMContentLoaded', onScroll);
+  })();
+</script>
 
 </body>
 </html>
