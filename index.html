@@ -590,13 +590,12 @@ body.light-mode .service-card:hover{
 /* =========================
    About
    ========================= */
-.about-image{
-  width:100%; max-width:400px; margin:0 auto 50px; display:block;
-  border-radius:var(--radius); box-shadow:var(--shadow);
-  object-fit:cover;
-}
-.about-grid{ display:grid; gap:30px; }
-@media (min-width:768px){ .about-grid{ grid-template-columns:1fr 1fr; } }
+.about-grid{ display:grid; gap:30px; align-items:center; }
+/* Desktop: left = cards, right = image (fixed column for image) */
+@media (min-width:768px){ .about-grid{ grid-template-columns:1fr 420px; } }
+.about-cards{ display:flex; flex-direction:column; gap:24px; }
+.about-image{ display:flex; align-items:center; justify-content:center; }
+.about-image img{ width:100%; height:auto; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.35); display:block; }
 .about-card{
   background:var(--glass-bg); backdrop-filter:blur(var(--blur));
   border:1px solid rgba(255,255,255,.08);
@@ -1264,27 +1263,32 @@ body.light-mode .job-card p{ color:var(--text); }
             <h2 class="enter">Über uns</h2>
             <p class="enter">Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski steht seit 2021 für verlässliche Objektpflege in NRW</p>
         </div>
-        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80" alt="Professioneller Hausmeister bei der Arbeit" class="about-image enter">
         <div class="about-grid">
-            <div class="about-card enter glassCard" style="--accent-rgb:140,100,255;">
-              <span class="noise" aria-hidden="true"></span>
-              <h3>Warum wir?</h3>
-              <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
-              <ul>
-                <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
-                <li>Sauber & sorgfältig: standardisierte Checklisten</li>
-                <li>Verbindlich & fair: transparente Kommunikation</li>
-              </ul>
+            <div class="about-cards">
+              <div class="about-card enter glassCard" style="--accent-rgb:140,100,255;">
+                <span class="noise" aria-hidden="true"></span>
+                <h3>Warum wir?</h3>
+                <p>Unser Team vereint praxisnahe Erfahrung mit effizienten Prozessen – für Ergebnisse, die man sieht.</p>
+                <ul>
+                  <li>Pünktlich & planbar: feste Touren und klare Intervalle</li>
+                  <li>Sauber & sorgfältig: standardisierte Checklisten</li>
+                  <li>Verbindlich & fair: transparente Kommunikation</li>
+                </ul>
+              </div>
+              <div class="about-card enter glassCard" style="--accent-rgb:90,220,140;">
+                <span class="noise" aria-hidden="true"></span>
+                <h3>Unser Versprechen</h3>
+                <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung.  Wir sind versichert und arbeiten nach höchsten Standards.</p>
+                <ul>
+                  <li>Umfassende Betriebshaftpflicht</li>
+                  <li>Regelmäßige Fortbildungen</li>
+                  <li>Dokumentierte Arbeit</li>
+                </ul>
+              </div>
             </div>
-            <div class="about-card enter glassCard" style="--accent-rgb:90,220,140;">
-              <span class="noise" aria-hidden="true"></span>
-              <h3>Unser Versprechen</h3>
-              <p>Mit uns genießen Sie den Komfort eines festen Ansprechpartners und zuverlässiger Umsetzung.  Wir sind versichert und arbeiten nach höchsten Standards.</p>
-              <ul>
-                <li>Umfassende Betriebshaftpflicht</li>
-                <li>Regelmäßige Fortbildungen</li>
-                <li>Dokumentierte Arbeit</li>
-              </ul>
+
+            <div class="about-image enter">
+                <img src="/assets/gebaeudemanagement-service.jpg" alt="Gebäudemanagement Service" loading="lazy">
             </div>
         </div>
     </div>
