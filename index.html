@@ -590,6 +590,11 @@ body.light-mode .service-card:hover{
 /* =========================
    About
    ========================= */
+.about-image{
+  width:100%; max-width:400px; margin:0 auto 50px; display:block;
+  border-radius:var(--radius); box-shadow:var(--shadow);
+  object-fit:cover;
+}
 .about-grid{ display:grid; gap:30px; }
 @media (min-width:768px){ .about-grid{ grid-template-columns:1fr 1fr; } }
 .about-card{
@@ -1259,6 +1264,7 @@ body.light-mode .job-card p{ color:var(--text); }
             <h2 class="enter">Über uns</h2>
             <p class="enter">Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski steht seit 2021 für verlässliche Objektpflege in NRW</p>
         </div>
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80" alt="Professioneller Hausmeister bei der Arbeit" class="about-image enter">
         <div class="about-grid">
             <div class="about-card enter glassCard" style="--accent-rgb:140,100,255;">
               <span class="noise" aria-hidden="true"></span>
