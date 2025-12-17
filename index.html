@@ -572,19 +572,20 @@ body.light-mode .service-card:hover{
 .map-controls button:hover{ background:rgba(143,211,255,.3); }
 .map-controls button:active{ background:rgba(143,211,255,.25); }
 
-/* City button accents */
-#btnDortmund{ background:linear-gradient(90deg,#2b8bec,#4cc9f0); color:#fff; }
-#btnDortmund:hover{ filter:brightness(1.05); }
-#btnKoeln{ background:linear-gradient(90deg,#ffbe0b,#ff9f1c); color:#081018; }
-#btnKoeln:hover{ filter:brightness(1.03); }
-#btnGelsenkirchen{ background:linear-gradient(90deg,#8c6cff,#c77dff); color:#081018; }
-#btnGelsenkirchen:hover{ filter:brightness(1.03); }
-#btnDuisburg{ background:linear-gradient(90deg,#69db7c,#2fbf6e); color:#081018; }
-#btnDuisburg:hover{ filter:brightness(1.03); }
-#btnOberhausen{ background:linear-gradient(90deg,#f72585,#ff6fa3); color:#fff; }
-#btnOberhausen:hover{ filter:brightness(1.05); }
-#btnDuesseldorf{ background:linear-gradient(90deg,#ff6b6b,#ff9a9a); color:#081018; }
-#btnDuesseldorf:hover{ filter:brightness(1.03); }
+/* City button accents - make all city buttons match Dortmund's light-blue look
+  (Overview / reset button remains unchanged) */
+#btnDortmund,
+#btnKoeln,
+#btnGelsenkirchen,
+#btnDuisburg,
+#btnOberhausen,
+#btnDuesseldorf{ background:linear-gradient(90deg,#2b8bec,#4cc9f0); color:#fff; }
+#btnDortmund:hover,
+#btnKoeln:hover,
+#btnGelsenkirchen:hover,
+#btnDuisburg:hover,
+#btnOberhausen:hover,
+#btnDuesseldorf:hover{ filter:brightness(1.05); }
 
 /* =========================
    About
