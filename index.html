@@ -141,7 +141,7 @@ body.light-mode :where(a, button, input, select, textarea, summary):focus-visibl
 body::before{
   content:""; position:fixed; inset:0; pointer-events:none; z-index:-2;
   /* Calm single background image (also on desktop) */
-  background: url('assets/urban-2589645_1920.jpg') center / cover no-repeat;
+  background: url('assets/urban-2589645_1920.jpg') center top / cover no-repeat;
   animation:none;
   filter:none;
   opacity:1;
@@ -452,7 +452,7 @@ section + section::before{
 
   /* Mobile: use ONE calm background image for the whole page */
   body::before{
-    background: url('assets/urban-2589645_1920.jpg') center / cover no-repeat;
+    background: url('assets/urban-2589645_1920.jpg') center top / cover no-repeat;
     animation: none;
     filter: none;
   }
