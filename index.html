@@ -210,15 +210,18 @@ body.light-mode .nav-wrap{
   .nav-brand-company{ font-size:0.65rem; }
   .nav-links{
     display:none; position:absolute; top:100%; right:0; left:0;
-    /* More opaque on mobile (and keeps readability even if blur is limited) */
-    background: rgba(17,27,47,.92);
-    backdrop-filter:blur(var(--blur)) saturate(130%);
-    -webkit-backdrop-filter:blur(var(--blur)) saturate(130%);
+    /* Subtle glass: readable, but not a heavy “milky” look */
+    background: linear-gradient(180deg, rgba(17,27,47,.82), rgba(17,27,47,.74));
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
     border-bottom:1px solid var(--border);
     box-shadow: 0 18px 50px rgba(0,0,0,.35);
     flex-direction:column; gap:12px; padding:16px 20px;
     max-height: calc(100vh - 72px);
     overflow:auto;
+  }
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .nav-links{ background: rgba(17,27,47,.92); }
   }
   body.light-mode .nav-links{
     background: rgba(255,255,255,.94);
@@ -438,7 +441,16 @@ section + section::before{
   .hero h1{ font-size:clamp(32px,8vw,48px); }
   section{ padding:60px 0; }
   .section-title h2{ font-size:2rem; }
+  /* iOS/Safari: fixed backgrounds can disappear/jank */
+  .hero{ background-attachment:scroll; }
   .section-with-image{ background-attachment:scroll; }
+
+  /* Services background: avoid looking overly zoomed on phones */
+  #leistungen.section-with-image{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center top;
+  }
 }
 
 .step-card{
@@ -1029,7 +1041,7 @@ body.light-mode .job-card p{ color:var(--text); }
 <div class="nav-wrap">
     <div class="nav">
         <a href="#" class="nav-brand" aria-label="Zur Startseite">
-          <img src="assets/sd-tim-logo.svg" alt="Hausmeisterservice Spasowski" class="nav-brand-logo">
+          <img src="assets/sd-tim-logo.svg" alt="" aria-hidden="true" class="nav-brand-logo">
           <div class="nav-brand-text">
             <div>Hausmeister<span class="brand-blue">service</span></div>
             <div class="nav-brand-company">Gebäudemanagement</div>
