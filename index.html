@@ -22,7 +22,7 @@
   --bg-1:#0d1117;
   --bg-2:#101a2f;
   --glass-bg:rgba(17,27,47,.65);
-  --border:rgba(255,255,255,.12);
+  --border:rgba(255,255,255,.16);
   --text:#e9eef9;
   --heading:#ffffff;
   --muted:#a4b4ce;
@@ -42,15 +42,17 @@
   --step3-color:#ffbe0b;
 
   /* Background Images - easy to change */
-  --bg-workflow:url('assets/workflow.webp');
-  --bg-leistungen:url('assets/leistungen.webp');
+  /* Note: workflow.webp/leistungen.webp are currently missing in /assets.
+     Using an existing image as fallback so backgrounds also render on mobile. */
+  --bg-workflow:url('assets/gebaeudemanagement-service.jpg');
+  --bg-leistungen:url('assets/gebaeudemanagement-service.jpg');
 }
 
 body.light-mode{
   --bg-1:#f9fbfd;
   --bg-2:#f1f6fb;
   --glass-bg:rgba(255,255,255,.75);
-  --border:rgba(0,0,0,.1);
+  --border:rgba(0,0,0,.12);
   --text:#1a212a;
   --heading:#101820;
   --muted:#6c7a89;
@@ -70,6 +72,30 @@ html{ color-scheme: dark light; }
 
 a{ color:var(--accent); text-decoration:none; transition:color .2s; }
 a:hover{ color:#b5e9ff; }
+
+/* Accessibility: visible focus + skip link */
+:where(a, button, input, select, textarea, summary):focus-visible{
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(143,211,255,.18);
+}
+body.light-mode :where(a, button, input, select, textarea, summary):focus-visible{
+  box-shadow: 0 0 0 4px rgba(43,139,236,.18);
+}
+.skip-link{
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  z-index: 1000;
+  transform: translateY(-160%);
+  transition: transform .2s ease;
+}
+.skip-link:focus{ transform: translateY(0); }
 
 .brand-accent,.brand-blue{ color:var(--brand-blue); }
 
@@ -184,9 +210,20 @@ body.light-mode .nav-wrap{
   .nav-brand-company{ font-size:0.65rem; }
   .nav-links{
     display:none; position:absolute; top:100%; right:0; left:0;
-    background:var(--glass-bg); backdrop-filter:blur(var(--blur));
+    /* More opaque on mobile (and keeps readability even if blur is limited) */
+    background: rgba(17,27,47,.92);
+    backdrop-filter:blur(var(--blur)) saturate(130%);
+    -webkit-backdrop-filter:blur(var(--blur)) saturate(130%);
     border-bottom:1px solid var(--border);
+    box-shadow: 0 18px 50px rgba(0,0,0,.35);
     flex-direction:column; gap:12px; padding:16px 20px;
+    max-height: calc(100vh - 72px);
+    overflow:auto;
+  }
+  body.light-mode .nav-links{
+    background: rgba(255,255,255,.94);
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    box-shadow: 0 18px 50px rgba(0,0,0,.12);
   }
   .nav.open .nav-links{ display:flex; }
   .nav-toggle{ display:block; }
@@ -923,7 +960,7 @@ body.light-mode .job-card p{ color:var(--text); }
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Hausmeisterservice Spasowski – SD TIM GmbH",
+  "name": "Hausmeisterservice Spasowski",
   "image": "https://hausmeisterservice-spasowski.de/assets/og-image.jpg",
   "url": "https://hausmeisterservice-spasowski.de/",
   "telephone": "+49-XXX-XXXXXXX",
@@ -980,6 +1017,7 @@ body.light-mode .job-card p{ color:var(--text); }
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
     <!-- Swirling blurred background colours -->
     <div class="blur-stage">
         <div class="spot spot1"></div>
@@ -991,7 +1029,7 @@ body.light-mode .job-card p{ color:var(--text); }
 <div class="nav-wrap">
     <div class="nav">
         <a href="#" class="nav-brand" aria-label="Zur Startseite">
-          <img src="assets/sd-tim-logo.png" alt="SD TIM GmbH" class="nav-brand-logo">
+          <img src="assets/sd-tim-logo.svg" alt="Hausmeisterservice Spasowski" class="nav-brand-logo">
           <div class="nav-brand-text">
             <div>Hausmeister<span class="brand-blue">service</span></div>
             <div class="nav-brand-company">Gebäudemanagement</div>
@@ -1013,15 +1051,8 @@ body.light-mode .job-card p{ color:var(--text); }
     </div>
 </div>
 
-<div class="cta-bar" role="navigation" aria-label="Hauptaktionen">
-  <a class="btn primary"   href="#formQuote" aria-label="Zum Formular Angebot anfordern">Angebot anfordern</a>
-  <a class="btn secondary" href="#formApply" aria-label="Zum Formular Bewerben">Bewerben</a>
-</div>
-
-
-
 <!-- Hero -->
-<section class="hero">
+    <section id="main" class="hero">
     <div class="container">
         <h1 class="enter">Hausmeister- &amp; Objektservice auf den Sie sich verlassen können</h1>
         <p class="enter">Seit 2021 sorgen wir mit klaren Prozessen und zuverlässigen Mitarbeitern für gepflegte Immobilien in Nordrhein‑Westfalen.</p>
@@ -2114,10 +2145,6 @@ footer .footer-grid{
     setText('.nav-links a[href="#karriere"]', 'Jobs');
     setText('.nav-links a[href="#faq"]', 'FAQ');
     setText('.nav-links a[href="#kontakt"]', 'Contact');
-
-    // CTA
-    setText('.cta-bar .btn.primary', 'Request quote');
-    setText('.cta-bar .btn.secondary', 'Apply');
 
     // Hero
     setText('.hero h1', 'Facility & property services you can rely on');
