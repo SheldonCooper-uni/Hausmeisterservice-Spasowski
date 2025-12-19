@@ -152,33 +152,6 @@ body::before{
   100%{ background-position:100% 50%,0% 100%,100% 0%; }
 }
 
-/* Optional spot blobs (extra glow) */
-.blur-stage{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-1; }
-.blur-stage .spot{
-  position:absolute; border-radius:50%; filter:blur(120px); mix-blend-mode:screen; opacity:.58;
-  will-change:transform;
-}
-.blur-stage .spot1{ width:500px; height:500px; top:-10%; left:-10%;
-  background:radial-gradient(circle,#8338ec 0%, transparent 70%);
-  animation:float1 35s ease-in-out infinite alternate;
-}
-.blur-stage .spot2{ width:450px; height:450px; bottom:-20%; right:-15%;
-  background:radial-gradient(circle,#4cc9f0 0%, transparent 70%);
-  animation:float2 30s ease-in-out infinite alternate-reverse;
-}
-.blur-stage .spot3{ width:350px; height:350px; top:40%; left:60%;
-  background:radial-gradient(circle,#f72585 0%, transparent 70%);
-  animation:float3 28s ease-in-out infinite alternate;
-}
-.blur-stage .spot4{ width:500px; height:500px; bottom:15%; left:30%;
-  background:radial-gradient(circle,#ffbe0b 0%, transparent 70%);
-  animation:float4 32s ease-in-out infinite alternate;
-}
-@keyframes float1{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(50px,60px) scale(1.2)} 100%{transform:translate(-40px,-50px) scale(.9)} }
-@keyframes float2{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-60px,-50px) scale(1.15)} 100%{transform:translate(50px,40px) scale(1.05)} }
-@keyframes float3{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-40px) scale(1.2)} 100%{transform:translate(-30px,60px) scale(1)} }
-@keyframes float4{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-50px,40px) scale(1.1)} 100%{transform:translate(40px,-30px) scale(.95)} }
-
 /* =========================
    Navigation
    ========================= */
@@ -483,7 +456,6 @@ section + section::before{
     animation: none;
     filter: none;
   }
-  .blur-stage{ display:none; }
   .hero{ background-image:none !important; }
   .section-with-image{ background-image:none !important; }
   .section-with-image::before{ content:none; }
@@ -1043,7 +1015,7 @@ body.light-mode .job-card p{ color:var(--text); }
 
 /* Prefer-reduced-motion */
 @media (prefers-reduced-motion: reduce){
-  body::before, .blur-stage .spot{ animation:none !important; }
+  body::before{ animation:none !important; }
   .enter{ transition:none !important; opacity:1 !important; transform:none !important; filter:none !important; }
 }
 
@@ -1136,13 +1108,6 @@ body.light-mode .job-card p{ color:var(--text); }
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
-    <!-- Swirling blurred background colours -->
-    <div class="blur-stage">
-        <div class="spot spot1"></div>
-        <div class="spot spot2"></div>
-        <div class="spot spot3"></div>
-        <div class="spot spot4"></div>
-    </div>
 <!-- Navigation -->
 <div class="nav-wrap">
     <div class="nav">
