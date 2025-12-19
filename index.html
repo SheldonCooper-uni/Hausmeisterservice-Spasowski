@@ -90,10 +90,12 @@ body.light-mode{
 html,body{
   margin:0; padding:0; width:100%;
   font-family:'Poppins',sans-serif;
-  background:var(--bg-1); color:var(--text);
+  /* Keep page background on html so body::before can sit above it reliably */
+  background:transparent; color:var(--text);
   overflow-x:hidden;
 }
-html{ color-scheme: dark light; }
+html{ color-scheme: dark light; background:var(--bg-1); }
+body{ position:relative; }
 
 a{ color:var(--accent); text-decoration:none; transition:color .2s; }
 a:hover{ color:#b5e9ff; }
@@ -137,14 +139,12 @@ body.light-mode :where(a, button, input, select, textarea, summary):focus-visibl
    Animated Backgrounds
    ========================= */
 body::before{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:-3;
-  background:
-    radial-gradient(at 10% 30%, rgba(108,61,242,.22) 0%, transparent 68%),
-    radial-gradient(at 90% 20%, rgba(76,201,240,.18) 0%, transparent 70%),
-    radial-gradient(at 30% 80%, rgba(247,37,133,.16) 0%, transparent 70%);
-  animation:moveAurora 65s ease-in-out infinite;
-  filter:blur(90px);
-  opacity:.8;
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:-2;
+  /* Calm single background image (also on desktop) */
+  background: url('assets/urban-2589645_1920.jpg') center / cover no-repeat;
+  animation:none;
+  filter:none;
+  opacity:1;
 }
 @keyframes moveAurora{
   0%{ background-position:0% 50%,100% 0%,50% 100%; }
@@ -153,7 +153,7 @@ body::before{
 }
 
 /* Optional spot blobs (extra glow) */
-.blur-stage{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-2; }
+.blur-stage{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-1; }
 .blur-stage .spot{
   position:absolute; border-radius:50%; filter:blur(120px); mix-blend-mode:screen; opacity:.58;
   will-change:transform;
@@ -236,21 +236,21 @@ body.light-mode .nav-wrap{
   .nav-brand-company{ font-size:0.65rem; }
   .nav-links{
     display:none; position:absolute; top:100%; right:0; left:0;
-    /* Subtle glass: readable, but not a heavy “milky” look */
-    background: linear-gradient(180deg, rgba(17,27,47,.82), rgba(17,27,47,.74));
-    backdrop-filter: blur(18px) saturate(125%);
-    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    /* Mobile menu: watery iOS-like glass */
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.00)), var(--glass-bg-strong);
+    backdrop-filter: blur(var(--blur-strong)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(var(--glass-sat));
     border-bottom:1px solid var(--border);
-    box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    box-shadow: 0 22px 70px rgba(0,0,0,.45);
     flex-direction:column; gap:12px; padding:16px 20px;
     max-height: calc(100vh - 72px);
     overflow:auto;
   }
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-    .nav-links{ background: rgba(17,27,47,.92); }
+    .nav-links{ background: rgba(0,0,0,.86); }
   }
   body.light-mode .nav-links{
-    background: rgba(255,255,255,.94);
+    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.62));
     border-bottom: 1px solid rgba(0,0,0,.12);
     box-shadow: 0 18px 50px rgba(0,0,0,.12);
   }
@@ -268,16 +268,21 @@ body.light-mode .nav-wrap{
   display:flex; align-items:center; justify-content:center; text-align:center; flex-direction:column;
   position:relative;
   min-height:85vh;
-  background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80');
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
+  /* Keep top area more see-through; darker tint comes mainly from the lower gradient */
+  background: transparent;
 }
 .hero::before{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(to bottom, rgba(13,17,23,0.85) 0%, rgba(13,17,23,0.75) 50%, rgba(13,17,23,0.9) 100%);
+  /* Subtle darkening only "below" (not at the very top) */
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.00) 0%,
+    rgba(0,0,0,0.00) 60%,
+    rgba(0,0,0,0.08) 82%,
+    rgba(0,0,0,0.12) 100%
+  );
   z-index:1;
 }
 .hero > *{ position:relative; z-index:2; }
@@ -474,7 +479,7 @@ section + section::before{
 
   /* Mobile: use ONE calm background image for the whole page */
   body::before{
-    background: url('assets/gebaeudemanagement-service.jpg') center / cover no-repeat;
+    background: url('assets/urban-2589645_1920.jpg') center / cover no-repeat;
     animation: none;
     filter: none;
   }
@@ -975,6 +980,27 @@ body.light-mode .contact-info,
 body.light-mode .contact-form{ border:1px solid rgba(0,0,0,.08); }
 body.light-mode .footer-bottom{ color:var(--text); }
 
+/* Footer: mobile readability + better spacing */
+@media (max-width:600px){
+  footer{ padding:32px 18px; margin-top:96px; }
+  footer .footer-grid{ gap:18px; }
+  footer h4{ font-size:1.15rem; margin-bottom:8px; }
+  footer ul li{ margin-bottom:6px; }
+  footer ul li a{ display:inline-block; padding:6px 0; }
+  .footer-bottom{ margin-top:18px; line-height:1.5; }
+}
+
+/* Large screens: slightly more see-through + more watery */
+@media (min-width:992px){
+  :root{
+    --glass-bg: rgba(8,9,12,.22);
+    --glass-bg-strong: rgba(8,9,12,.30);
+    --blur:26px;
+    --blur-strong:34px;
+    --glass-sat:155%;
+  }
+}
+
 /* =========================
    Entrance Effects
    ========================= */
@@ -1025,7 +1051,7 @@ body.light-mode .job-card p{ color:var(--text); }
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))){
   .nav-wrap, .step-card, .service-card, .about-card, .map-card,
   .contact-form, .contact-info, .faq-item, .job-card{
-    background:rgba(17,27,47,.85);
+    background:rgba(0,0,0,.78);
   }
 }
 
@@ -1211,7 +1237,7 @@ body.light-mode .job-card p{ color:var(--text); }
     position:absolute;
     inset:0;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-    opacity: 0.06;
+    opacity: 0.03;
     mix-blend-mode: overlay;
     pointer-events:none;
   }
@@ -1279,7 +1305,7 @@ body.light-mode .job-card p{ color:var(--text); }
   .glassCard{ --accent-rgb: 64,196,255; position:relative; overflow:hidden; border-radius:22px; background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02)), var(--glass-bg-strong); border:1px solid var(--border); backdrop-filter:blur(var(--blur-strong)) saturate(var(--glass-sat)); -webkit-backdrop-filter:blur(var(--blur-strong)) saturate(var(--glass-sat)); box-shadow:0 26px 90px rgba(0,0,0,0.42), inset 0 1px 0 var(--glass-inset); padding:32px 36px; }
   .glassCard::before{ content:""; position:absolute; top:14px; bottom:14px; left:14px; width:4px; border-radius:999px; background:linear-gradient(180deg, rgba(var(--accent-rgb),0.00), rgba(var(--accent-rgb),0.75), rgba(var(--accent-rgb),0.00)); box-shadow:0 0 26px rgba(var(--accent-rgb),0.28); pointer-events:none; }
   .glassCard::after{ content:""; position:absolute; inset:-40%; background: radial-gradient(circle at 18% 30%, rgba(var(--accent-rgb),0.14), transparent 55%), radial-gradient(circle at 85% 55%, rgba(255,255,255,0.05), transparent 60%); pointer-events:none; }
-  .glassCard .noise{ position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"); opacity:0.06; mix-blend-mode:overlay; pointer-events:none; }
+  .glassCard .noise{ position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"); opacity:0.03; mix-blend-mode:overlay; pointer-events:none; }
   .glassCard .sectionBadge{ position:absolute; top:14px; left:18px; padding:6px 10px; font-size:12px; font-weight:600; border-radius:999px; color:rgba(200,245,255,0.95); background:rgba(var(--accent-rgb),0.12); border:1px solid rgba(var(--accent-rgb),0.24); box-shadow:0 0 18px rgba(var(--accent-rgb),0.16); }
   .glassCard{ transition:transform .28s ease, box-shadow .28s ease; }
   .glassCard:hover{ transform:translateY(-8px); box-shadow:0 34px 90px rgba(0,0,0,0.65); }
