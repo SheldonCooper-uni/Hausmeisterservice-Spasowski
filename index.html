@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <!-- SEO: Meta description for search engines -->
     <meta name="description" content="Professionelle Objektbetreuung in NRW: Hausmeisterservice, Treppenhausreinigung, Grünpflege, Winterdienst. Jetzt Angebot anfordern."/>
+    <!-- Performance: Preload the main background image (used via CSS) -->
+    <link rel="preload" as="image" href="assets/urban-2589645_1920.jpg" fetchpriority="high">
     <!-- Performance: Preconnect to font domains and preload the primary font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,7 +145,8 @@ body::before{
   /* Calm single background image (also on desktop) */
   background: url('assets/urban-2589645_1920.jpg') center top / cover no-repeat;
   animation:none;
-  filter:none;
+  /* Dark mode: slightly darker for better readability */
+  filter: brightness(0.78) contrast(1.05);
   opacity:1;
 }
 /* Light mode: darken background image for better contrast */
@@ -1043,21 +1046,21 @@ body.light-mode .job-card p{ color:var(--text); }
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hausmeisterservice Spasowski – Angebot & Bewerbung">
 <meta property="og:description" content="Schnell ein Angebot anfordern oder direkt bewerben. Zuverlässiger Service, faire Preise, kurze Reaktionszeiten.">
-<meta property="og:image" content="assets/og-image.jpg">
+<meta property="og:image" content="assets/urban-2589645_1920.jpg">
 <meta property="og:url" content="https://hausmeisterservice-spasowski.de/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hausmeisterservice Spasowski – Angebot & Bewerbung">
 <meta name="twitter:description" content="Schnell ein Angebot anfordern oder direkt bewerben. Zuverlässiger Service, faire Preise, kurze Reaktionszeiten.">
-<meta name="twitter:image" content="assets/og-image.jpg">
+<meta name="twitter:image" content="assets/urban-2589645_1920.jpg">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Hausmeisterservice Spasowski",
-  "image": "https://hausmeisterservice-spasowski.de/assets/og-image.jpg",
+  "image": "https://hausmeisterservice-spasowski.de/assets/urban-2589645_1920.jpg",
   "url": "https://hausmeisterservice-spasowski.de/",
-  "telephone": "+49-XXX-XXXXXXX",
+  "telephone": "+49 1517 1468541",
   "email": "info@hausmeisterservice-spasowski.de",
   "address": {
     "@type": "PostalAddress",
@@ -1116,13 +1119,13 @@ body.light-mode .job-card p{ color:var(--text); }
 <div class="nav-wrap">
     <div class="nav">
         <a href="#" class="nav-brand" aria-label="Zur Startseite">
-          <img src="assets/logo-header.png" alt="" aria-hidden="true" class="nav-brand-logo">
+          <img src="assets/logo-header.png" alt="" aria-hidden="true" class="nav-brand-logo" decoding="async" fetchpriority="high">
           <div class="nav-brand-text">
             <div>Hausmeister<span class="brand-blue">service</span></div>
             <div class="nav-brand-company">Gebäudemanagement</div>
           </div>
         </a>
-        <div class="nav-links">
+        <div class="nav-links" id="primaryNav">
             <a href="#workflow">Ablauf</a>
             <a href="#leistungen">Leistungen</a>
             <a href="#about">Über uns</a>
@@ -1132,7 +1135,7 @@ body.light-mode .job-card p{ color:var(--text); }
             <button id="langToggle" class="theme-toggle-btn" aria-label="Sprache umschalten">EN</button>
                         <button id="themeToggle" class="theme-toggle-btn" aria-label="Farbschema wechseln">🌗</button>
         </div>
-        <button id="navToggle" class="nav-toggle" aria-label="Menü öffnen">
+        <button id="navToggle" class="nav-toggle" aria-label="Menü öffnen" aria-controls="primaryNav" aria-expanded="false">
             <span class="burger"></span>
         </button>
     </div>
@@ -1730,15 +1733,15 @@ footer .footer-grid{
                 <ul>
                     <li>
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
-                        Frosthauswinkel 6, 45891 Gelsenkirchen Deutschland
+                  <a href="https://www.google.com/maps/search/?api=1&query=Forsthauswinkel%206%2C%2045891%20Gelsenkirchen" target="_blank" rel="noopener noreferrer">Forsthauswinkel 6, 45891 Gelsenkirchen, Deutschland</a>
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6.5l-1.4-1.4-8.6 8.6-4.3-4.3-1.4 1.4 5.7 5.7z"/></svg>
-                        +49 1517 1468541
+                  <a href="tel:+4915171468541">+49 1517 1468541</a>
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                        info@hausmeisterservice-spasowski.de
+                  <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3H8c-1.1 0-2 .9-2 2v2H4v2h2v6H4v2h2v2c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2h2v-2h-2V9h2V7h-2V5c0-1.1-.9-2-2-2zm0 14H8v2h8v-2zm0-4H8v2h8v-2zm0-4H8v2h8V9z"/></svg>
@@ -1892,8 +1895,9 @@ footer .footer-grid{
         <div>
             <h4>Hausmeister<span class="brand-blue">service</span>&nbsp;Spasowski</h4>
             <p>Zuverlässige Objektbetreuung in NRW.  Sauber.  Schnell.  Sorgfältig.</p>
-            <p>Adresse: [Straße, PLZ Ort], Dortmund</p>
-            <p>E-Mail: info@hausmeisterservice-spasowski.de</p>
+          <p>Adresse: Forsthauswinkel 6, 45891 Gelsenkirchen</p>
+          <p>Telefon: <a href="tel:+4915171468541">+49 1517 1468541</a></p>
+          <p>E-Mail: <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a></p>
         </div>
         <div>
             <h4>Navigation</h4>
@@ -2167,7 +2171,11 @@ footer .footer-grid{
     // Mobile navigation toggle
     const navToggleBtn = document.getElementById('navToggle');
     const navElement = document.querySelector('.nav');
-    navToggleBtn?.addEventListener('click', () => navElement.classList.toggle('open'));
+    navToggleBtn?.addEventListener('click', () => {
+      const isOpen = navElement.classList.toggle('open');
+      navToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      navToggleBtn.setAttribute('aria-label', isOpen ? 'Menü schließen' : 'Menü öffnen');
+    });
 
     // Staggered reveal for hero elements
     window.addEventListener('load', () => {
