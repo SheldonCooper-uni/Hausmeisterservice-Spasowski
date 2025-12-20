@@ -247,6 +247,7 @@ body.light-mode .nav-brand-company{ color: var(--text); }
 /* Light mode: near the top/hero keep it white (style preference) */
 body.light-mode.nav-on-hero .nav-brand-company{ color:#fff; }
 .nav-links{ display:flex; gap:16px; }
+.nav-actions{ display:flex; gap:12px; align-items:center; }
 .nav-links a{
   padding:8px 14px; border-radius:var(--radius); color:var(--text);
   transition:background .3s, color .3s;
@@ -293,8 +294,22 @@ body.light-mode.nav-on-hero .nav-brand-company{ color:#fff; }
   }
   .nav.open .nav-links{ display:flex; }
   .nav-toggle{ display:block; }
-  .nav-links a{ width:100%; padding:12px 0; }
-  .nav-links .theme-toggle-btn{ margin-left:0; margin-top:12px; align-self:flex-start; }
+  .nav-links a{
+    width:100%;
+    padding:12px 14px;
+    background:var(--glass-bg);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+  }
+  .nav-actions{
+    width:100%;
+    display:flex;
+    gap:12px;
+    padding-top:12px;
+    margin-top:4px;
+    border-top:1px solid var(--border);
+  }
+  .nav-actions .theme-toggle-btn{ margin:0; }
 }
 
 /* =========================
@@ -3015,8 +3030,10 @@ body.party-mode {
             <a href="#karriere">Karriere</a>
             <a href="#faq">FAQ</a>
             <a href="#kontakt">Kontakt</a>
-            <button id="langToggle" class="theme-toggle-btn" aria-label="Sprache umschalten">EN</button>
-                        <button id="themeToggle" class="theme-toggle-btn" aria-label="Farbschema wechseln">🌗</button>
+            <div class="nav-actions">
+              <button id="langToggle" class="theme-toggle-btn" aria-label="Sprache umschalten">EN</button>
+              <button id="themeToggle" class="theme-toggle-btn" aria-label="Farbschema wechseln">🌗</button>
+            </div>
         </div>
         <button id="navToggle" class="nav-toggle" aria-label="Menü öffnen">
             <span class="burger"></span>
