@@ -709,23 +709,34 @@ body.light-mode .service-card:hover{
   letter-spacing:-0.01em;
 }
 
-/* Sonderaufgaben: Bild neben dem Titel */
-#leistungen .service-card-title-row{
+/* Sonderaufgaben: Bild neben dem Container (Karte), nicht in ihm */
+#leistungen .services-grid > .sonderaufgaben-wrap{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin:0 0 12px;
+  gap: clamp(16px, 2.4vw, 28px);
+  align-items: stretch;
 }
-#leistungen .service-card-title-row h3{ margin:0; }
-#leistungen .service-thumb{
-  width:76px;
-  height:52px;
-  border-radius:12px;
-  object-fit:cover;
-  border:1px solid var(--border);
+@media (max-width: 767px){
+  #leistungen .services-grid > .sonderaufgaben-wrap{ flex-direction: column; }
+}
+@media (min-width: 768px){
+  #leistungen .services-grid > .sonderaufgaben-wrap{ grid-column: 1 / -1; }
+  /* Karte bleibt „normal“ groß, Bild nimmt den Rest */
+  #leistungen .services-grid > .sonderaufgaben-wrap > .service-card{ flex: 0 0 clamp(280px, 33%, 420px); }
+}
+#leistungen .sonderaufgaben-media{
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  flex:0 0 auto;
+}
+#leistungen .sonderaufgaben-media img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* kein Verzerren */
+  object-position: center;
 }
 .service-card p{
   margin:0 0 16px;
@@ -997,8 +1008,26 @@ footer .footer-grid{
 footer h4{ margin:0 0 10px; color:var(--heading); font-size:1.3rem; }
 footer ul{ list-style:none; padding:0; margin:0; }
 footer ul li{ margin-bottom:8px; }
-footer ul li a{ color:var(--muted); font-size:.95rem; transition:color .2s; }
-footer ul li a:hover{ color:var(--accent); }
+footer ul li a{
+  color:var(--muted);
+  font-size:.95rem;
+  cursor:pointer;
+  display:inline-block;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: color .2s, text-decoration-color .2s, opacity .2s;
+}
+footer ul li a:hover{
+  color:var(--accent);
+  text-decoration-color: currentColor;
+}
+footer ul li a:active{ opacity:.85; }
+footer ul li a:focus-visible{
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
 .footer-bottom{ margin-top:30px; font-size:.85rem; text-align:center; color:var(--muted); }
 .footer-bottom span{ color:var(--accent); }
 
@@ -1010,6 +1039,9 @@ body.light-mode .about-card,
 body.light-mode .contact-info,
 body.light-mode .contact-form{ border:1px solid rgba(0,0,0,.08); }
 body.light-mode .footer-bottom{ color:var(--text); }
+
+/* Anchor targets for footer links (offset for fixed header) */
+.anchor-target{ display:block; height:0; scroll-margin-top: 96px; }
 
 /* =========================
    Entrance Effects
@@ -3088,6 +3120,7 @@ body.party-mode {
     box-shadow: 0 0 34px rgba(64,196,255,0.38);
   }
   </style>
+<span id="ablauf" class="anchor-target" aria-hidden="true"></span>
 <section id="workflow" class="section-with-image">
     <div class="container">
         <div id="workflowHeaderSpacing" class="glassCard sectionHeaderSpacing" style="--accent-rgb:64,196,255;">
@@ -3289,22 +3322,25 @@ body.party-mode {
 </details>
 
             </div>
-            <div class="service-card enter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <div class="service-card-title-row">
+            <div class="sonderaufgaben-wrap">
+              <div class="service-card enter">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                   <h3>Sonderaufgaben</h3>
-                  <img class="service-thumb" src="assets/gebaeudemanagement-service.jpg" alt="HM-Service" loading="lazy" decoding="async">
-                </div>
-                <p>Entrümpelungen, Notdienste, Winterdienst und weitere individuelle Aufträge.</p>
-                <ul>
-                    <li>Entrümpelung</li>
-                    <li>Winterdienst</li>
-                    <li>Notdienste</li>
-                </ul>
-                <details class="service-more">
-  <summary>Mehr erfahren</summary>
-  <p>Für Sonderaufträge (z.B. Entrümpelungen, Winterdienst, kurzfristige Einsätze) machen wir Ihnen ein klares Angebot mit Umfang und Termin. Ideal, wenn einmal “extra was ansteht”, ohne langfristige Bindung.</p>
-</details>
+                  <p>Entrümpelungen, Notdienste, Winterdienst und weitere individuelle Aufträge.</p>
+                  <ul>
+                      <li>Entrümpelung</li>
+                      <li>Winterdienst</li>
+                      <li>Notdienste</li>
+                  </ul>
+                  <details class="service-more">
+    <summary>Mehr erfahren</summary>
+    <p>Für Sonderaufträge (z.B. Entrümpelungen, Winterdienst, kurzfristige Einsätze) machen wir Ihnen ein klares Angebot mit Umfang und Termin. Ideal, wenn einmal “extra was ansteht”, ohne langfristige Bindung.</p>
+  </details>
+              </div>
+
+              <div class="sonderaufgaben-media">
+                <img src="assets/HM-Service.png" alt="HM-Service" loading="lazy" decoding="async">
+              </div>
             </div>
         </div>
     </div>
@@ -3333,6 +3369,7 @@ body.party-mode {
 </section>
 
 <!-- Über uns / About -->
+<span id="ueber-uns" class="anchor-target" aria-hidden="true"></span>
 <section id="about">
     <div class="container">
         <div class="section-title">
@@ -3455,7 +3492,7 @@ footer .footer-grid{
             </div>
             <div class="about-card enter">
                 <h3>Jetzt bewerben</h3>
-                <form id="formApply" novalidate>
+                <form id="formApply" action="https://formspree.io/f/xjkopowr" method="POST" enctype="multipart/form-data" novalidate>
                     <input type="hidden" name="formType" value="Bewerbung">
                     <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
                     <div class="grid-2">
@@ -3493,7 +3530,7 @@ footer .footer-grid{
                     </div>
                     <div>
                         <label for="cv">Lebenslauf (PDF, max. 5MB)</label>
-                        <input id="cv" type="file" name="cv" accept="application/pdf">
+                        <input id="cv" type="file" name="cv" accept="application/pdf,.pdf">
                     </div>
                     <div class="consent">
                         <input type="checkbox" id="applyDSE" name="dataConsent" value="Einverstanden" required>
@@ -3613,7 +3650,7 @@ footer .footer-grid{
             </div>
             <div class="contact-form enter">
                 <h3>Angebot anfordern</h3>
-                <form id="formQuote" novalidate>
+                <form id="formQuote" action="https://formspree.io/f/xjkopowr" method="POST" novalidate>
                     <input type="hidden" name="formType" value="Angebot">
                     <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
                     <div>
@@ -3764,8 +3801,8 @@ footer .footer-grid{
             <h4>Navigation</h4>
             <ul>
                 <li><a href="#leistungen">Leistungen</a></li>
-                <li><a href="#workflow">Ablauf</a></li>
-                <li><a href="#about">Über uns</a></li>
+                <li><a href="#ablauf">Ablauf</a></li>
+                <li><a href="#ueber-uns">Über uns</a></li>
                 <li><a href="#karriere">Karriere</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
@@ -3918,63 +3955,104 @@ footer .footer-grid{
     // Formspree endpoint
     const FORMSPREE = "https://formspree.io/f/xjkopowr";
 
-    // --- REVISED: Generic form submission handler to work around file upload limits ---
+    // Generic form submission handler (supports PDF uploads via multipart FormData)
     async function sendForm(form, noteEl, btn) {
         if (!form.checkValidity()) {
             form.reportValidity();
             return;
         }
 
-        const originalFormData = new FormData(form);
+      const originalFormData = new FormData(form);
         const fileInput = form.querySelector('input[type="file"]');
         let fileAttached = false;
+      const MAX_FILE_SIZE = 5 * 1024 * 1024;
         
         if (fileInput && fileInput.files.length > 0) {
-            if (fileInput.files[0].size > 5 * 1024 * 1024) {
-                noteEl.className = "error";
-                noteEl.textContent = "Die Datei ist zu groß (max. 5 MB).";
-                return;
-            }
-            fileAttached = true;
+          const file = fileInput.files[0];
+          const fileName = (file && file.name) ? file.name.toLowerCase() : '';
+          const isPdfByType = file && file.type === 'application/pdf';
+          const isPdfByExt = fileName.endsWith('.pdf');
+
+          if (file.size > MAX_FILE_SIZE) {
+            noteEl.className = "error";
+            noteEl.textContent = "Die Datei ist zu groß (max. 5 MB).";
+            return;
+          }
+
+          if (!(isPdfByType || isPdfByExt)) {
+            noteEl.className = "error";
+            noteEl.textContent = "Bitte laden Sie eine PDF-Datei hoch (.pdf).";
+            return;
+          }
+
+          fileAttached = true;
         }
 
-        // We will not send the file itself to avoid Formspree errors on free plans.
-        // Instead, we notify that the CV will be sent separately.
-        if (fileAttached) {
-            originalFormData.delete('cv'); // Remove the actual file from form data
-            originalFormData.append('lebenslauf_info', `Bewerber hat einen Lebenslauf hochgeladen, der separat per E-Mail ankommt: ${fileInput.files[0].name}`);
+      async function postFormData(formData) {
+        const res = await fetch(FORMSPREE, {
+          method: "POST",
+          body: formData,
+          headers: { "Accept": "application/json" }
+        });
+
+        let data = null;
+        try {
+          const text = await res.text();
+          data = text ? JSON.parse(text) : null;
+        } catch (_) {
+          // ignore JSON parse failures
         }
+
+        return { res, data };
+      }
 
         btn.disabled = true;
         const prevText = btn.textContent;
         btn.textContent = "Sende…";
         
         try {
-            const res = await fetch(FORMSPREE, {
-                method: "POST",
-                body: originalFormData,
-                headers: { "Accept": "application/json" }
-            });
+          let result = await postFormData(originalFormData);
 
-            if (res.ok) {
+          // If the endpoint rejects attachments, retry once without the file so the form is still delivered.
+          if (!result.res.ok && fileAttached) {
+            const retryData = new FormData(form);
+            const file = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+            const fileName = file ? file.name : 'unbekannt';
+            retryData.delete('cv');
+            // Keep the submission deliverable, but make the email note human-readable.
+            retryData.append('lebenslauf_hinweis', `Lebenslauf (PDF) ausgewählt (${fileName}). Upload wurde vom Formular-Endpunkt abgelehnt – bitte per E-Mail nachreichen.`);
+
+            result = await postFormData(retryData);
+            if (result.res.ok) {
+              btn.textContent = "Gesendet ✅";
+              noteEl.className = "success";
+              noteEl.innerHTML = `Vielen Dank! Ihre Bewerbung wurde gesendet.<br><strong>Hinweis:</strong> Der PDF-Upload wurde vom Formular-Endpunkt nicht akzeptiert. Bitte senden Sie den Lebenslauf separat an <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`;
+              form.reset();
+              form.querySelectorAll('.multi').forEach(multi => {
+                const msBtn = multi.querySelector('.ms-btn');
+                if(msBtn) {
+                  msBtn.textContent = 'Bitte wählen…';
+                  msBtn.classList.remove('selected');
+                }
+              });
+              return;
+            }
+          }
+
+          if (result.res.ok) {
                 btn.textContent = "Gesendet ✅";
                 noteEl.className = "success";
-                if (fileAttached) {
-                     noteEl.innerHTML = `Vielen Dank! Ihre Bewerbung wurde gesendet.<br><strong>Wichtig:</strong> Bitte senden Sie Ihren Lebenslauf jetzt noch separat an <a href="mailto:info@hausmeisterservice-spasowski.de">info@hausmeisterservice-spasowski.de</a>.`;
-                } else {
-                     noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
-                }
+            noteEl.textContent = "Vielen Dank! Ihre Nachricht wurde gesendet.";
                 form.reset();
                 form.querySelectorAll('.multi').forEach(multi => {
                     const msBtn = multi.querySelector('.ms-btn');
                     if(msBtn) {
-                       msBtn.textContent = 'Bitte wählen…';
-                       msBtn.classList.remove('selected');
+                      msBtn.textContent = 'Bitte wählen…';
+                      msBtn.classList.remove('selected');
                     }
                 });
             } else {
-                 const errorData = await res.json();
-                 throw new Error(errorData.error || "Fehler beim Senden.");
+             throw new Error((result.data && (result.data.error || result.data.message)) || "Fehler beim Senden.");
             }
         } catch (err) {
             btn.textContent = "Nochmal versuchen";
