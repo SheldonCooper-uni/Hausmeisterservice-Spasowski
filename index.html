@@ -152,11 +152,19 @@ body.light-mode :where(a, button, input, select, textarea, summary):focus-visibl
 /* Theme Toggle Icon */
 .theme-toggle-btn{
   margin-left:1rem; background:var(--glass-bg);
-  border:1px solid var(--border); border-radius:50%;
-  padding:.4rem; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--border); border-radius:999px;
+  width:40px; height:40px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  line-height:1;
   cursor:pointer; color:var(--accent); transition:background .3s, transform .2s;
 }
 .theme-toggle-btn:hover{ background:var(--accent-dim); transform:translateY(-2px); }
+
+/* In the navbar, let flex gap handle spacing */
+.nav-links .theme-toggle-btn{ margin-left:0; }
+
+/* Slightly stronger label for EN */
+#langToggle{ font-weight:600; letter-spacing:.02em; }
 
 /* =========================
    Animated Backgrounds
@@ -233,6 +241,7 @@ body.light-mode .nav-wrap{
 .nav-brand-logo{ height:42px; width:auto; display:block; }
 .nav-brand-text{ display:flex; flex-direction:column; line-height:1.2; }
 .nav-brand-company{ font-size:0.75rem; font-weight:400; color:var(--muted); margin-top:2px; }
+body.light-mode .nav-brand-company{ color:#fff; }
 .nav-links{ display:flex; gap:16px; }
 .nav-links a{
   padding:8px 14px; border-radius:var(--radius); color:var(--text);
@@ -2039,6 +2048,851 @@ body.light-mode ::-webkit-scrollbar-thumb:hover {
   #leistungen .service-card{ padding: 22px; }
 }
 </style>
+
+<!-- ===== Ultimate Premium Experience (effects) ===== -->
+<style>
+/* ===========================================
+   ✨ ULTIMATE PREMIUM EXPERIENCE ✨
+   Next-Level Apple-Style Effects
+   =========================================== */
+
+/* ===========================================
+   1. CUSTOM CURSOR - Glowing Magic Cursor
+   =========================================== */
+
+/* Cursor Glow der dem Mauszeiger folgt */
+.cursor-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    circle,
+    rgba(143, 211, 255, 0.08) 0%,
+    rgba(143, 211, 255, 0.03) 30%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+
+body:hover .cursor-glow {
+  opacity: 1;
+}
+
+body.light-mode .cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(43, 139, 236, 0.06) 0%,
+    rgba(43, 139, 236, 0.02) 30%,
+    transparent 70%
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Custom Cursor Style (disabled: normal system cursor) */
+@media (pointer: fine) {
+  .custom-cursor {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+      height 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background 0.2s ease,
+      opacity 0.2s ease;
+    box-shadow:
+      0 0 20px rgba(143, 211, 255, 0.5),
+      0 0 40px rgba(143, 211, 255, 0.3);
+  }
+
+  .custom-cursor-ring {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(143, 211, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  /* Cursor States */
+  body.cursor-hover .custom-cursor {
+    width: 8px;
+    height: 8px;
+    background: #fff;
+  }
+
+  body.cursor-hover .custom-cursor-ring {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(143, 211, 255, 0.6);
+  }
+
+  body.cursor-click .custom-cursor {
+    width: 6px;
+    height: 6px;
+  }
+
+  body.cursor-click .custom-cursor-ring {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Ensure system cursor remains visible */
+  body,
+  a,
+  button,
+  .btn,
+  .faq-item,
+  .service-card,
+  .step-card,
+  .job-card,
+  input,
+  select,
+  textarea,
+  .nav-links a,
+  .map-controls button,
+  .qc-btn,
+  #backToTop {
+    cursor: auto;
+  }
+
+  /* Hide custom cursor visuals */
+  .cursor-glow,
+  .custom-cursor,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
+
+/* ===========================================
+   2. CLICK RIPPLE EFFECT
+   =========================================== */
+
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: rippleEffect 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ===========================================
+   3. PARALLAX SCROLL EFFECTS
+   =========================================== */
+
+[data-parallax] {
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+/* Parallax Layers */
+.parallax-slow {
+  --parallax-speed: 0.3;
+}
+
+.parallax-medium {
+  --parallax-speed: 0.5;
+}
+
+.parallax-fast {
+  --parallax-speed: 0.8;
+}
+
+/* Hero Parallax */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero h1 {
+  --parallax-speed: 0.2;
+}
+
+.hero p {
+  --parallax-speed: 0.3;
+}
+
+.hero .cta-buttons {
+  --parallax-speed: 0.4;
+}
+
+/* Section Parallax Depth */
+.section-title h2 {
+  --parallax-speed: 0.15;
+}
+
+/* Floating Elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+.float-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ===========================================
+   4. GLOW EFFECTS - Breathing & Pulsing
+   =========================================== */
+
+/* Breathing Glow Animation */
+@keyframes breathingGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(143, 211, 255, 0.1),
+      0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(143, 211, 255, 0.2),
+      0 0 60px rgba(143, 211, 255, 0.1),
+      0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Accent Color Breathing */
+@keyframes accentBreath {
+  0%, 100% {
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    filter: brightness(1.1) saturate(1.2);
+  }
+}
+
+/* Apply to buttons */
+.btn.primary {
+  animation: breathingGlow 4s ease-in-out infinite;
+}
+
+.btn.primary:hover {
+  animation: none;
+  box-shadow:
+    0 0 50px rgba(143, 211, 255, 0.4),
+    0 0 100px rgba(143, 211, 255, 0.2),
+    0 10px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Glowing Border Animation */
+@keyframes glowingBorder {
+  0%, 100% {
+    border-color: rgba(143, 211, 255, 0.2);
+  }
+  50% {
+    border-color: rgba(143, 211, 255, 0.5);
+  }
+}
+
+/* Card Glow on Hover */
+.service-card:hover,
+.step-card:hover,
+.about-card:hover,
+.job-card:hover {
+  box-shadow:
+    0 0 60px rgba(143, 211, 255, 0.15),
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Neon Text Glow */
+.glow-text {
+  text-shadow:
+    0 0 10px rgba(143, 211, 255, 0.5),
+    0 0 20px rgba(143, 211, 255, 0.3),
+    0 0 40px rgba(143, 211, 255, 0.2);
+}
+
+/* ===========================================
+   5. MICRO-INTERACTIONS
+   =========================================== */
+
+/* Icon Hover Animations */
+.service-card svg,
+.contact-info svg {
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.3s ease,
+    filter 0.3s ease !important;
+}
+
+.service-card:hover svg {
+  transform: scale(1.15) rotate(5deg) !important;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* Step Number Bounce */
+.step-number {
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease !important;
+}
+
+.step-card:hover .step-number {
+  transform: scale(1.15) rotate(10deg) !important;
+  box-shadow:
+    0 0 30px rgba(143, 211, 255, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Checkbox Animation */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(143, 211, 255, 0.4);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  position: relative;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+input[type="checkbox"]:hover {
+  border-color: rgba(143, 211, 255, 0.7);
+  transform: scale(1.05);
+}
+
+input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #2b8bec, #4cc9f0);
+  border-color: transparent;
+  animation: checkBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  animation: checkmarkAppear 0.3s ease forwards;
+}
+
+@keyframes checkBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.2); }
+  50% { transform: scale(0.9); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes checkmarkAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Button Press Effect */
+.btn:active,
+button:active {
+  transform: scale(0.95) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* Tag Hover Wiggle */
+.tag {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tag:hover {
+  transform: scale(1.05) rotate(-2deg);
+}
+
+/* ===========================================
+   6. ANIMATED GRADIENTS
+   =========================================== */
+
+/* Animated Background Gradient */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    -45deg,
+    rgba(43, 139, 236, 0.1),
+    rgba(76, 201, 240, 0.1),
+    rgba(143, 211, 255, 0.1),
+    rgba(102, 126, 234, 0.1)
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Border Gradient Animation */
+@keyframes borderGradient {
+  0%, 100% {
+    border-image-source: linear-gradient(
+      0deg,
+      rgba(143, 211, 255, 0.3),
+      rgba(76, 201, 240, 0.1)
+    );
+  }
+  50% {
+    border-image-source: linear-gradient(
+      180deg,
+      rgba(143, 211, 255, 0.3),
+      rgba(76, 201, 240, 0.1)
+    );
+  }
+}
+
+/* Aurora Background for Hero */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(76, 201, 240, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(143, 211, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 60%, rgba(102, 126, 234, 0.05) 0%, transparent 50%);
+  animation: auroraMove 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes auroraMove {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1) rotate(0deg);
+  }
+  33% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(2deg);
+  }
+  66% {
+    opacity: 0.5;
+    transform: scale(0.95) rotate(-2deg);
+  }
+}
+
+/* ===========================================
+   7. NOISE/GRAIN TEXTURE - Film Look
+   =========================================== */
+
+/* Subtle Noise Overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+body.light-mode::after {
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+}
+
+/* Animated Grain */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 1%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 0%); }
+  60% { transform: translate(1%, 0%); }
+  70% { transform: translate(0%, 1%); }
+  80% { transform: translate(0%, -1%); }
+  90% { transform: translate(1%, 1%); }
+}
+
+/* Glass Noise Texture */
+.service-card,
+.step-card,
+.about-card,
+.contact-info,
+.contact-form,
+.job-card,
+.faq-item,
+.glassCard,
+.map-card {
+  position: relative;
+}
+
+/* ===========================================
+   8. TYPOGRAPHY ANIMATIONS
+   =========================================== */
+
+/* Text Reveal Animation */
+@keyframes textReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.text-reveal {
+  animation: textReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Smooth Text Gradient */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #8fd3ff 50%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textGradient 5s ease infinite;
+}
+
+@keyframes textGradient {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Letter Spacing on Hover */
+h1, h2, h3, h4 {
+  transition:
+    letter-spacing 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 0.4s ease !important;
+}
+
+.section-title h2:hover {
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 40px rgba(143, 211, 255, 0.3);
+}
+
+/* Typewriter Effect (optional class) */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--accent);
+  white-space: nowrap;
+  animation:
+    typing 3s steps(40, end),
+    blinkCursor 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blinkCursor {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--accent); }
+}
+
+/* ===========================================
+   9. ADVANCED HOVER EFFECTS
+   =========================================== */
+
+/* Magnetic Button Effect (prepared for JS) */
+.magnetic-btn {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Tilt Effect on Cards */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.tilt-card:hover {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(20px);
+}
+
+/* Spotlight Effect */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight::before {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ===========================================
+   10. LOADING ANIMATIONS
+   =========================================== */
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonWave 1.5s ease-in-out infinite;
+  border-radius: var(--radius);
+}
+
+@keyframes skeletonWave {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(143, 211, 255, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Pulse Dot */
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulseDot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
+/* ===========================================
+   11. SCROLL PROGRESS INDICATOR
+   =========================================== */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2b8bec, #4cc9f0, #8fd3ff);
+  z-index: 10000;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.1s linear;
+}
+
+/* ===========================================
+   12. TOAST NOTIFICATIONS (Prepared)
+   =========================================== */
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--liquid-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px 24px;
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s ease;
+  z-index: 10001;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ===========================================
+   13. SOUND DESIGN READY (CSS Triggers)
+   =========================================== */
+
+/* Diese Klassen können mit JS für Sound-Events verwendet werden */
+[data-sound="click"]:active,
+[data-sound="hover"]:hover,
+[data-sound="success"].success,
+[data-sound="error"].error {
+  /* JS kann diese Selektoren für Sound-Trigger nutzen */
+  --sound-trigger: 1;
+}
+
+/* Visual feedback für Sound-ready elements */
+[data-sound] {
+  position: relative;
+}
+
+/* ===========================================
+   14. EASTER EGG: Konami Code Ready
+   =========================================== */
+
+body.party-mode {
+  animation: partyBackground 0.5s ease infinite;
+}
+
+@keyframes partyBackground {
+  0%, 100% { filter: hue-rotate(0deg); }
+  25% { filter: hue-rotate(90deg); }
+  50% { filter: hue-rotate(180deg); }
+  75% { filter: hue-rotate(270deg); }
+}
+
+/* ===========================================
+   15. PERFORMANCE: Reduced Motion
+   =========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .cursor-glow,
+  .custom-cursor,
+  .custom-cursor-ring,
+  body::after {
+    display: none !important;
+  }
+
+  .hero::after {
+    animation: none !important;
+  }
+}
+
+/* ===========================================
+   16. PRINT STYLES
+   =========================================== */
+
+@media print {
+  .cursor-glow,
+  .custom-cursor,
+  .custom-cursor-ring,
+  body::after,
+  .hero::after,
+  .scroll-progress,
+  .toast,
+  .qc-btn,
+  #backToTop {
+    display: none !important;
+  }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -3724,6 +4578,530 @@ Managing director(s): Please add</p>`);
     window.addEventListener('load', onScroll);
     document.addEventListener('DOMContentLoaded', onScroll);
   })();
+</script>
+
+<!-- Ultimate Premium Experience - JavaScript -->
+<script>
+/* ===========================================
+   ✨ ULTIMATE PREMIUM EXPERIENCE - JavaScript
+   Custom Cursor, Parallax, Ripple & more
+   =========================================== */
+
+(function() {
+  'use strict';
+
+  // =========================================
+  // 1. CUSTOM CURSOR
+  // =========================================
+
+  function initCustomCursor() {
+    // Only on devices with fine pointer (mouse)
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    // Create cursor elements
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
+
+    const cursorRing = document.createElement('div');
+    cursorRing.className = 'custom-cursor-ring';
+    document.body.appendChild(cursorRing);
+
+    // Cursor glow
+    const cursorGlow = document.createElement('div');
+    cursorGlow.className = 'cursor-glow';
+    document.body.appendChild(cursorGlow);
+
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let ringX = 0, ringY = 0;
+    let glowX = 0, glowY = 0;
+
+    // Smooth cursor following
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Animation loop for smooth movement
+    function animateCursor() {
+      // Cursor follows instantly
+      cursorX += (mouseX - cursorX) * 0.2;
+      cursorY += (mouseY - cursorY) * 0.2;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+
+      // Ring follows with delay
+      ringX += (mouseX - ringX) * 0.1;
+      ringY += (mouseY - ringY) * 0.1;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+
+      // Glow follows slowly
+      glowX += (mouseX - glowX) * 0.05;
+      glowY += (mouseY - glowY) * 0.05;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover states
+    const hoverElements = document.querySelectorAll(
+      'a, button, .btn, .faq-item, .service-card, .step-card, ' +
+      '.job-card, input, select, textarea, .nav-links a, ' +
+      '.map-controls button, .qc-btn, #backToTop, .about-card'
+    );
+
+    hoverElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        document.body.classList.add('cursor-hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        document.body.classList.remove('cursor-hover');
+      });
+    });
+
+    // Click state
+    document.addEventListener('mousedown', () => {
+      document.body.classList.add('cursor-click');
+    });
+    document.addEventListener('mouseup', () => {
+      document.body.classList.remove('cursor-click');
+    });
+
+    // Hide when leaving window
+    document.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+      cursorRing.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      cursor.style.opacity = '1';
+      cursorRing.style.opacity = '1';
+    });
+  }
+
+  // =========================================
+  // 2. CLICK RIPPLE EFFECT
+  // =========================================
+
+  function initRippleEffect() {
+    const rippleElements = document.querySelectorAll(
+      '.btn, button, .map-controls button, .nav-links a, .faq-item'
+    );
+
+    rippleElements.forEach(el => {
+      el.classList.add('ripple-container');
+
+      el.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+
+        this.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  }
+
+  // =========================================
+  // 3. PARALLAX SCROLL
+  // =========================================
+
+  function initParallax() {
+    const parallaxElements = document.querySelectorAll(
+      '.hero h1, .hero p, .hero .cta-buttons, .section-title h2'
+    );
+
+    let ticking = false;
+
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      void(scrollY);
+
+      parallaxElements.forEach(el => {
+        const speed = parseFloat(el.style.getPropertyValue('--parallax-speed')) || 0.2;
+        const rect = el.getBoundingClientRect();
+        const centerY = rect.top + rect.height / 2;
+        const viewportCenter = window.innerHeight / 2;
+        const distance = centerY - viewportCenter;
+
+        // Only apply when element is in view
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const translateY = distance * speed * 0.1;
+          el.style.transform = `translateY(${translateY}px) translateZ(0)`;
+        }
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // =========================================
+  // 4. SCROLL PROGRESS INDICATOR
+  // =========================================
+
+  function initScrollProgress() {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    document.body.appendChild(progressBar);
+
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
+      progressBar.style.transform = `scaleX(${progress})`;
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // =========================================
+  // 5. MAGNETIC BUTTONS
+  // =========================================
+
+  function initMagneticButtons() {
+    const magneticBtns = document.querySelectorAll('.btn.primary, .qc-btn');
+
+    magneticBtns.forEach(btn => {
+      btn.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.02)`;
+      });
+
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = '';
+      });
+    });
+  }
+
+  // =========================================
+  // 6. TILT EFFECT ON CARDS
+  // =========================================
+
+  function initTiltEffect() {
+    const cards = document.querySelectorAll(
+      '.service-card, .step-card, .about-card, .job-card'
+    );
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+
+        this.style.transform = `
+          perspective(1000px)
+          rotateX(${rotateX}deg)
+          rotateY(${rotateY}deg)
+          translateZ(10px)
+          scale(1.02)
+        `;
+      });
+
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = '';
+        this.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+        setTimeout(() => {
+          this.style.transition = '';
+        }, 500);
+      });
+    });
+  }
+
+  // =========================================
+  // 7. SPOTLIGHT EFFECT ON CARDS
+  // =========================================
+
+  function initSpotlight() {
+    const cards = document.querySelectorAll(
+      '.service-card, .step-card, .about-card, .job-card, .glassCard'
+    );
+
+    cards.forEach(card => {
+      const spotlight = document.createElement('div');
+      spotlight.style.cssText = `
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+      `;
+      card.style.position = 'relative';
+      card.style.overflow = 'hidden';
+      card.appendChild(spotlight);
+
+      card.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        spotlight.style.left = x + 'px';
+        spotlight.style.top = y + 'px';
+        spotlight.style.opacity = '1';
+      });
+
+      card.addEventListener('mouseleave', function() {
+        spotlight.style.opacity = '0';
+      });
+    });
+  }
+
+  // =========================================
+  // 8. SMOOTH REVEAL ON SCROLL
+  // =========================================
+
+  function initSmoothReveal() {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Add reveal class and observe
+    document.querySelectorAll(
+      '.service-card, .step-card, .faq-item, .job-card'
+    ).forEach((el, index) => {
+      el.style.transitionDelay = `${index * 0.05}s`;
+      observer.observe(el);
+    });
+  }
+
+  // =========================================
+  // 9. SMOOTH ANCHOR SCROLLING (Enhanced)
+  // =========================================
+
+  function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.length > 1) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+            const startPosition = window.scrollY;
+            const distance = targetPosition - startPosition - 80; // 80px offset for nav
+
+            // Smooth scroll with easing
+            smoothScrollTo(distance, 800);
+          }
+        }
+      });
+    });
+  }
+
+  function smoothScrollTo(distance, duration) {
+    const startPosition = window.scrollY;
+    const startTime = performance.now();
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function scroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = easeOutCubic(progress);
+
+      window.scrollTo(0, startPosition + distance * easeProgress);
+
+      if (progress < 1) {
+        requestAnimationFrame(scroll);
+      }
+    }
+
+    requestAnimationFrame(scroll);
+  }
+
+  // =========================================
+  // 10. TOAST NOTIFICATION SYSTEM
+  // =========================================
+
+  window.showToast = function(message, duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 10);
+
+    // Auto hide
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 500);
+    }, duration);
+  };
+
+  // =========================================
+  // 11. KONAMI CODE EASTER EGG
+  // =========================================
+
+  function initKonamiCode() {
+    const konamiCode = [
+      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+      'KeyB', 'KeyA'
+    ];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          document.body.classList.add('party-mode');
+          showToast('🎉 Party Mode Activated! 🎉');
+          setTimeout(() => {
+            document.body.classList.remove('party-mode');
+          }, 5000);
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    });
+  }
+
+  // =========================================
+  // 12. LAZY LOAD IMAGES (Enhanced)
+  // =========================================
+
+  function initLazyLoad() {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+
+    images.forEach(img => {
+      img.addEventListener('load', function() {
+        this.classList.add('loaded');
+      });
+
+      // If already loaded
+      if (img.complete) {
+        img.classList.add('loaded');
+      }
+    });
+  }
+
+  // =========================================
+  // 13. SOUND EFFECTS (Optional)
+  // =========================================
+
+  function initSoundEffects() {
+    // Sound is disabled by default - can be enabled by user
+    let soundEnabled = false;
+
+    // Audio context (created on user interaction)
+    let audioContext = null;
+
+    function playClickSound() {
+      if (!soundEnabled || !audioContext) return;
+
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.value = 800;
+      oscillator.type = 'sine';
+      gainNode.gain.value = 0.1;
+
+      oscillator.start();
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    }
+
+    // Enable sounds on first click (to comply with autoplay policies)
+    document.addEventListener('click', function initAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      document.removeEventListener('click', initAudio);
+    }, { once: true });
+
+    // Toggle sound with keyboard shortcut (Ctrl+M)
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.code === 'KeyM') {
+        soundEnabled = !soundEnabled;
+        showToast(soundEnabled ? '🔊 Sound On' : '🔇 Sound Off');
+      }
+    });
+
+    // Attach to buttons
+    document.querySelectorAll('[data-sound="click"]').forEach(el => {
+      el.addEventListener('click', playClickSound);
+    });
+  }
+
+  // =========================================
+  // INITIALIZE ALL
+  // =========================================
+
+  function init() {
+    // Check for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      console.log('Reduced motion preferred - animations disabled');
+      return;
+    }
+
+    initRippleEffect();
+    initParallax();
+    initScrollProgress();
+    initMagneticButtons();
+    initTiltEffect();
+    initSpotlight();
+    initSmoothReveal();
+    initSmoothScroll();
+    initKonamiCode();
+    initLazyLoad();
+    initSoundEffects();
+
+    console.log('Premium Effects initialized');
+  }
+
+  // Run when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
 </script>
 
 </body>
