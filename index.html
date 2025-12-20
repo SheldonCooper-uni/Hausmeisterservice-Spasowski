@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" as="style">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80">
     <title>Hausmeisterservice – Objektpflege NRW</title>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -301,6 +302,7 @@ body.light-mode .nav-brand-company{ color:#fff; }
   display:flex; align-items:center; justify-content:center; text-align:center; flex-direction:column;
   position:relative;
   min-height:85vh;
+  background-color: var(--bg-1);
   background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80');
   background-size:cover;
   background-position:center;
@@ -2892,6 +2894,15 @@ body.party-mode {
     transition: none !important;
   }
 }
+</style>
+
+<!-- Disable colorful background layers (prevents flash on refresh) -->
+<style>
+  body::before,
+  .blur-stage,
+  .hero::after {
+    display: none !important;
+  }
 </style>
 </head>
 <body>
