@@ -61,6 +61,56 @@ body.light-mode{
   --shadow:0 8px 32px rgba(0,0,0,.1);
 }
 
+/* =========================
+   Scroll-to-top button
+   ========================= */
+.back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(var(--blur)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+  color: var(--text);
+  cursor: pointer;
+  z-index: 120;
+
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease, background .2s ease;
+}
+.back-to-top.visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover{ background: var(--accent-dim); }
+.back-to-top svg{ width: 22px; height: 22px; display:block; }
+.back-to-top svg path{
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Light mode: arrow white (ensure contrast) */
+body.light-mode .back-to-top{
+  color: #fff;
+  background: rgba(10, 16, 26, 0.58);
+  border-color: rgba(255,255,255,.20);
+}
+body.light-mode .back-to-top:hover{ background: rgba(10, 16, 26, 0.70); }
+
 *{ box-sizing:border-box; }
 html,body{
   margin:0; padding:0; width:100%;
@@ -207,7 +257,7 @@ body.light-mode .nav-wrap{
 @media (max-width:768px){
   .nav-brand-logo{ height:36px; }
   .nav-brand{ font-size:1.1rem; gap:10px; }
-  .nav-brand-company{ font-size:0.65rem; }
+  .nav-brand-company{ display:none; }
   .nav-links{
     display:none; position:absolute; top:100%; right:0; left:0;
     /* Subtle glass: readable, but not a heavy “milky” look */
@@ -368,9 +418,9 @@ section .container{ max-width:1200px; margin:0 auto; padding:0 20px; }
   position:absolute;
   inset:0;
   background:linear-gradient(to bottom,
-    rgba(249,251,253,0.96) 0%,
-    rgba(249,251,253,0.92) 50%,
-    rgba(249,251,253,0.96) 100%);
+    rgba(249,251,253,0.84) 0%,
+    rgba(249,251,253,0.76) 50%,
+    rgba(249,251,253,0.84) 100%);
   z-index:1;
 }
 body:not(.light-mode) .section-with-image::before{
@@ -444,6 +494,9 @@ section + section::before{
   /* iOS/Safari: fixed backgrounds can disappear/jank */
   .hero{ background-attachment:scroll; }
   .section-with-image{ background-attachment:scroll; }
+
+  /* Mobile: avoid duplicate service photo */
+  .about-image{ display:none; }
 
   /* Services background: avoid looking overly zoomed on phones */
   #leistungen.section-with-image{
@@ -2646,6 +2699,7 @@ Managing director(s): Please add</p>`);
 <!-- Back to top button -->
 <style>
   #backToTop{ position:fixed; right:16px; bottom:150px; z-index:1500; width:46px; height:46px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:rgba(17,27,47,.85); color:var(--text); border:1px solid rgba(255,255,255,.06); box-shadow:0 10px 30px rgba(0,0,0,.35); cursor:pointer; opacity:0; transform:translateY(12px); transition:opacity .28s ease, transform .28s ease; }
+  body.light-mode #backToTop{ color:#fff; }
   #backToTop.visible{ opacity:1; transform:translateY(0); }
   #backToTop:focus{ outline:2px solid var(--accent); outline-offset:3px; }
   @media (max-width:480px){ #backToTop{ right:12px; bottom:120px; width:44px; height:44px } }
