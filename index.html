@@ -1426,6 +1426,560 @@ body.light-mode .nav-wrap {
 }
 </style>
 
+<!-- ===== Apple Smooth Experience (butter-smooth) ===== -->
+<style>
+/* ===========================================
+   APPLE SMOOTH EXPERIENCE
+   Butter-smooth animations like iOS/macOS
+   =========================================== */
+
+/* ===========================================
+   1. SMOOTH SCROLLING - Silky Page Scroll
+   =========================================== */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+/* ===========================================
+   2. APPLE EASING CURVES
+   =========================================== */
+
+:root {
+  --apple-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --apple-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --apple-ease-out: cubic-bezier(0, 0, 0.58, 1);
+  --apple-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+
+  --apple-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --apple-spring-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --apple-decel: cubic-bezier(0, 0, 0.2, 1);
+  --apple-snappy: cubic-bezier(0.2, 0, 0, 1);
+
+  --duration-instant: 0.1s;
+  --duration-fast: 0.2s;
+  --duration-normal: 0.35s;
+  --duration-slow: 0.5s;
+  --duration-slower: 0.7s;
+}
+
+/* ===========================================
+   3. GPU ACCELERATION
+   =========================================== */
+
+.service-card,
+.step-card,
+.about-card,
+.contact-info,
+.contact-form,
+.job-card,
+.faq-item,
+.glassCard,
+.map-card,
+.nav-wrap,
+.btn,
+.hero,
+.enter,
+img,
+a,
+button {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  will-change: transform, opacity;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===========================================
+   4. SMOOTH TRANSITIONS
+   =========================================== */
+
+* {
+  transition-timing-function: var(--apple-ease-out);
+}
+
+a {
+  transition:
+    color var(--duration-fast) var(--apple-ease),
+    opacity var(--duration-fast) var(--apple-ease),
+    transform var(--duration-fast) var(--apple-spring-soft) !important;
+}
+
+a:hover {
+  transform: translateZ(0);
+}
+
+.btn,
+button,
+.map-controls button,
+.theme-toggle-btn,
+.nav-toggle,
+#backToTop {
+  transition:
+    transform var(--duration-normal) var(--apple-spring),
+    background var(--duration-fast) var(--apple-ease),
+    box-shadow var(--duration-normal) var(--apple-ease),
+    border-color var(--duration-fast) var(--apple-ease),
+    opacity var(--duration-fast) var(--apple-ease) !important;
+}
+
+.btn:hover,
+button:hover,
+.map-controls button:hover,
+.theme-toggle-btn:hover {
+  transform: translateY(-2px) scale(1.02) translateZ(0) !important;
+}
+
+.btn:active,
+button:active,
+.map-controls button:active,
+.theme-toggle-btn:active {
+  transform: translateY(0) scale(0.98) translateZ(0) !important;
+  transition-duration: var(--duration-instant) !important;
+}
+
+.service-card,
+.step-card,
+.about-card,
+.contact-info,
+.contact-form,
+.job-card,
+.faq-item,
+.glassCard,
+.map-card {
+  transition:
+    transform var(--duration-slow) var(--apple-spring-soft),
+    box-shadow var(--duration-slow) var(--apple-ease),
+    background var(--duration-normal) var(--apple-ease),
+    border-color var(--duration-normal) var(--apple-ease),
+    opacity var(--duration-normal) var(--apple-ease) !important;
+}
+
+.service-card:hover,
+.step-card:hover,
+.about-card:hover,
+.contact-info:hover,
+.contact-form:hover,
+.job-card:hover,
+.glassCard:hover,
+.map-card:hover {
+  transform: translateY(-8px) scale(1.01) translateZ(0) !important;
+}
+
+/* ===========================================
+   5. SMOOTH ENTRANCE ANIMATIONS
+   =========================================== */
+
+.enter {
+  opacity: 0;
+  transform: translateY(40px) translateZ(0);
+  transition:
+    opacity var(--duration-slower) var(--apple-ease-out),
+    transform var(--duration-slower) var(--apple-spring-soft),
+    filter var(--duration-slower) var(--apple-ease) !important;
+}
+
+.enter.visible {
+  opacity: 1;
+  transform: translateY(0) translateZ(0);
+}
+
+.services-grid .service-card:nth-child(1) { transition-delay: 0.05s; }
+.services-grid .service-card:nth-child(2) { transition-delay: 0.1s; }
+.services-grid .service-card:nth-child(3) { transition-delay: 0.15s; }
+.services-grid .service-card:nth-child(4) { transition-delay: 0.2s; }
+.services-grid .service-card:nth-child(5) { transition-delay: 0.25s; }
+.services-grid .service-card:nth-child(6) { transition-delay: 0.3s; }
+
+.steps .step-card:nth-child(1) { transition-delay: 0.1s; }
+.steps .step-card:nth-child(2) { transition-delay: 0.2s; }
+.steps .step-card:nth-child(3) { transition-delay: 0.3s; }
+
+/* ===========================================
+   6. SMOOTH NAVIGATION
+   =========================================== */
+
+.nav-wrap {
+  transition:
+    background var(--duration-normal) var(--apple-ease),
+    box-shadow var(--duration-normal) var(--apple-ease),
+    backdrop-filter var(--duration-normal) var(--apple-ease),
+    transform var(--duration-normal) var(--apple-ease) !important;
+}
+
+.nav-links a {
+  transition:
+    background var(--duration-fast) var(--apple-ease),
+    color var(--duration-fast) var(--apple-ease),
+    transform var(--duration-fast) var(--apple-spring-soft) !important;
+}
+
+.nav-links a:hover {
+  transform: scale(1.05) translateZ(0);
+}
+
+.nav-links a:active {
+  transform: scale(0.95) translateZ(0);
+  transition-duration: var(--duration-instant);
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    transition:
+      opacity var(--duration-normal) var(--apple-ease),
+      transform var(--duration-normal) var(--apple-spring-soft) !important;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  .nav.open .nav-links {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================================
+   7. SMOOTH FAQ ACCORDION
+   =========================================== */
+
+.faq-item {
+  transition:
+    background var(--duration-normal) var(--apple-ease),
+    border-color var(--duration-normal) var(--apple-ease),
+    box-shadow var(--duration-normal) var(--apple-ease),
+    transform var(--duration-normal) var(--apple-spring-soft) !important;
+}
+
+.faq-answer {
+  transition:
+    max-height var(--duration-slow) var(--apple-ease-out),
+    opacity var(--duration-normal) var(--apple-ease),
+    margin-top var(--duration-normal) var(--apple-ease),
+    padding var(--duration-normal) var(--apple-ease) !important;
+}
+
+.faq-toggle {
+  transition: transform var(--duration-normal) var(--apple-spring) !important;
+}
+
+.faq-item.open .faq-toggle {
+  transform: rotate(180deg);
+}
+
+/* ===========================================
+   8. SMOOTH FORM INPUTS
+   =========================================== */
+
+input,
+select,
+textarea,
+.ms-btn {
+  transition:
+    border-color var(--duration-fast) var(--apple-ease),
+    box-shadow var(--duration-fast) var(--apple-ease),
+    background var(--duration-fast) var(--apple-ease),
+    transform var(--duration-fast) var(--apple-spring-soft) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.ms-btn:focus {
+  transform: scale(1.01) translateZ(0);
+}
+
+.ms-menu {
+  transition:
+    opacity var(--duration-fast) var(--apple-ease),
+    transform var(--duration-fast) var(--apple-spring-soft) !important;
+  transform-origin: top center;
+}
+
+.ms-menu[style*="block"] {
+  animation: dropdownOpen var(--duration-fast) var(--apple-spring-soft) forwards;
+}
+
+@keyframes dropdownOpen {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+/* ===========================================
+   9. SMOOTH IMAGES
+   =========================================== */
+
+img {
+  transition:
+    transform var(--duration-slow) var(--apple-spring-soft),
+    opacity var(--duration-normal) var(--apple-ease),
+    filter var(--duration-normal) var(--apple-ease) !important;
+}
+
+.about-image img:hover,
+.hero-media img:hover {
+  transform: scale(1.02) translateZ(0);
+}
+
+img {
+  opacity: 1;
+}
+
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--apple-ease);
+}
+
+img[loading="lazy"].loaded,
+img[loading="lazy"]:not([src=""]) {
+  opacity: 1;
+}
+
+/* ===========================================
+   10. SMOOTH SCROLL INDICATORS
+   =========================================== */
+
+#backToTop {
+  transition:
+    opacity var(--duration-normal) var(--apple-ease),
+    transform var(--duration-normal) var(--apple-spring),
+    background var(--duration-fast) var(--apple-ease) !important;
+}
+
+#backToTop:hover {
+  transform: translateY(-4px) scale(1.1) translateZ(0) !important;
+}
+
+#backToTop:active {
+  transform: translateY(-2px) scale(0.95) translateZ(0) !important;
+}
+
+/* ===========================================
+   11. SMOOTH MAP INTERACTIONS
+   =========================================== */
+
+#map {
+  transition: filter var(--duration-normal) var(--apple-ease);
+}
+
+.map-card:hover #map {
+  filter: brightness(1.02);
+}
+
+.map-controls button {
+  transition:
+    transform var(--duration-fast) var(--apple-spring),
+    background var(--duration-fast) var(--apple-ease),
+    box-shadow var(--duration-fast) var(--apple-ease) !important;
+}
+
+/* ===========================================
+   12. SMOOTH SECTION TRANSITIONS
+   =========================================== */
+
+section {
+  transition: opacity var(--duration-slow) var(--apple-ease);
+}
+
+.section-title h2,
+.section-title p {
+  transition:
+    transform var(--duration-slow) var(--apple-spring-soft),
+    opacity var(--duration-slow) var(--apple-ease) !important;
+}
+
+/* ===========================================
+   13. SMOOTH THEME TOGGLE
+   =========================================== */
+
+body {
+  transition:
+    background var(--duration-slow) var(--apple-ease),
+    color var(--duration-normal) var(--apple-ease) !important;
+}
+
+body::before {
+  transition:
+    filter var(--duration-slow) var(--apple-ease),
+    opacity var(--duration-slow) var(--apple-ease) !important;
+}
+
+/* ===========================================
+   14. SMOOTH HOVER STATES
+   =========================================== */
+
+.qc-btn {
+  transition:
+    transform var(--duration-fast) var(--apple-spring),
+    box-shadow var(--duration-fast) var(--apple-ease) !important;
+}
+
+.qc-btn:hover {
+  transform: scale(1.1) translateZ(0) !important;
+}
+
+.qc-btn:active {
+  transform: scale(0.95) translateZ(0) !important;
+}
+
+.qc-label {
+  transition:
+    opacity var(--duration-fast) var(--apple-ease),
+    transform var(--duration-fast) var(--apple-spring-soft) !important;
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.qc-show-label .qc-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===========================================
+   15. SMOOTH FOCUS STATES
+   =========================================== */
+
+:focus-visible {
+  transition:
+    outline-offset var(--duration-fast) var(--apple-spring),
+    box-shadow var(--duration-fast) var(--apple-ease) !important;
+  outline-offset: 4px;
+}
+
+/* ===========================================
+   16. SMOOTH LOADING STATES
+   =========================================== */
+
+@keyframes pageLoad {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  animation: pageLoad var(--duration-slow) var(--apple-ease-out);
+}
+
+.hero h1,
+.hero p,
+.hero .cta-buttons {
+  animation: pageLoad var(--duration-slower) var(--apple-spring-soft) both;
+}
+
+.hero h1 { animation-delay: 0.1s; }
+.hero p { animation-delay: 0.2s; }
+.hero .cta-buttons { animation-delay: 0.3s; }
+
+/* ===========================================
+   17. SMOOTH SCROLLBAR (Webkit)
+   =========================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  transition: background var(--duration-fast) var(--apple-ease);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* ===========================================
+   18. PERFORMANCE OPTIMIZATIONS
+   =========================================== */
+
+.service-card,
+.step-card,
+.about-card,
+.job-card,
+.faq-item,
+.glassCard {
+  contain: layout style paint;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter,
+  .service-card,
+  .step-card,
+  img {
+    will-change: transform, opacity;
+  }
+}
+
+/* ===========================================
+   19. REDUCED MOTION - Accessibility
+   =========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ===========================================
+   20. EXTRA: Elastic Scroll Feel (Body)
+   =========================================== */
+
+@supports (overscroll-behavior: contain) {
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+</style>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
