@@ -615,8 +615,12 @@ body:not(.light-mode) .step-card:hover{
 @media (min-width:768px){ .services-grid{ grid-template-columns:repeat(3,1fr); } }
 
 .service-card{
-  background:var(--glass-bg); backdrop-filter:blur(var(--blur));
-  border:1px solid var(--border); border-radius:var(--radius);
+  background:var(--glass-bg);
+  backdrop-filter: blur(var(--blur)) contrast(110%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) contrast(110%) brightness(105%);
+  border:1px solid var(--border);
+  border-image: linear-gradient(to bottom right, rgba(255,255,255,0.5), transparent 40%) 1;
+  border-radius:var(--radius);
   padding:35px; display:flex; flex-direction:column; box-shadow:var(--shadow);
   transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
   position:relative;
@@ -631,6 +635,31 @@ body:not(.light-mode) .step-card:hover{
   opacity:0;
   transition:opacity .35s ease;
 }
+
+/* Scroll-Glint: subtiler Lichtstrahl, der beim Scrollen über die Karten läuft */
+#leistungen .service-card::after{
+  content:'';
+  position:absolute;
+  inset:-40%;
+  background: linear-gradient(120deg,
+    transparent 46%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 54%);
+  opacity:0;
+  transform: translateX(-35%);
+  pointer-events:none;
+}
+@keyframes serviceGlintSweep{
+  from{ transform: translateX(-35%); }
+  to{ transform: translateX(35%); }
+}
+body.is-scrolling #leistungen .service-card::after{
+  opacity:1;
+  animation: serviceGlintSweep 900ms ease-out 1;
+}
+@media (prefers-reduced-motion: reduce){
+  body.is-scrolling #leistungen .service-card::after{ animation: none !important; opacity: 0 !important; }
+}
 .service-card:hover{
   transform:translateY(-8px);
   box-shadow:0 16px 48px rgba(0,0,0,.4);
@@ -644,9 +673,10 @@ body:not(.light-mode) .service-card:hover{
 /* Light Mode: cleaner, lighter service cards */
 body.light-mode .service-card{
   background:rgba(255,255,255,.85);
-  backdrop-filter:blur(20px) saturate(120%);
-  -webkit-backdrop-filter:blur(20px) saturate(120%);
+  backdrop-filter: blur(20px) saturate(120%) contrast(110%) brightness(105%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%) contrast(110%) brightness(105%);
   border:1px solid rgba(0,0,0,.06);
+  border-image: linear-gradient(to bottom right, rgba(255,255,255,0.55), transparent 40%) 1;
   box-shadow:0 4px 16px rgba(0,0,0,.04);
 }
 body.light-mode .service-card:hover{
@@ -677,6 +707,25 @@ body.light-mode .service-card:hover{
   color:var(--heading);
   font-weight:600;
   letter-spacing:-0.01em;
+}
+
+/* Sonderaufgaben: Bild neben dem Titel */
+#leistungen .service-card-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 12px;
+}
+#leistungen .service-card-title-row h3{ margin:0; }
+#leistungen .service-thumb{
+  width:76px;
+  height:52px;
+  border-radius:12px;
+  object-fit:cover;
+  border:1px solid var(--border);
+  box-shadow: var(--shadow);
+  flex:0 0 auto;
 }
 .service-card p{
   margin:0 0 16px;
@@ -3150,6 +3199,13 @@ body.party-mode {
   min-height: 440px;         /* gleiche Grundhöhe (optional) */
 }
 
+/* Bento-Grid Akzent: erste Karte größer (2 Spalten breit) */
+@media (min-width: 680px){
+  #leistungen .services-grid > .service-card.is-featured{
+    grid-column: span 2;
+  }
+}
+
 </style>
 <section id="leistungen" class="section-with-image">
   <div class="container">
@@ -3159,7 +3215,7 @@ body.party-mode {
       <p class="enter">Modular&nbsp;&amp; flexibel&nbsp;– individuell buchbar oder als Paket</p>
     </div>
         <div class="services-grid">
-            <div class="service-card enter">
+          <div class="service-card enter is-featured">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
                 <h3>Objektbetreuung</h3>
                 <p>Regelmäßige Sichtkontrollen, Funktionsprüfung der Haustechnik, Störungsmanagement und Koordination externer Gewerke.</p>
@@ -3235,7 +3291,10 @@ body.party-mode {
             </div>
             <div class="service-card enter">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <h3>Sonderaufgaben</h3>
+                <div class="service-card-title-row">
+                  <h3>Sonderaufgaben</h3>
+                  <img class="service-thumb" src="assets/gebaeudemanagement-service.jpg" alt="HM-Service" loading="lazy" decoding="async">
+                </div>
                 <p>Entrümpelungen, Notdienste, Winterdienst und weitere individuelle Aufträge.</p>
                 <ul>
                     <li>Entrümpelung</li>
