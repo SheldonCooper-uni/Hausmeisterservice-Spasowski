@@ -239,7 +239,7 @@ body.light-mode .nav-wrap{
   transition:opacity .3s ease;
 }
 .nav-brand:hover{ opacity:0.85; }
-.nav-brand-logo{ height:42px; width:auto; display:block; }
+.nav-brand-logo{ height:42px; width:auto; display:block; flex:0 0 auto; }
 .nav-brand-text{ display:flex; flex-direction:column; line-height:1.2; }
 .nav-brand-company{ font-size:0.75rem; font-weight:400; color:var(--muted); margin-top:2px; }
 /* Light mode: default dark text for contrast on light sections */
@@ -269,9 +269,10 @@ body.light-mode.nav-on-hero .nav-brand-company{ color:#fff; }
 .nav.open .nav-toggle .burger::after{ opacity:0; }
 
 @media (max-width:768px){
-  .nav-brand-logo{ height:36px; }
+  .nav-brand-logo{ height:42px; }
   .nav-brand{ font-size:1.1rem; gap:10px; }
-  .nav-brand-company{ display:none; }
+  .nav-brand-text{ line-height:1.15; }
+  .nav-brand-company{ display:block; font-size:0.7rem; }
   .nav-links{
     display:none; position:absolute; top:100%; right:0; left:0;
     /* Subtle glass: readable, but not a heavy “milky” look */
@@ -281,7 +282,7 @@ body.light-mode.nav-on-hero .nav-brand-company{ color:#fff; }
     border-bottom:1px solid var(--border);
     box-shadow: 0 18px 50px rgba(0,0,0,.35);
     flex-direction:column; gap:12px; padding:16px 20px;
-    max-height: calc(100vh - 72px);
+    max-height: calc(100vh - 92px);
     overflow:auto;
   }
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -1020,6 +1021,15 @@ footer .footer-grid{
   max-width:1200px; margin:0 auto; display:grid; gap:30px; justify-items:flex-start; text-align:left;
 }
 @media (min-width:768px){ footer .footer-grid{ grid-template-columns:1fr 1fr 1fr; } }
+@media (max-width:767px){
+  footer .footer-grid{
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 16px;
+    justify-items: stretch;
+    align-items: start;
+  }
+  footer .footer-grid > div:first-child{ grid-column: 1 / -1; }
+}
 footer h4{ margin:0 0 10px; color:var(--heading); font-size:1.3rem; }
 footer ul{ list-style:none; padding:0; margin:0; }
 footer ul li{ margin-bottom:8px; }
@@ -3844,19 +3854,26 @@ footer .footer-grid{
     // Set the current year in the footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Smooth scroll behaviour for nav and CTA links
+    // Smooth scroll behaviour for all in-page anchors.
+    // Important: we stopImmediatePropagation so other smooth-scroll listeners
+    // (added later for "premium effects") don't fight and make scrolling feel slow/janky.
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href.length > 1) {
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    document.querySelector('.nav')?.classList.remove('open');
-                }
-            }
-        });
+      if (anchor.dataset && anchor.dataset.smoothScrollBound === '1') return;
+      if (anchor.dataset) anchor.dataset.smoothScrollBound = '1';
+
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href.length <= 1) return;
+
+        const target = document.querySelector(href);
+        if (!target) return;
+
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('.nav')?.classList.remove('open');
+      });
     });
 
     // FAQ toggle functionality
@@ -4674,7 +4691,7 @@ Managing director(s): Please add</p>`);
 <!-- Quick contact buttons (fixed bottom-right) -->
 <style>
   .quick-contact{ position:fixed; right:16px; bottom:16px; z-index:1400; display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
-  .qc-btn{ display:inline-flex; align-items:center; justify-content:center; width:52px; height:52px; border-radius:999px; color:#fff; text-decoration:none; box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.06); font-size:20px; }
+  .qc-btn{ display:inline-flex; align-items:center; justify-content:center; width:52px; height:52px; border-radius:999px; color:#fff; text-decoration:none; box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.06); font-size:20px; touch-action:manipulation; -webkit-tap-highlight-color: transparent; }
   .qc-phone{ background:linear-gradient(135deg,#2b8bec 0%, #4cc9f0 100%); }
   .qc-wa{ background:linear-gradient(135deg,#25D366 0%, #1DA851 100%); }
   .qc-label{ display:none; margin-right:8px; background:rgba(0,0,0,.45); color:var(--text); padding:6px 10px; border-radius:12px; font-size:.85rem; backdrop-filter:blur(8px); }
@@ -4700,14 +4717,48 @@ Managing director(s): Please add</p>`);
   (function(){
     const qc = document.querySelector('.quick-contact');
     if(!qc) return;
+    const canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+    const isTouchLike = window.matchMedia && window.matchMedia('(hover: none)').matches;
+
+    // On touch devices, opening external apps via target="_blank" can be flaky.
+    // Prefer same-tab navigation for WhatsApp on touch devices.
+    if (isTouchLike) {
+      qc.querySelectorAll('a.qc-btn.qc-wa[target="_blank"]').forEach(a => a.removeAttribute('target'));
+    }
+
     qc.querySelectorAll('.qc-item').forEach(item => {
       const btn = item.querySelector('.qc-btn');
       const label = item.querySelector('.qc-label');
       if(!btn || !label) return;
-      btn.addEventListener('mouseenter', () => item.classList.add('qc-show-label'));
-      btn.addEventListener('mouseleave', () => item.classList.remove('qc-show-label'));
-      btn.addEventListener('focus', () => item.classList.add('qc-show-label'));
-      btn.addEventListener('blur', () => item.classList.remove('qc-show-label'));
+
+      if (canHover) {
+        btn.addEventListener('mouseenter', () => item.classList.add('qc-show-label'));
+        btn.addEventListener('mouseleave', () => item.classList.remove('qc-show-label'));
+      }
+      // Avoid "tap shows label then hides" flicker on touch devices.
+      if (!isTouchLike) {
+        btn.addEventListener('focus', () => item.classList.add('qc-show-label'));
+        btn.addEventListener('blur', () => item.classList.remove('qc-show-label'));
+      }
+
+      // Ensure taps/clicks reliably trigger the link action.
+      btn.addEventListener('click', (e) => {
+        // Prevent other global click handlers from interfering.
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        // On some mobile browsers, focus/blur can cancel the perceived action.
+        try { btn.blur(); } catch(_) {}
+
+        // If WhatsApp still has target=_blank (e.g., older cached DOM), force same-tab on touch.
+        if (isTouchLike && btn.classList.contains('qc-wa')) {
+          const href = btn.getAttribute('href');
+          if (href) {
+            e.preventDefault();
+            window.location.href = href;
+          }
+        }
+      }, { capture: true });
     });
   })();
 </script>
