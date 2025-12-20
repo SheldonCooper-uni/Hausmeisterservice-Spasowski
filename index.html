@@ -1021,6 +1021,411 @@ body.light-mode .job-card p{ color:var(--text); }
 <meta name="twitter:description" content="Schnell ein Angebot anfordern oder direkt bewerben. Zuverlässiger Service, faire Preise, kurze Reaktionszeiten.">
 <meta name="twitter:image" content="assets/og-image.jpg">
 
+<!-- ===== Liquid Glass Effect - iOS Style (override) ===== -->
+<style>
+/* ===========================================
+   LIQUID GLASS EFFECT - Apple iOS Style
+   =========================================== */
+
+/* Base Variables for Liquid Glass */
+:root {
+  /* Liquid Glass - Dark Mode */
+  --liquid-bg: rgba(255, 255, 255, 0.03);
+  --liquid-bg-hover: rgba(255, 255, 255, 0.06);
+  --liquid-border-top: rgba(255, 255, 255, 0.25);
+  --liquid-border-left: rgba(255, 255, 255, 0.15);
+  --liquid-border-right: rgba(255, 255, 255, 0.08);
+  --liquid-border-bottom: rgba(255, 255, 255, 0.04);
+  --liquid-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --liquid-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.3);
+  --liquid-inset: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --liquid-blur: 8px;
+  --liquid-saturation: 140%;
+  --liquid-shine: rgba(255, 255, 255, 0.15);
+  --liquid-refraction: rgba(255, 255, 255, 0.08);
+}
+
+/* Light Mode Adjustments */
+body.light-mode {
+  --liquid-bg: rgba(255, 255, 255, 0.35);
+  --liquid-bg-hover: rgba(255, 255, 255, 0.50);
+  --liquid-border-top: rgba(255, 255, 255, 0.70);
+  --liquid-border-left: rgba(255, 255, 255, 0.50);
+  --liquid-border-right: rgba(255, 255, 255, 0.30);
+  --liquid-border-bottom: rgba(0, 0, 0, 0.05);
+  --liquid-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --liquid-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --liquid-inset: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --liquid-shine: rgba(255, 255, 255, 0.6);
+  --liquid-refraction: rgba(255, 255, 255, 0.3);
+}
+
+/* ===========================================
+   Liquid Glass Animation Keyframes
+   =========================================== */
+
+@keyframes liquidShine {
+  0% {
+    background-position: -200% 0;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0;
+  }
+}
+
+@keyframes liquidPulse {
+  0%, 100% {
+    border-top-color: var(--liquid-border-top);
+    box-shadow: var(--liquid-shadow), var(--liquid-inset);
+  }
+  50% {
+    border-top-color: rgba(255, 255, 255, 0.35);
+    box-shadow: var(--liquid-shadow), var(--liquid-inset), 0 0 20px rgba(255, 255, 255, 0.05);
+  }
+}
+
+@keyframes liquidEdge {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(100%) skewX(-15deg);
+  }
+}
+
+/* ===========================================
+   Base Liquid Glass Container Style
+   =========================================== */
+
+.liquid-glass,
+.service-card,
+.step-card,
+.about-card,
+.contact-info,
+.contact-form,
+.job-card,
+.faq-item,
+.glassCard,
+.map-card {
+  background: var(--liquid-bg) !important;
+  backdrop-filter: blur(var(--liquid-blur)) saturate(var(--liquid-saturation)) !important;
+  -webkit-backdrop-filter: blur(var(--liquid-blur)) saturate(var(--liquid-saturation)) !important;
+
+  border: none !important;
+  border-top: 1px solid var(--liquid-border-top) !important;
+  border-left: 1px solid var(--liquid-border-left) !important;
+  border-right: 1px solid var(--liquid-border-right) !important;
+  border-bottom: 1px solid var(--liquid-border-bottom) !important;
+
+  box-shadow:
+    var(--liquid-shadow),
+    var(--liquid-inset),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1) !important;
+
+  transition:
+    background 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s cubic-bezier(0.2, 0, 0, 1),
+    border-color 0.4s ease !important;
+
+  position: relative;
+  overflow: hidden;
+
+  animation: liquidPulse 8s ease-in-out infinite;
+}
+
+/* Lichtreflex-Overlay */
+.service-card::before,
+.step-card::before,
+.about-card::before,
+.contact-info::before,
+.contact-form::before,
+.job-card::before,
+.faq-item::before,
+.glassCard::before,
+.map-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    var(--liquid-refraction) 45%,
+    var(--liquid-shine) 50%,
+    var(--liquid-refraction) 55%,
+    transparent 65%,
+    transparent 100%
+  ) !important;
+  background-size: 200% 100% !important;
+
+  animation: liquidShine 6s ease-in-out infinite !important;
+  opacity: 0.7 !important;
+}
+
+/* Schimmernde obere Kante */
+.service-card::after,
+.step-card::after,
+.about-card::after,
+.contact-info::after,
+.contact-form::after,
+.job-card::after,
+.faq-item::after,
+.glassCard::after,
+.map-card::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -50% !important;
+  width: 50% !important;
+  height: 1px !important;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.4),
+    transparent
+  ) !important;
+  animation: liquidEdge 8s ease-in-out infinite !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* ===========================================
+   Hover Effects - Liquid Response
+   =========================================== */
+
+.service-card:hover,
+.step-card:hover,
+.about-card:hover,
+.contact-info:hover,
+.contact-form:hover,
+.job-card:hover,
+.faq-item:hover,
+.glassCard:hover,
+.map-card:hover {
+  background: var(--liquid-bg-hover) !important;
+  transform: translateY(-4px) scale(1.01) !important;
+
+  box-shadow:
+    var(--liquid-shadow-hover),
+    var(--liquid-inset),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 40px rgba(255, 255, 255, 0.05) !important;
+
+  border-top-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.service-card:hover::before,
+.step-card:hover::before,
+.about-card:hover::before,
+.contact-info:hover::before,
+.contact-form:hover::before,
+.job-card:hover::before,
+.faq-item:hover::before,
+.glassCard:hover::before,
+.map-card:hover::before {
+  animation-duration: 3s !important;
+  opacity: 1 !important;
+}
+
+/* ===========================================
+   Navigation - Liquid Glass
+   =========================================== */
+
+.nav-wrap {
+  background: var(--liquid-bg) !important;
+  backdrop-filter: blur(12px) saturate(var(--liquid-saturation)) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(var(--liquid-saturation)) !important;
+
+  border: none !important;
+  border-bottom: 1px solid var(--liquid-border-bottom) !important;
+
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+body.light-mode .nav-wrap {
+  background: var(--liquid-bg) !important;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ===========================================
+   Step Cards - Staggered Animation
+   =========================================== */
+
+.step-card:nth-child(1) { animation-delay: 0s; }
+.step-card:nth-child(2) { animation-delay: 0.5s; }
+.step-card:nth-child(3) { animation-delay: 1s; }
+
+.step-card:nth-child(1)::before { animation-delay: 0s; }
+.step-card:nth-child(2)::before { animation-delay: 2s; }
+.step-card:nth-child(3)::before { animation-delay: 4s; }
+
+/* ===========================================
+   Service Cards - Staggered Animation
+   =========================================== */
+
+.service-card:nth-child(1)::before { animation-delay: 0s; }
+.service-card:nth-child(2)::before { animation-delay: 1s; }
+.service-card:nth-child(3)::before { animation-delay: 2s; }
+.service-card:nth-child(4)::before { animation-delay: 3s; }
+.service-card:nth-child(5)::before { animation-delay: 4s; }
+.service-card:nth-child(6)::before { animation-delay: 5s; }
+
+/* ===========================================
+   FAQ Items - Liquid Interaction
+   =========================================== */
+
+.faq-item.open {
+  background: var(--liquid-bg-hover) !important;
+  border-top-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* ===========================================
+   Buttons - Liquid Style
+   =========================================== */
+
+.btn {
+  background: var(--liquid-bg) !important;
+  backdrop-filter: blur(8px) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(130%) !important;
+  border: 1px solid var(--liquid-border-top) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn.primary {
+  background: linear-gradient(
+    135deg,
+    rgba(43, 139, 236, 0.8) 0%,
+    rgba(76, 201, 240, 0.8) 100%
+  ) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.btn.secondary {
+  background: var(--liquid-bg) !important;
+}
+
+/* ===========================================
+   Mobile Adjustments
+   =========================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --liquid-blur: 6px;
+  }
+
+  .service-card::before,
+  .step-card::before,
+  .about-card::before,
+  .job-card::before,
+  .faq-item::before {
+    animation-duration: 8s !important;
+  }
+}
+
+/* ===========================================
+   Reduced Motion - Accessibility
+   =========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card,
+  .step-card,
+  .about-card,
+  .contact-info,
+  .contact-form,
+  .job-card,
+  .faq-item,
+  .glassCard,
+  .map-card {
+    animation: none !important;
+  }
+
+  .service-card::before,
+  .step-card::before,
+  .about-card::before,
+  .contact-info::before,
+  .contact-form::before,
+  .job-card::before,
+  .faq-item::before,
+  .glassCard::before,
+  .map-card::before,
+  .service-card::after,
+  .step-card::after,
+  .about-card::after,
+  .contact-info::after,
+  .contact-form::after,
+  .job-card::after,
+  .faq-item::after,
+  .glassCard::after,
+  .map-card::after {
+    animation: none !important;
+    opacity: 0.5 !important;
+  }
+}
+
+/* ===========================================
+   Special: Intense Liquid Effect on Focus
+   =========================================== */
+
+.service-card:focus-within,
+.step-card:focus-within,
+.about-card:focus-within,
+.contact-info:focus-within,
+.contact-form:focus-within,
+.job-card:focus-within,
+.faq-item:focus-within {
+  border-top-color: rgba(143, 211, 255, 0.5) !important;
+  box-shadow:
+    var(--liquid-shadow-hover),
+    var(--liquid-inset),
+    0 0 30px rgba(143, 211, 255, 0.15) !important;
+}
+</style>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
